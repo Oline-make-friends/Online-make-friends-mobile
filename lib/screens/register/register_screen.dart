@@ -64,19 +64,19 @@ class RegisterScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      const CustomTextFormField(
+                      CustomTextFormField(
                         hintTxt: 'Email',
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      const CustomTextFormField(hintTxt: 'Password'),
+                      CustomTextFormField(hintTxt: 'Password'),
                       const SizedBox(height: 20),
-                      const CustomTextFormField(hintTxt: 'Retype Password'),
+                      CustomTextFormField(hintTxt: 'Retype Password'),
                       const SizedBox(height: 20),
-                      const CustomTextFormField(hintTxt: 'Fullname'),
+                      CustomTextFormField(hintTxt: 'Fullname'),
                       const SizedBox(height: 20),
-                      const CustomTextFormField(hintTxt: 'Age'),
+                      CustomTextFormField(hintTxt: 'Age'),
                       const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,

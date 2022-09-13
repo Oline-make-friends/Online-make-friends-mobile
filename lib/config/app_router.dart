@@ -28,6 +28,8 @@ class AppRouter {
         return NotificationScreen.route();
       case ProfileScreen.routeName:
         return ProfileScreen.route();
+      case NewsFeedScreen.routeName:
+        return NewsFeedScreen.route();
       default:
         return _errorRoute();
     }

@@ -98,17 +98,21 @@ class ProfileScreen extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
+                    itemCount: 4,
                     padding: const EdgeInsets.only(right: 5),
                     itemBuilder: ((context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          border:
-                              Border.all(color: Theme.of(context).primaryColor),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(user.imageUrls[index]),
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Container(
+                          height: 125,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.black),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(user.imageUrls[index]),
+                            ),
                           ),
                         ),
                       );
@@ -119,6 +123,13 @@ class ProfileScreen extends StatelessWidget {
                   title: 'Interest',
                   icon: Icons.edit,
                 ),
+                Row(
+                  children: [
+                    CustomTextContainer(text: 'GAME'),
+                    CustomTextContainer(text: 'TECHNOLOGY'),
+                    CustomTextContainer(text: 'MUSIC'),
+                  ],
+                )
               ],
             ),
           )
@@ -140,6 +151,7 @@ class TitleWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(title, style: Theme.of(context).textTheme.headline3),
         IconButton(

@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String hintTxt;
+  String? Function(String?)? validator;
+  TextEditingController? controller;
 
-  const CustomTextFormField({
+  CustomTextFormField({
     Key? key,
     required this.hintTxt,
+    this.validator,
+    this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: validator,
+      controller: controller,
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white54,
@@ -33,16 +39,6 @@ class CustomTextFormField extends StatelessWidget {
           ),
         ),
         hintText: hintTxt,
-        // border: OutlineInputBorder(
-        //   borderRadius:
-        //       const BorderRadius.all(
-        //     Radius.circular(20),
-        //   ),
-        //   borderSide: BorderSide(
-        //     color: Theme.of(context)
-        //         .backgroundColor,
-        //   ),
-        // ),
       ),
     );
   }

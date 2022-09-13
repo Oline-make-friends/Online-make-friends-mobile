@@ -163,56 +163,31 @@ class SplashScreen extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.all(20.0),
                                       child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          const CustomTextFormField(
-                                            hintTxt: 'Username or email',
+                                          CustomLoginButton(
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, '/login');
+                                            },
+                                            image:
+                                                'https://img.icons8.com/material-two-tone/344/new-post.png',
+                                            title:
+                                                'Login with email or username',
+                                            color:
+                                                Theme.of(context).primaryColor,
                                           ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          const CustomTextFormField(
-                                              hintTxt: 'Password'),
-                                          const SizedBox(height: 20),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: IntrinsicWidth(
-                                              child: CustomButton(
-                                                  onTap: () {
-                                                    Navigator.pushNamed(
-                                                        context, '/home');
-                                                  },
-                                                  title: 'Login Now',
-                                                  buttonColor: Theme.of(context)
-                                                      .primaryColor),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              'Or',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: IntrinsicWidth(
-                                              child: CustomButton(
-                                                  onTap: () {
-                                                    Navigator.of(context)
-                                                        .pushNamed('/register');
-                                                  },
-                                                  title: 'Join us now !',
-                                                  buttonColor: Colors.white54,
-                                                  textColor:
-                                                      const Color(0xFF116ddd)),
-                                            ),
+                                          const SizedBox(height: 50),
+                                          CustomLoginButton(
+                                            onTap: () {},
+                                            image:
+                                                'http://pngimg.com/uploads/google/google_PNG19635.png',
+                                            title: 'Login with FPT account',
+                                            textColor:
+                                                Theme.of(context).primaryColor,
                                           ),
                                         ],
                                       ),
@@ -231,6 +206,62 @@ class SplashScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CustomLoginButton extends StatelessWidget {
+  final VoidCallback onTap;
+  final String image;
+  final String title;
+  final Color color;
+  final Color textColor;
+
+  const CustomLoginButton({
+    Key? key,
+    required this.onTap,
+    required this.image,
+    required this.title,
+    this.color = Colors.white,
+    this.textColor = Colors.white,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          // border: Border.all(
+          //     color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+          color: color,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: Image(
+                  image: NetworkImage(image),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Text(
+                title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: textColor),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

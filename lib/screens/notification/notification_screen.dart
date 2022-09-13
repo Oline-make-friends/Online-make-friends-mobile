@@ -41,7 +41,7 @@ class NotificationScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Your friend request has been accepted !',
+                      'Your friend request has been accepted!',
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1!
@@ -70,7 +70,7 @@ class NotificationScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'A person wants to be your friend !',
+                      'A person wants to be your friend!',
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1!

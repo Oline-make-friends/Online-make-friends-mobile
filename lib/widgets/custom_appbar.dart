@@ -43,6 +43,15 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
         IconButton(
           onPressed: () {
+            Navigator.pushNamed(context, '/news');
+          },
+          icon: FaIcon(
+            FontAwesomeIcons.newspaper,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        IconButton(
+          onPressed: () {
             Navigator.pushNamed(context, '/matches');
           },
           icon: FaIcon(
@@ -51,7 +60,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/profile');
+          },
           icon: FaIcon(
             FontAwesomeIcons.userLarge,
             color: Theme.of(context).primaryColor,
