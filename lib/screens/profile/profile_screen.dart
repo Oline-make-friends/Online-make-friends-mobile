@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(user.imageUrls[0]),
+                    image: NetworkImage(user.avatarUrl[0]),
                     fit: BoxFit.cover,
                   ),
                   boxShadow: const [
@@ -62,7 +62,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 40),
                     child: Text(
-                      user.name,
+                      user.fullname,
                       style: Theme.of(context)
                           .textTheme
                           .headline1!
@@ -83,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.edit,
                 ),
                 Text(
-                  user.bio,
+                  user.about,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -111,7 +111,7 @@ class ProfileScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black),
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(user.imageUrls[index]),
+                              image: NetworkImage(user.avatarUrl[index]),
                             ),
                           ),
                         ),

@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/account_model.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = '/login';
 
   static Route route() {
     return MaterialPageRoute(
-      builder: (context) => const LoginScreen(),
+      builder: (context) => LoginScreen(),
       settings: const RouteSettings(),
     );
   }
 
-  const LoginScreen({Key? key}) : super(key: key);
+  var loginController = Get.put(LoginController());
+
+  LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    final TextEditingController _usernameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-    bool hasError = false;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -67,12 +66,11 @@ class LoginScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Form(
-                  key: _formKey,
                   child: Column(
                     children: [
                       //Username field
                       CustomTextFormField(
-                        controller: _usernameController,
+                        controller: loginController.usernameController,
                         validator: (valid) {
                           if (valid == null || valid.isEmpty) {
                             return 'Username or email required';
@@ -86,7 +84,7 @@ class LoginScreen extends StatelessWidget {
 
                       //Password Field
                       CustomTextFormField(
-                        controller: _passwordController,
+                        controller: loginController.passwordController,
                         validator: (valid) {
                           if (valid == null ||
                               valid.isEmpty ||
@@ -104,27 +102,9 @@ class LoginScreen extends StatelessWidget {
                         child: IntrinsicWidth(
                           child: CustomButton(
                               onTap: () {
-                                final isValid =
-                                    _formKey.currentState!.validate();
-                                final accounts = Account.accounts;
-                                if (isValid) {
-                                  for (Account acc in accounts) {
-                                    if (acc.username ==
-                                            _usernameController.text &&
-                                        acc.password ==
-                                            _passwordController.text) {
-                                      print('login success');
-                                      Navigator.pushNamed(context, '/home');
-                                    }
-                                    if (acc.username !=
-                                            _usernameController.text ||
-                                        acc.password !=
-                                            _passwordController.text) {
-                                      print('Login failed');
-                                      hasError = true;
-                                    }
-                                  }
-                                }
+                                loginController.login();
+
+                                // Navigator.pushNamed(context, '/home');
                               },
                               title: 'Login Now',
                               buttonColor: Theme.of(context).primaryColor),
@@ -154,7 +134,7 @@ class LoginScreen extends StatelessWidget {
                               textColor: const Color(0xFF116ddd)),
                         ),
                       ),
-                      hasError ? Text('data') : Text(''),
+                      // hasError ? Text('data') : Text(''),
                     ],
                   ),
                 ),

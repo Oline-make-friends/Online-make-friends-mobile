@@ -52,13 +52,5 @@ class UserMatch extends Equatable {
           .where((chat) => chat.userId == 1 && chat.matchedUserId == 5)
           .toList(),
     ),
-    UserMatch(
-      id: 5,
-      userId: 1,
-      matchedUser: User.users[5],
-      chats: Chat.chats
-          .where((chat) => chat.userId == 1 && chat.matchedUserId == 6)
-          .toList(),
-    ),
   ];
 }

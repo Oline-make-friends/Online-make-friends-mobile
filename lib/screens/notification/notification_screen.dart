@@ -34,7 +34,7 @@ class NotificationScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(User.users[4].imageUrls[0]),
+                  backgroundImage: NetworkImage(User.users[4].avatarUrl[0]),
                 ),
                 const SizedBox(width: 10),
                 Column(
@@ -63,7 +63,7 @@ class NotificationScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(User.users[3].imageUrls[0]),
+                  backgroundImage: NetworkImage(User.users[3].avatarUrl[0]),
                 ),
                 const SizedBox(width: 10),
                 Column(

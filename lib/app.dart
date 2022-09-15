@@ -4,6 +4,7 @@ import 'package:flutter_making_friends_app_2/blocs/swipe/swipe_bloc.dart';
 import 'package:flutter_making_friends_app_2/config/app_router.dart';
 import 'package:flutter_making_friends_app_2/config/theme.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
+import 'package:get/get.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
           create: (_) => SwipeBloc()..add(LoadUser(users: User.users)),
         )
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
         theme: theme(),

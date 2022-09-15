@@ -80,7 +80,7 @@ class CustomPost extends StatelessWidget {
             Align(
               alignment: Alignment.topLeft,
               child: CircleAvatar(
-                backgroundImage: NetworkImage(user.imageUrls[0]),
+                backgroundImage: NetworkImage(user.avatarUrl[0]),
               ),
             ),
             const SizedBox(width: 5),
@@ -91,7 +91,7 @@ class CustomPost extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        user.name,
+                        user.fullname,
                         style: Theme.of(context)
                             .textTheme
                             .headline6!
@@ -122,7 +122,7 @@ class CustomPost extends StatelessWidget {
                           height: 100,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(user.imageUrls[1]),
+                              image: NetworkImage(user.avatarUrl[1]),
                             ),
                           ),
                         )

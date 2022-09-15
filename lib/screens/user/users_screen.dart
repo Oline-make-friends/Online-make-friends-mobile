@@ -47,7 +47,7 @@ class UsersScreen extends StatelessWidget {
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20)),
                           image: DecorationImage(
-                            image: NetworkImage(user.imageUrls[0]),
+                            image: NetworkImage(user.avatarUrl[0]),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -90,11 +90,11 @@ class UsersScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${user.name}, ${user.age}',
+                    '${user.fullname}, ${user.location}',
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   Text(
-                    user.jobTitle,
+                    user.major,
                     style: Theme.of(context)
                         .textTheme
                         .headline2!
@@ -106,7 +106,7 @@ class UsersScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline2!,
                   ),
                   Text(
-                    user.bio,
+                    user.about,
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         height: 2,
                         color: Colors.black,
@@ -117,32 +117,32 @@ class UsersScreen extends StatelessWidget {
                     'Interests',
                     style: Theme.of(context).textTheme.headline2,
                   ),
-                  Row(
-                    children: user.interests
-                        .map(
-                          (interest) => Container(
-                            padding: const EdgeInsets.all(5),
-                            margin: const EdgeInsets.only(right: 5, top: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              gradient: LinearGradient(
-                                colors: [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context).accentColor,
-                                ],
-                              ),
-                            ),
-                            child: Text(
-                              interest,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  )
+                  // Row(
+                  //   children: user.interests
+                  //       .map(
+                  //         (interest) => Container(
+                  //           padding: const EdgeInsets.all(5),
+                  //           margin: const EdgeInsets.only(right: 5, top: 5),
+                  //           decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(5),
+                  //             gradient: LinearGradient(
+                  //               colors: [
+                  //                 Theme.of(context).primaryColor,
+                  //                 Theme.of(context).accentColor,
+                  //               ],
+                  //             ),
+                  //           ),
+                  //           child: Text(
+                  //             interest,
+                  //             style: Theme.of(context)
+                  //                 .textTheme
+                  //                 .headline6!
+                  //                 .copyWith(color: Colors.white),
+                  //           ),
+                  //         ),
+                  //       )
+                  //       .toList(),
+                  // )
                 ],
               ),
             )

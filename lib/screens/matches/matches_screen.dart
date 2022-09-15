@@ -52,10 +52,10 @@ class MatchesScreen extends StatelessWidget {
                           height: 70,
                           width: 70,
                           imageUrl:
-                              inactiveMatches[index].matchedUser.imageUrls[0],
+                              inactiveMatches[index].matchedUser.avatarUrl[0],
                         ),
                         Text(
-                          inactiveMatches[index].matchedUser.name,
+                          inactiveMatches[index].matchedUser.fullname,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
@@ -89,13 +89,13 @@ class MatchesScreen extends StatelessWidget {
                           height: 70,
                           width: 70,
                           imageUrl:
-                              activeMatches[index].matchedUser.imageUrls[0],
+                              activeMatches[index].matchedUser.avatarUrl[0],
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              activeMatches[index].matchedUser.name,
+                              activeMatches[index].matchedUser.fullname,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!

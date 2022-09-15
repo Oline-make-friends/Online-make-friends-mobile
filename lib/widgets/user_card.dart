@@ -25,7 +25,7 @@ class UserCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(user.imageUrls[0]),
+                    image: NetworkImage(user.avatarUrl[0]),
                   ),
                   borderRadius: BorderRadius.circular(5),
                   boxShadow: [
@@ -59,7 +59,7 @@ class UserCard extends StatelessWidget {
                   children: [
                     Row(children: [
                       Text(
-                        "${user.name}, ${user.age}",
+                        "${user.fullname}, ${user.location}",
                         style: Theme.of(context)
                             .textTheme
                             .headline2!
@@ -81,7 +81,7 @@ class UserCard extends StatelessWidget {
                       ),
                     ]),
                     Text(
-                      "${user.jobTitle}",
+                      "${user.major}",
                       style: Theme.of(context).textTheme.headline3!.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.w300,
