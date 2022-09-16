@@ -66,15 +66,18 @@ class LoginScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Form(
+                  key: loginController.loginFormKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Column(
                     children: [
                       //Username field
                       CustomTextFormField(
                         controller: loginController.usernameController,
-                        validator: (valid) {
-                          if (valid == null || valid.isEmpty) {
-                            return 'Username or email required';
-                          }
+                        onSaved: (value) {
+                          loginController.username = value!;
+                        },
+                        validator: (value) {
+                          return loginController.validateUsername(value!);
                         },
                         hintTxt: 'Username or email',
                       ),
@@ -85,18 +88,28 @@ class LoginScreen extends StatelessWidget {
                       //Password Field
                       CustomTextFormField(
                         controller: loginController.passwordController,
-                        validator: (valid) {
-                          if (valid == null ||
-                              valid.isEmpty ||
-                              valid.length < 6) {
-                            return "Password can't be blank or less than 6 charaters";
-                          }
+                        onSaved: (value) {
+                          loginController.password = value!;
+                        },
+                        validator: (value) {
+                          return loginController.validatePassword(value!);
                         },
                         hintTxt: 'Password',
                       ),
                       const SizedBox(height: 10),
-
-                      const SizedBox(height: 20),
+                      Obx(() {
+                        return Text(
+                          loginController.errorString.value,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.red),
+                        );
+                      }),
+                      // GetX<LoginController>(builder: (controller) {
+                      //   return Text(controller.errorString.value);
+                      // }),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: IntrinsicWidth(

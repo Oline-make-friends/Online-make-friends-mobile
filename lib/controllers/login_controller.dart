@@ -8,26 +8,62 @@ import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 
 class LoginController extends GetxController {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
+  var username = '';
+  var password = '';
+  var errorString = "".obs;
 
-  void login() async {
+  @override
+  void onInit() {
+    super.onInit();
+    usernameController = TextEditingController();
+    passwordController = TextEditingController();
+    errorString.obs;
+  }
+
+  @override
+  void onClose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
+
+  String? validateUsername(String value) {
+    if (value.isEmpty || value.length <= 2) {
+      return "Username can't be blank or less than 2 characters";
+    }
+    return null;
+  }
+
+  String? validatePassword(String value) {
+    if (value.isEmpty || value.length < 4) {
+      return "Password must have more than 4 characters";
+    }
+    return null;
+  }
+
+  Future<String?> login() async {
+    final isValid = loginFormKey.currentState!.validate();
+    if (!isValid) {
+      return null;
+    }
+    loginFormKey.currentState!.save();
     LoginModel loginModl = LoginModel(
         username: usernameController.text, password: passwordController.text);
     var response =
         await UserRepository.post(loginToJson(loginModl), 'auth/login');
-    // print(response);
     var data = json.decode(response);
-    print(data);
     if (data == "Username or password is wrong!") {
-      print("Error");
-      return;
-    }
-    if (data["is_admin"] == true) {
-      print('You can access admin account!');
-      return;
+      errorString.value = "Username or password is incorrect!";
+      return errorString.value;
+    } else if (data["is_admin"] == true) {
+      errorString.value = 'You can not access admin account!';
+      return errorString.value;
     } else {
-      Get.to(HomeScreen());
+      Get.to(const HomeScreen());
     }
+    return null;
   }
 }

@@ -18,7 +18,7 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Notification',
+          'Notifications',
           style: Theme.of(context).textTheme.headline5,
         ),
         backgroundColor: Colors.transparent,
