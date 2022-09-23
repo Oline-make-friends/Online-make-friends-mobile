@@ -22,14 +22,16 @@ class AppRouter {
         return ChatScreen.route(userMatch: settings.arguments as UserMatch);
       case UsersScreen.routeName:
         return UsersScreen.route(user: settings.arguments as User);
-      case MatchesScreen.routeName:
-        return MatchesScreen.route();
+      case FriendsScreen.routeName:
+        return FriendsScreen.route();
       case NotificationScreen.routeName:
         return NotificationScreen.route();
       case ProfileScreen.routeName:
         return ProfileScreen.route();
       case NewsFeedScreen.routeName:
         return NewsFeedScreen.route();
+      case BottomNavScreen.routeName:
+        return BottomNavScreen.route();
       default:
         return _errorRoute();
     }

@@ -14,7 +14,7 @@ class UserRepository {
   }
 
   static Uri buildUrl(String endpoint) {
-    const String host = "http://192.168.1.12:8000/";
+    const String host = "http://192.168.1.18:8000/";
     final apiPath = host + endpoint;
     return Uri.parse(apiPath);
   }

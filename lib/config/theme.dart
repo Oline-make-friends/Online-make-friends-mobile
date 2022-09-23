@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData theme() {
   return ThemeData(
+    brightness: Brightness.light,
     primaryColor: const Color(0xFF116ddd),
     backgroundColor: const Color(0xFFdee9f1),
     scaffoldBackgroundColor: const Color(0xFFdee9f1),

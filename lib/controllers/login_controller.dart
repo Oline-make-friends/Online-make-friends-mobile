@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_making_friends_app_2/models/login_model.dart';
 import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
 import 'package:flutter_making_friends_app_2/screens/home/home_screen.dart';
+import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 
@@ -58,11 +59,11 @@ class LoginController extends GetxController {
     if (data == "Username or password is wrong!") {
       errorString.value = "Username or password is incorrect!";
       return errorString.value;
-    } else if (data["is_admin"] == true) {
-      errorString.value = 'You can not access admin account!';
-      return errorString.value;
+      // } else if (data["is_admin"] == true) {
+      //   errorString.value = 'You can not access admin account!';
+      //   return errorString.value;
     } else {
-      Get.to(const HomeScreen());
+      Get.to(const BottomNavScreen());
     }
     return null;
   }

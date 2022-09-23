@@ -3,17 +3,8 @@ import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
 import 'package:flutter_making_friends_app_2/widgets/user_image_small.dart';
 
-class MatchesScreen extends StatelessWidget {
-  static const routeName = '/matches';
-
-  static Route route() {
-    return MaterialPageRoute(
-      builder: (context) => const MatchesScreen(),
-      settings: const RouteSettings(name: routeName),
-    );
-  }
-
-  const MatchesScreen({Key? key}) : super(key: key);
+class SingleChatScreen extends StatelessWidget {
+  const SingleChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +16,6 @@ class MatchesScreen extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
