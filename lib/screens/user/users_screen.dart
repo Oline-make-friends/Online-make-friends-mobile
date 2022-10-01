@@ -47,7 +47,10 @@ class UsersScreen extends StatelessWidget {
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20)),
                           image: DecorationImage(
-                            image: NetworkImage(user.avatarUrl[0]),
+                            image: user.avatarUrl.isNotEmpty
+                                ? NetworkImage(user.avatarUrl[0])
+                                : NetworkImage(
+                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -94,7 +97,7 @@ class UsersScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   Text(
-                    user.major,
+                    user.major ?? "",
                     style: Theme.of(context)
                         .textTheme
                         .headline2!
@@ -106,7 +109,7 @@ class UsersScreen extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline2!,
                   ),
                   Text(
-                    user.about,
+                    user.about ?? "",
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                         height: 2,
                         color: Colors.black,
@@ -116,6 +119,13 @@ class UsersScreen extends StatelessWidget {
                   Text(
                     'Interests',
                     style: Theme.of(context).textTheme.headline2,
+                  ),
+                  Text(
+                    user.interests ?? "",
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        height: 2,
+                        color: Colors.black,
+                        fontWeight: FontWeight.normal),
                   ),
                   // Row(
                   //   children: user.interests

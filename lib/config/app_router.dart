@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/models/user_match_model.dart';
-import 'package:flutter_making_friends_app_2/screens/chat/chat_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
 
 import '../models/user_model.dart';
@@ -32,6 +31,10 @@ class AppRouter {
         return NewsFeedScreen.route();
       case BottomNavScreen.routeName:
         return BottomNavScreen.route();
+      case TestScreen.routeName:
+        return TestScreen.route();
+      case UserPostsScreen.routeName:
+        return UserPostsScreen.route();
       default:
         return _errorRoute();
     }

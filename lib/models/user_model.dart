@@ -1,9 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final user = userFromJson(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 
 List<User> userFromJson(String str) =>
     List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
@@ -11,19 +14,20 @@ List<User> userFromJson(String str) =>
 String userToJson(List<User> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class User {
+class User extends Equatable {
   User({
     required this.id,
     this.username,
     required this.fullname,
     this.password,
     required this.gender,
-    required this.location,
-    required this.interests,
-    required this.major,
-    required this.about,
+    this.location,
+    this.address,
+    this.interests,
+    this.major,
+    this.about,
     required this.friends,
-    required this.dateOfBirth,
+    this.dateOfBirth,
     required this.friendsRequest,
     required this.avatarUrl,
     this.isAdmin = false,
@@ -39,12 +43,13 @@ class User {
   final String fullname;
   final String? password;
   final String gender;
-  final String location;
-  final String interests;
-  final String major;
-  final String about;
+  final String? location;
+  final String? address;
+  final String? interests;
+  final String? major;
+  final String? about;
   final List<dynamic> friends;
-  final String dateOfBirth;
+  final String? dateOfBirth;
   final List<dynamic> friendsRequest;
   final List<String> avatarUrl;
   final bool? isAdmin;
@@ -60,6 +65,7 @@ class User {
         password: json["password"],
         gender: json["gender"],
         location: json["location"],
+        address: json["address"],
         interests: json["interrests"],
         major: json["major"],
         about: json["about"],
@@ -82,6 +88,7 @@ class User {
         "password": password,
         "gender": gender,
         "location": location,
+        "address": address,
         "interrests": interests,
         "major": major,
         "about": about,
@@ -95,6 +102,36 @@ class User {
         "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
       };
+
+  @override
+  List<Object?> get props {
+    return [
+      id,
+      username,
+      fullname,
+      password,
+      gender,
+      location,
+      address,
+      interests,
+      major,
+      about,
+      friends,
+      dateOfBirth,
+      friendsRequest,
+      avatarUrl,
+      isAdmin,
+      isActive,
+      createdAt,
+      updatedAt,
+      v,
+    ];
+  }
+
+  @override
+  String toString() {
+    return "id: ${id}, fullname: ${fullname}, gender: {$gender}, location: ${location}, interests: ${interests}, major: ${major}, about: ${about}, friends: ${friends}, DOB: ${dateOfBirth}, address: ${address}";
+  }
 
   static List<User> users = [
     User(

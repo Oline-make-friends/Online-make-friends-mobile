@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_making_friends_app_2/models/login_model.dart';
+import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
 import 'package:flutter_making_friends_app_2/screens/home/home_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
@@ -54,7 +55,7 @@ class LoginController extends GetxController {
     LoginModel loginModl = LoginModel(
         username: usernameController.text, password: passwordController.text);
     var response =
-        await UserRepository.post(loginToJson(loginModl), 'auth/login');
+        await UserRepository.postLogin(loginToJson(loginModl), 'auth/login');
     var data = json.decode(response);
     if (data == "Username or password is wrong!") {
       errorString.value = "Username or password is incorrect!";
@@ -63,7 +64,9 @@ class LoginController extends GetxController {
       //   errorString.value = 'You can not access admin account!';
       //   return errorString.value;
     } else {
-      Get.to(const BottomNavScreen());
+      User currentUser = User.fromJson(data);
+      // print("current user logined: ${currentUser.toString()}");
+      Get.to(const BottomNavScreen(), arguments: currentUser);
     }
     return null;
   }

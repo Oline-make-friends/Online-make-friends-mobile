@@ -25,7 +25,10 @@ class UserCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(user.avatarUrl[0]),
+                    image: user.avatarUrl.isNotEmpty
+                        ? NetworkImage(user.avatarUrl[0])
+                        : NetworkImage(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
                   ),
                   borderRadius: BorderRadius.circular(5),
                   boxShadow: [
@@ -57,29 +60,31 @@ class UserCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(children: [
-                      Text(
-                        "${user.fullname}, ${user.location}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline2!
-                            .copyWith(color: Colors.white),
-                      ),
-                      const SizedBox(width: 5),
-                      Container(
-                        // width: 35,
-                        // height: 35,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          // color: Colors.white,
+                    Row(
+                      children: [
+                        Text(
+                          "${user.fullname}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline2!
+                              .copyWith(color: Colors.white),
                         ),
-                        child: Icon(
-                          Icons.info_outline,
-                          size: 25,
-                          color: Theme.of(context).primaryColor,
+                        const SizedBox(width: 5),
+                        Container(
+                          // width: 35,
+                          // height: 35,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            // color: Colors.white,
+                          ),
+                          child: Icon(
+                            Icons.info_outline,
+                            size: 25,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                     Text(
                       "${user.major}",
                       style: Theme.of(context).textTheme.headline3!.copyWith(

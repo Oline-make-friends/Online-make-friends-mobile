@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_making_friends_app_2/models/models.dart';
+import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
+import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
@@ -18,7 +20,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User user = User.users[0];
+    // var data = Get.arguments;
+    final currentUser = Get.arguments;
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Column(
@@ -31,7 +34,10 @@ class ProfileScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(user.avatarUrl[0]),
+                    image: currentUser.avatarUrl.isNotEmpty
+                        ? NetworkImage(currentUser.avatarUrl[0])
+                        : NetworkImage(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
                     fit: BoxFit.cover,
                   ),
                   boxShadow: const [
@@ -62,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 40),
                     child: Text(
-                      user.fullname,
+                      currentUser.fullname,
                       style: Theme.of(context)
                           .textTheme
                           .headline1!
@@ -83,7 +89,7 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.edit,
                 ),
                 Text(
-                  user.about,
+                  currentUser.about,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -98,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                   child: ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 4,
+                    itemCount: currentUser.avatarUrl.length,
                     padding: const EdgeInsets.only(right: 5),
                     itemBuilder: ((context, index) {
                       return Padding(
@@ -111,7 +117,10 @@ class ProfileScreen extends StatelessWidget {
                             border: Border.all(color: Colors.black),
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(user.avatarUrl[index]),
+                              image: currentUser.avatarUrl.isNotEmpty
+                                  ? NetworkImage(currentUser.avatarUrl[index])
+                                  : NetworkImage(
+                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
                             ),
                           ),
                         ),
@@ -123,13 +132,27 @@ class ProfileScreen extends StatelessWidget {
                   title: 'Interest',
                   icon: Icons.edit,
                 ),
-                Row(
-                  children: [
-                    CustomTextContainer(text: 'GAME'),
-                    CustomTextContainer(text: 'TECHNOLOGY'),
-                    CustomTextContainer(text: 'MUSIC'),
-                  ],
-                )
+                Text(
+                  currentUser.interests ?? "",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(height: 1.5),
+                ),
+                Text(currentUser.toString()),
+
+                ElevatedButton(
+                    onPressed: () {
+                      Get.to(UserPostsScreen(), arguments: currentUser);
+                    },
+                    child: Text('Your posts')),
+                // Row(
+                //   children: [
+                //     CustomTextContainer(text: 'GAME'),
+                //     CustomTextContainer(text: 'TECHNOLOGY'),
+                //     CustomTextContainer(text: 'MUSIC'),
+                //   ],
+                // )
               ],
             ),
           )

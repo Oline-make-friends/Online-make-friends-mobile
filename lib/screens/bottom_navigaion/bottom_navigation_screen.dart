@@ -40,34 +40,37 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.newspaper),
-            label: 'News',
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.meeting_room_outlined),
-            label: 'Meeting',
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Theme.of(context).primaryColor,
-        onTap: _onItemTapped,
+      bottomNavigationBar: SizedBox(
+        height: 52,
+        child: BottomNavigationBar(
+          elevation: 0,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.newspaper),
+              label: 'News',
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.meeting_room_outlined),
+              label: 'Meeting',
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          unselectedItemColor: Colors.grey,
+          selectedItemColor: Theme.of(context).primaryColor,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
