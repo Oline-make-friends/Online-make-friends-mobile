@@ -14,22 +14,26 @@ List<User> userFromJson(String str) =>
 String userToJson(List<User> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+String registerToJson(User data) {
+  return json.encode(data.registerToJson());
+}
+
 class User extends Equatable {
   User({
-    required this.id,
+    this.id,
     this.username,
-    required this.fullname,
+    this.fullname,
     this.password,
-    required this.gender,
+    this.gender,
     this.location,
-    this.address,
     this.interests,
     this.major,
     this.about,
-    required this.friends,
+    this.follows,
+    this.friends,
     this.dateOfBirth,
-    required this.friendsRequest,
-    required this.avatarUrl,
+    this.friendsRequest,
+    this.avatarUrl,
     this.isAdmin = false,
     this.isActive = false,
     DateTime? createdAt,
@@ -38,21 +42,21 @@ class User extends Equatable {
   })  : this.createdAt = createdAt ?? DateTime.now(),
         this.updatedAt = updatedAt ?? DateTime.now();
 
-  final String id;
+  final String? id;
   final String? username;
-  final String fullname;
+  final String? fullname;
   final String? password;
-  final String gender;
+  final String? gender;
   final String? location;
-  final String? address;
-  final String? interests;
+  final List<String>? interests;
   final String? major;
   final String? about;
-  final List<dynamic> friends;
+  final List<dynamic>? follows;
+  final List<dynamic>? friends;
   final String? dateOfBirth;
-  final List<dynamic> friendsRequest;
-  final List<String> avatarUrl;
-  final bool? isAdmin;
+  final List<dynamic>? friendsRequest;
+  final String? avatarUrl;
+  final bool isAdmin;
   final bool isActive;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -65,15 +69,15 @@ class User extends Equatable {
         password: json["password"],
         gender: json["gender"],
         location: json["location"],
-        address: json["address"],
-        interests: json["interrests"],
+        interests: List<String>.from(json["interrests"].map((x) => x)),
         major: json["major"],
         about: json["about"],
+        follows: List<dynamic>.from(json["follows"].map((x) => x)),
         friends: List<dynamic>.from(json["friends"].map((x) => x)),
         dateOfBirth: json["date_of_birth"],
         friendsRequest:
             List<dynamic>.from(json["friends_request"].map((x) => x)),
-        avatarUrl: List<String>.from(json["avatar_url"].map((x) => x)),
+        avatarUrl: json["avatar_url"],
         isAdmin: json["is_admin"],
         isActive: json["is_active"],
         createdAt: DateTime.parse(json["createdAt"]),
@@ -88,19 +92,27 @@ class User extends Equatable {
         "password": password,
         "gender": gender,
         "location": location,
-        "address": address,
         "interrests": interests,
         "major": major,
         "about": about,
-        "friends": List<dynamic>.from(friends.map((x) => x)),
+        "follos": List<dynamic>.from(follows!.map((x) => x)),
+        "friends": List<dynamic>.from(friends!.map((x) => x)),
         "date_of_birth": dateOfBirth,
-        "friends_request": List<dynamic>.from(friendsRequest.map((x) => x)),
-        "avatar_url": List<dynamic>.from(avatarUrl.map((x) => x)),
+        "friends_request": List<dynamic>.from(friendsRequest!.map((x) => x)),
+        "avatar_url": avatarUrl,
         "is_admin": isAdmin,
         "is_active": isActive,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
         "__v": v,
+      };
+
+  Map<String, dynamic> registerToJson() => {
+        "username": username,
+        "fullname": fullname,
+        "password": password,
+        "gender": gender,
+        "date_of_birth": dateOfBirth,
       };
 
   @override
@@ -112,10 +124,10 @@ class User extends Equatable {
       password,
       gender,
       location,
-      address,
       interests,
       major,
       about,
+      follows,
       friends,
       dateOfBirth,
       friendsRequest,
@@ -130,7 +142,7 @@ class User extends Equatable {
 
   @override
   String toString() {
-    return "id: ${id}, fullname: ${fullname}, gender: {$gender}, location: ${location}, interests: ${interests}, major: ${major}, about: ${about}, friends: ${friends}, DOB: ${dateOfBirth}, address: ${address}";
+    return "id: ${id}, fullname: ${fullname}, gender: {$gender}, location: ${location}, interests: ${interests}, major: ${major}, about: ${about}, friends: ${friends}, DOB: ${dateOfBirth}, ";
   }
 
   static List<User> users = [
@@ -139,92 +151,72 @@ class User extends Equatable {
       fullname: "Beluga",
       gender: "Male",
       location: "USA",
-      interests: "Game",
+      interests: ["Game"],
       major: "Sussy Cat",
       about: "Ka-hoot destroyer, Roblux hacker, skittle-chan lover, Mods hater",
       friends: [],
       dateOfBirth: "15/4/2002",
       friendsRequest: [],
-      avatarUrl: [
-        'https://static.wikia.nocookie.net/beluga/images/9/99/Beluga_d.png/revision/latest?cb=20211229190719',
-        'https://i.ytimg.com/vi/C1CuiP2xvVs/maxresdefault.jpg',
-        'https://i.ytimg.com/vi/ikwG466kQlo/maxresdefault.jpg',
-        'https://i1.sndcdn.com/avatars-hzXBVKIiq1Upmrj0-GlzQog-t500x500.jpg',
-      ],
+      avatarUrl:
+          'https://static.wikia.nocookie.net/beluga/images/9/99/Beluga_d.png/revision/latest?cb=20211229190719',
     ),
     User(
       id: "2",
       fullname: "Hecker",
       gender: "Male",
       location: "USA",
-      interests: "Hecking",
+      interests: ["Hecking"],
       major: "Freelancer",
       about:
           "Initially a hacker who originally threatens Beluga, he later gradually becomes one of the latter's best friends once Skittle disappears, as the videos go.",
       friends: [],
       dateOfBirth: "22/7/2002",
       friendsRequest: [],
-      avatarUrl: [
-        'https://yt3.ggpht.com/arWtsAqaTamuoTbdT2z-QXL121Qbv80wbsOE_1ty6I98JV3ocpKmfZ3A-UcyAVKiqikznFpc=s900-c-k-c0x00ffffff-no-rj',
-        'https://i.imgflip.com/5lqwao.jpg',
-        'https://exploringbits.com/wp-content/uploads/2021/09/baby-hecker-pfp.jpg?ezimgfmt=rs:352x351/rscb3/ng:webp/ngcb3',
-        'https://static.wikia.nocookie.net/youtube/images/f/fb/Heckler.jpg/revision/latest?cb=20210902045825'
-      ],
+      avatarUrl:
+          'https://yt3.ggpht.com/arWtsAqaTamuoTbdT2z-QXL121Qbv80wbsOE_1ty6I98JV3ocpKmfZ3A-UcyAVKiqikznFpc=s900-c-k-c0x00ffffff-no-rj',
     ),
     User(
       id: "3",
       fullname: "Skittle",
       gender: "Male",
       location: "USA",
-      interests: "Game",
+      interests: ["Game"],
       major: "SE",
       about:
           "Beluga's best friend after encountering Lester. Later in the videos, Beluga was suffering from memory loss due to Lester's meddling, however, Hecker used his hacking skills to restore his memories along with skittles,[7] skittle has since made a return.",
       friends: [],
       dateOfBirth: "15/4/2002",
       friendsRequest: [],
-      avatarUrl: [
-        'https://static.wikia.nocookie.net/beluga/images/f/f6/Skittle.jpg/revision/latest?cb=20210730213705',
-        'https://static.wikia.nocookie.net/beluga/images/7/75/VladimirPic.png/revision/latest?cb=20211021052158',
-        'https://exploringbits.com/wp-content/uploads/2021/09/Vladimire%CC%81-PFP-discord.jpg?ezimgfmt=rs:352x391/rscb3/ng:webp/ngcb3',
-        'https://static.wikia.nocookie.net/beluga/images/3/3d/Skittle_Jr..png/revision/latest/scale-to-width-down/656?cb=20220426170352',
-      ],
+      avatarUrl:
+          'https://static.wikia.nocookie.net/beluga/images/f/f6/Skittle.jpg/revision/latest?cb=20210730213705',
     ),
     User(
       id: "4",
       fullname: "Scemmer",
       gender: "Male",
       location: "USA",
-      interests: "Scemming",
+      interests: ["Scemming"],
       major: "SE",
       about: "A scemming cat",
       friends: [],
       dateOfBirth: "15/4/2002",
       friendsRequest: [],
-      avatarUrl: [
-        'https://static.wikia.nocookie.net/beluga/images/b/b1/ScemerPic.png/revision/latest?cb=20211225164758',
-        'https://static.wikia.nocookie.net/beluga/images/b/b1/ScemerPic.png/revision/latest?cb=20211225164758',
-        'https://static.wikia.nocookie.net/beluga/images/b/b1/ScemerPic.png/revision/latest?cb=20211225164758',
-        'https://static.wikia.nocookie.net/beluga/images/b/b1/ScemerPic.png/revision/latest?cb=20211225164758',
-      ],
+      avatarUrl:
+          'https://static.wikia.nocookie.net/beluga/images/b/b1/ScemerPic.png/revision/latest?cb=20211225164758',
     ),
     User(
       id: "5",
       fullname: "Eugnene",
       gender: "Male",
       location: "USA",
-      interests: "Banning",
+      interests: ["Banning"],
       major: "SE",
       about: "Literally an egg \u{1f95a}",
       friends: [],
       dateOfBirth: "15/4/2002",
       friendsRequest: [],
-      avatarUrl: [
-        'https://static.wikia.nocookie.net/beluga/images/2/2d/Eugene.png/revision/latest/top-crop/width/360/height/450?cb=20210904195805',
-        'https://static.wikia.nocookie.net/beluga/images/2/2d/Eugene.png/revision/latest/top-crop/width/360/height/450?cb=20210904195805',
-        'https://static.wikia.nocookie.net/beluga/images/2/2d/Eugene.png/revision/latest/top-crop/width/360/height/450?cb=20210904195805',
-        'https://static.wikia.nocookie.net/beluga/images/2/2d/Eugene.png/revision/latest/top-crop/width/360/height/450?cb=20210904195805',
-      ],
+      avatarUrl:
+          'https://static.wikia.nocookie.net/beluga/images/2/2d/Eugene.png/revision/latest/top-crop/width/360/height/450?cb=20210904195805',
     ),
   ];
 }

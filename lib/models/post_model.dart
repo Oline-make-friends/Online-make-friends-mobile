@@ -16,7 +16,6 @@ String postToJson(List<Post> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Post extends Equatable {
-  
   Post({
     required this.id,
     required this.createdBy,

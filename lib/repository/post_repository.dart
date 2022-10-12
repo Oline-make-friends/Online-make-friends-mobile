@@ -5,12 +5,6 @@ import 'package:http/http.dart' as http;
 class PostRepository {
   static final client = http.Client();
 
-  // static Uri buildUrl(String endpoint) {
-  //   const String host = "http://192.168.1.16:8000/";
-  //   final apiPath = host + endpoint;
-  //   return Uri.parse(apiPath);
-  // }
-
   static getAllPost(String endpoint) async {
     var response = await client.get(
       BuildServer.buildUrl(endpoint),
@@ -18,6 +12,7 @@ class PostRepository {
     print("${response.statusCode}: ${response.body}");
     if (response.statusCode == 200) {
       var resultString = response.body;
+      print('posts result: $resultString');
       return postFromJson(resultString);
     } else {
       return null;

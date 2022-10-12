@@ -42,10 +42,10 @@ class SingleChatScreen extends StatelessWidget {
                           height: 70,
                           width: 70,
                           imageUrl:
-                              inactiveMatches[index].matchedUser.avatarUrl[0],
+                              inactiveMatches[index].matchedUser.avatarUrl!,
                         ),
                         Text(
-                          inactiveMatches[index].matchedUser.fullname,
+                          inactiveMatches[index].matchedUser.fullname!,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
@@ -78,14 +78,13 @@ class SingleChatScreen extends StatelessWidget {
                         UserImageSmall(
                           height: 70,
                           width: 70,
-                          imageUrl:
-                              activeMatches[index].matchedUser.avatarUrl[0],
+                          imageUrl: activeMatches[index].matchedUser.avatarUrl!,
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              activeMatches[index].matchedUser.fullname,
+                              activeMatches[index].matchedUser.fullname!,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!

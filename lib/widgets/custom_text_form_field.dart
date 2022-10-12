@@ -5,6 +5,7 @@ class CustomTextFormField extends StatelessWidget {
   void Function(String?)? onSaved;
   String? Function(String?)? validator;
   TextEditingController? controller;
+  Widget? suffixIcon;
 
   CustomTextFormField({
     Key? key,
@@ -12,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onSaved,
     this.validator,
     this.controller,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class CustomTextFormField extends StatelessWidget {
             color: Color(0xFF116ddd),
           ),
           borderRadius: BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(15),
           ),
         ),
         focusedBorder: const OutlineInputBorder(
@@ -38,9 +40,28 @@ class CustomTextFormField extends StatelessWidget {
             color: Color(0xFF116ddd),
           ),
           borderRadius: BorderRadius.all(
-            Radius.circular(20),
+            Radius.circular(15),
           ),
         ),
+        errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2,
+            color: Color.fromARGB(255, 221, 24, 17),
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2,
+            color: Color(0xFF116ddd),
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        suffixIcon: suffixIcon,
         hintText: hintTxt,
       ),
     );

@@ -34,10 +34,10 @@ class ChatScreen extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 15,
-              backgroundImage: NetworkImage(userMatch.matchedUser.avatarUrl[0]),
+              backgroundImage: NetworkImage(userMatch.matchedUser.avatarUrl!),
             ),
             Text(
-              userMatch.matchedUser.fullname,
+              userMatch.matchedUser.fullname!,
               style: Theme.of(context)
                   .textTheme
                   .headline6!
@@ -79,7 +79,7 @@ class ChatScreen extends StatelessWidget {
                                 CircleAvatar(
                                   radius: 15,
                                   backgroundImage: NetworkImage(
-                                      userMatch.matchedUser.avatarUrl[0]),
+                                      userMatch.matchedUser.avatarUrl!),
                                 ),
                                 const SizedBox(width: 10),
                                 Container(

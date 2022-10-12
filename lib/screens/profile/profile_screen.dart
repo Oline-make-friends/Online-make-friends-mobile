@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var data = Get.arguments;
-    final currentUser = Get.arguments;
+    final User currentUser = Get.arguments;
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Column(
@@ -34,10 +34,10 @@ class ProfileScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: currentUser.avatarUrl.isNotEmpty
-                        ? NetworkImage(currentUser.avatarUrl[0])
-                        : NetworkImage(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
+                    image: currentUser.avatarUrl.isNull
+                        ? NetworkImage(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU")
+                        : NetworkImage(currentUser.avatarUrl!),
                     fit: BoxFit.cover,
                   ),
                   boxShadow: const [
@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 40),
                     child: Text(
-                      currentUser.fullname,
+                      currentUser.fullname!,
                       style: Theme.of(context)
                           .textTheme
                           .headline1!
@@ -89,55 +89,81 @@ class ProfileScreen extends StatelessWidget {
                   icon: Icons.edit,
                 ),
                 Text(
-                  currentUser.about,
+                  currentUser.about!,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
                       .copyWith(height: 1.5),
                 ),
-                TitleWithIcon(
-                  title: 'Pictures',
-                  icon: Icons.edit,
-                ),
-                SizedBox(
-                  height: 125,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: currentUser.avatarUrl.length,
-                    padding: const EdgeInsets.only(right: 5),
-                    itemBuilder: ((context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: Container(
-                          height: 125,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: Colors.black),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: currentUser.avatarUrl.isNotEmpty
-                                  ? NetworkImage(currentUser.avatarUrl[index])
-                                  : NetworkImage(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                ),
+                // TitleWithIcon(
+                //   title: 'Pictures',
+                //   icon: Icons.edit,
+                // ),
+                // SizedBox(
+                //   height: 125,
+                //   child: ListView.builder(
+                //     shrinkWrap: true,
+                //     scrollDirection: Axis.horizontal,
+                //     itemCount: currentUser.avatarUrl.length,
+                //     padding: const EdgeInsets.only(right: 5),
+                //     itemBuilder: ((context, index) {
+                //       return Padding(
+                //         padding: const EdgeInsets.only(right: 5),
+                //         child: Container(
+                //           height: 125,
+                //           width: 100,
+                //           decoration: BoxDecoration(
+                //             borderRadius: BorderRadius.circular(5),
+                //             border: Border.all(color: Colors.black),
+                //             image: DecorationImage(
+                //               fit: BoxFit.cover,
+                //               image: currentUser.avatarUrl.isNotEmpty
+                //                   ? NetworkImage(currentUser.avatarUrl[index])
+                //                   : NetworkImage(
+                //                       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //     }),
+                //   ),
+                // ),
                 TitleWithIcon(
                   title: 'Interest',
                   icon: Icons.edit,
                 ),
-                Text(
-                  currentUser.interests ?? "",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(height: 1.5),
+                // Text(
+                //   currentUser.interests ?? "",
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .bodyText1!
+                //       .copyWith(height: 1.5),
+                // ),
+                Row(
+                  children: currentUser.interests!
+                      .map(
+                        (interest) => Container(
+                          padding: const EdgeInsets.all(5),
+                          margin: const EdgeInsets.only(right: 5, top: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            gradient: LinearGradient(
+                              colors: [
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).accentColor,
+                              ],
+                            ),
+                          ),
+                          child: Text(
+                            interest,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: Colors.white),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
                 Text(currentUser.toString()),
 

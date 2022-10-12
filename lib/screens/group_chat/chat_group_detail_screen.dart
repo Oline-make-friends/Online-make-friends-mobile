@@ -40,17 +40,17 @@ class ChatGroupDetailScreen extends StatelessWidget {
           child: Column(
             children: [
               CustomGroupMessage(
-                avatarImg: User.users[0].avatarUrl[0],
+                avatarImg: User.users[0].avatarUrl!,
                 sentByMe: false,
                 content: "Có ai ôn OSG chưa?",
               ),
               CustomGroupMessage(
-                avatarImg: User.users[3].avatarUrl[0],
+                avatarImg: User.users[3].avatarUrl!,
                 sentByMe: false,
                 content: "Chưa",
               ),
               CustomGroupMessage(
-                avatarImg: User.users[1].avatarUrl[0],
+                avatarImg: User.users[1].avatarUrl!,
                 sentByMe: false,
                 content: "All in quizlet thôi",
               ),

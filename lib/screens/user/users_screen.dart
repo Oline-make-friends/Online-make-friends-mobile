@@ -47,8 +47,8 @@ class UsersScreen extends StatelessWidget {
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20)),
                           image: DecorationImage(
-                            image: user.avatarUrl.isNotEmpty
-                                ? NetworkImage(user.avatarUrl[0])
+                            image: user.avatarUrl != null
+                                ? NetworkImage(user.avatarUrl!)
                                 : NetworkImage(
                                     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
                             fit: BoxFit.cover,
@@ -120,39 +120,39 @@ class UsersScreen extends StatelessWidget {
                     'Interests',
                     style: Theme.of(context).textTheme.headline2,
                   ),
-                  Text(
-                    user.interests ?? "",
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                        height: 2,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal),
+                  // Text(
+                  //   user.interests ?? "",
+                  //   style: Theme.of(context).textTheme.headline6!.copyWith(
+                  //       height: 2,
+                  //       color: Colors.black,
+                  //       fontWeight: FontWeight.normal),
+                  // ),
+                  Wrap(
+                    children: user.interests!
+                        .map(
+                          (interest) => Container(
+                            padding: const EdgeInsets.all(5),
+                            margin: const EdgeInsets.only(right: 5, top: 5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Theme.of(context).primaryColor,
+                                  Theme.of(context).accentColor,
+                                ],
+                              ),
+                            ),
+                            child: Text(
+                              interest,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: Colors.white),
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
-                  // Row(
-                  //   children: user.interests
-                  //       .map(
-                  //         (interest) => Container(
-                  //           padding: const EdgeInsets.all(5),
-                  //           margin: const EdgeInsets.only(right: 5, top: 5),
-                  //           decoration: BoxDecoration(
-                  //             borderRadius: BorderRadius.circular(5),
-                  //             gradient: LinearGradient(
-                  //               colors: [
-                  //                 Theme.of(context).primaryColor,
-                  //                 Theme.of(context).accentColor,
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           child: Text(
-                  //             interest,
-                  //             style: Theme.of(context)
-                  //                 .textTheme
-                  //                 .headline6!
-                  //                 .copyWith(color: Colors.white),
-                  //           ),
-                  //         ),
-                  //       )
-                  //       .toList(),
-                  // )
                 ],
               ),
             )

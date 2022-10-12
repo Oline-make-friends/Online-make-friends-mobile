@@ -25,8 +25,8 @@ class UserCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: user.avatarUrl.isNotEmpty
-                        ? NetworkImage(user.avatarUrl[0])
+                    image: user.avatarUrl != null
+                        ? NetworkImage(user.avatarUrl!)
                         : NetworkImage(
                             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMx1itTXTXLB8p4ALTTL8mUPa9TFN_m9h5VQ&usqp=CAU"),
                   ),

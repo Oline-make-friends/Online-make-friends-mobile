@@ -174,7 +174,7 @@ class SplashScreen extends StatelessWidget {
                                                   context, '/login');
                                             },
                                             image:
-                                                'https://img.icons8.com/material-two-tone/344/new-post.png',
+                                                'https://cdn.icon-icons.com/icons2/2751/PNG/512/email_icon_176156.png',
                                             title:
                                                 'Login with email or username',
                                             color:

@@ -6,6 +6,7 @@ import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
 import 'package:flutter_making_friends_app_2/screens/home/home_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
+import 'package:flutter_making_friends_app_2/widgets/alert.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 
@@ -33,31 +34,39 @@ class LoginController extends GetxController {
   }
 
   String? validateUsername(String value) {
-    if (value.isEmpty || value.length <= 2) {
-      return "Username can't be blank or less than 2 characters";
+    if (value.isEmpty || !value.contains('@gmail.com')) {
+      return "email is invalid";
     }
     return null;
   }
 
   String? validatePassword(String value) {
     if (value.isEmpty || value.length < 4) {
-      return "Password must have more than 4 characters";
+      return "Password must have more than 6 characters";
     }
     return null;
   }
 
-  Future<String?> login() async {
+  Future<String?> login(BuildContext context) async {
     final isValid = loginFormKey.currentState!.validate();
     if (!isValid) {
       return null;
     }
     loginFormKey.currentState!.save();
+    Alert.showLoadingIndicatorDialog(context);
     LoginModel loginModl = LoginModel(
         username: usernameController.text, password: passwordController.text);
     var response =
         await UserRepository.postLogin(loginToJson(loginModl), 'auth/login');
+    if (response ==
+        'TimeoutException after 0:00:10.000000: Future not completed') {
+      Navigator.of(context).pop();
+      errorString.value = "Server timeout! Please try again!";
+      return errorString.value;
+    }
     var data = json.decode(response);
     if (data == "Username or password is wrong!") {
+      Navigator.of(context).pop();
       errorString.value = "Username or password is incorrect!";
       return errorString.value;
       // } else if (data["is_admin"] == true) {

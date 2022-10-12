@@ -41,7 +41,8 @@ class Notification extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap
+  () {
     return <String, dynamic>{
       'id': id,
       'user': user.toJson(),

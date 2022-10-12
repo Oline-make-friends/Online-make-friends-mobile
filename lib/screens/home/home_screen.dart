@@ -5,7 +5,6 @@ import 'package:flutter_making_friends_app_2/controllers/user_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../blocs/swipe/swipe_bloc.dart';
 import '../../models/models.dart';
 import '../../widgets/widgets.dart';
 
@@ -50,8 +49,8 @@ class HomeScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                print("current user: ${currentUser.toString()}");
-                print('new list without current user: ${users.toString()}');
+                // print("current user: ${currentUser.toString()}");
+                // print('new list without current user: ${users.toString()}');
                 return InkWell(
                   onDoubleTap: () {
                     Navigator.pushNamed(context, '/users', arguments: users[0]);
@@ -79,13 +78,19 @@ class HomeScreen extends StatelessWidget {
                     color: Theme.of(context).errorColor,
                     icon: Icons.clear_rounded,
                   ),
-                  ChoiceButton(
-                      width: 80,
-                      height: 80,
-                      size: 30,
-                      color: Colors.white,
-                      hasGradient: true,
-                      icon: FontAwesomeIcons.handshakeSimple),
+                  GestureDetector(
+                    onTap: () {
+                      usercontroller.addFriend(context, currentUser.id,
+                          usercontroller.userList[0].id.toString());
+                    },
+                    child: ChoiceButton(
+                        width: 80,
+                        height: 80,
+                        size: 30,
+                        color: Colors.white,
+                        hasGradient: true,
+                        icon: FontAwesomeIcons.handshakeSimple),
+                  ),
                   ChoiceButton(
                     color: Theme.of(context).accentColor,
                     icon: Icons.watch_later,

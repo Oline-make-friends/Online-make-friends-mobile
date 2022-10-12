@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
@@ -8,13 +9,18 @@ class UserRepository {
   static final client = http.Client();
 
   static Future<String> postLogin(var body, String endpoint) async {
-    var response = await client.post(
-      BuildServer.buildUrl(endpoint),
-      body: body,
-      headers: {"Content-type": "application/json"},
-    );
-    // print("${response.statusCode}: ${response.body}");
-    return response.body;
+    try {
+      var response = await client.post(
+        BuildServer.buildUrl(endpoint),
+        body: body,
+        headers: {"Content-type": "application/json"},
+      ).timeout(const Duration(seconds: 10));
+      // print("${response.statusCode}: ${response.body}");
+      return response.body;
+    } on TimeoutException catch (e) {
+      print(e.toString());
+      return e.toString();
+    }
   }
 
   static getAllUser(String endpoint) async {
@@ -30,9 +36,26 @@ class UserRepository {
     }
   }
 
-  // static Uri buildUrl(String endpoint) {
-  //   const String host = "http://192.168.1.16:8000/";
-  //   final apiPath = host + endpoint;
-  //   return Uri.parse(apiPath);
-  // }
+  static registerUser(String endpoint, var body) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: body,
+      headers: {"Content-type": "application/json"},
+    );
+    print('${respone.statusCode}: ${respone.body}');
+    return respone.body;
+  }
+
+  static addFriend(String endpoint, String userId, String friendId) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "id": userId,
+        "friend": friendId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    print('add friend post: ${respone.statusCode} : ${respone.body}');
+    return respone.body;
+  }
 }

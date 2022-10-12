@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_making_friends_app_2/models/models.dart';
+import 'package:flutter_making_friends_app_2/screens/news/image_view_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 class NewsDetailScreen extends StatelessWidget {
@@ -9,10 +12,11 @@ class NewsDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Post currentPost = Get.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Thread',
+          "${currentPost.createdBy.fullname}'s post",
           style: Theme.of(context).textTheme.headline5,
         ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -31,42 +35,61 @@ class NewsDetailScreen extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         backgroundImage:
-                            NetworkImage(User.users[1].avatarUrl[0]),
+                            NetworkImage(currentPost.createdBy.avatarUrl!),
                       ),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            User.users[1].fullname,
+                            currentPost.createdBy.fullname!,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6!
                                 .copyWith(color: Colors.black),
                           ),
-                          const Text("11:45 20, Sep, 2022"),
+                          Text(
+                            "${currentPost.createdAt.day}/${currentPost.createdAt.month}/${currentPost.createdAt.year} ${currentPost.createdAt.hour}h:${currentPost.createdAt.minute}'",
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    'Your computer is hecked? No worry, call Hecker: 01234566789',
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Colors.black,
-                        ),
+                    currentPost.content,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(color: Colors.black, height: 2),
                   ),
-                  Container(
-                    height: 100,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(User.users[1].avatarUrl[1]),
-                      ),
-                    ),
-                  ),
+                  const SizedBox(height: 5),
+                  currentPost.imageUrl != null
+                      ? GestureDetector(
+                          onTap: () {
+                            Get.to(ImageViewScreen(),
+                                arguments: currentPost.imageUrl);
+                          },
+                          child: Hero(
+                            tag: 'image_hero',
+                            child: Container(
+                              height: 200,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.transparent),
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(currentPost.imageUrl),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   const Divider(thickness: 2),
                   Text(
-                    '7 Shares 20 Likes',
+                    '${currentPost.comments.length} Comments ${currentPost.likes.length} Likes',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const Divider(thickness: 2),
@@ -102,43 +125,67 @@ class NewsDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(thickness: 2),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(User.users[0].avatarUrl[0]),
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            User.users[0].fullname,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(color: Colors.black),
-                          ),
-                          const Text("11:45 20, Sep, 2022"),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    'Your computer is hecked? No worry, call Hecker: 01234566789',
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Colors.black,
+            const Divider(thickness: 3),
+            currentPost.comments.length != 0
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    NetworkImage(User.users[0].avatarUrl!),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    User.users[0].fullname!,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                  const Text("11:45 20, Sep, 2022"),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    'Your computer is hecked? No worry, call Hecker: 01234566789',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                          color: Colors.black,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
+                        const Divider(thickness: 1.5),
+                        Center(
+                          child: Text(
+                            '.',
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: Text(
+                      '.',
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
                   ),
-                ],
-              ),
-            )
           ],
         ),
       ),

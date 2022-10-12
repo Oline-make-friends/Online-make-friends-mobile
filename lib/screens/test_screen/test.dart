@@ -16,12 +16,15 @@ class TestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userController = Get.put(UserController());
+    // final userController = Get.put(UserController());
+    // final notiController = Get.put(NotiController());
     final postController = Get.put(PostController());
-    final notiController = Get.put(NotiController());
     User data = Get.arguments;
-    // final posts = postController.postList;
-    final noties = notiController.notiList;
+    final posts = postController.postList
+        .where((p) => data.friends!.contains(p) && p.isDeleted == true)
+        .toList();
+
+    // final noties = notiController.notiList;
     // .where((post) => post.createdBy.fullname == data.fullname)
     // .toList();
     return Scaffold(
@@ -29,7 +32,36 @@ class TestScreen extends StatelessWidget {
         title: const Text('Test screen'),
       ),
       body: Column(
-        children: [],
+        children: [
+          Text(data.toString()),
+          // Obx(
+          //   () {
+          //     if (userController.isLoading.value) {
+          //       return Text('Loading...');
+          //     } else {
+          //       return Text(userController.userList[0].fullname!);
+          //     }
+          //   },
+          // ),
+          Obx(
+            () {
+              if (postController.isLoading.value) {
+                return Text('Loading...');
+              } else {
+                if (posts.length == 0) {
+                  return Text('There is no friends posts');
+                } else {
+                  return Text(posts[0].createdBy.fullname!);
+                }
+              }
+            },
+          )
+          // Text(postController.postList[0].content),
+          // Text(postController.postList[0].imageUrl),
+          // Text(postController.postList[0].createdBy.fullname!),
+          // Text(postController.postList[0].createdAt.toString()),
+          // Text(postController.postList[0].content),
+        ],
       ),
     );
   }

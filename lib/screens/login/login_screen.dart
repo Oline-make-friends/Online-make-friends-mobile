@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/account_model.dart';
+import 'package:flutter_making_friends_app_2/screens/test_screen/test.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:get/get.dart';
 
@@ -40,6 +41,13 @@ class LoginScreen extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(TestScreen());
+              },
+              icon: Icon(Icons.warning_amber)),
+        ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -70,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Column(
                     children: [
-                      //Username field
+                      //!Username field
                       CustomTextFormField(
                         controller: loginController.usernameController,
                         onSaved: (value) {
@@ -85,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                         height: 20,
                       ),
 
-                      //Password Field
+                      //!Password Field
                       CustomTextFormField(
                         controller: loginController.passwordController,
                         onSaved: (value) {
@@ -96,6 +104,7 @@ class LoginScreen extends StatelessWidget {
                         },
                         hintTxt: 'Password',
                       ),
+                      //!
                       const SizedBox(height: 10),
                       Obx(() {
                         return Text(
@@ -115,9 +124,7 @@ class LoginScreen extends StatelessWidget {
                         child: IntrinsicWidth(
                           child: CustomButton(
                               onTap: () {
-                                loginController.login();
-
-                                // Navigator.pushNamed(context, '/home');
+                                loginController.login(context);
                               },
                               title: 'Login Now',
                               buttonColor: Theme.of(context).primaryColor),
@@ -147,7 +154,6 @@ class LoginScreen extends StatelessWidget {
                               textColor: const Color(0xFF116ddd)),
                         ),
                       ),
-                      // hasError ? Text('data') : Text(''),
                     ],
                   ),
                 ),
