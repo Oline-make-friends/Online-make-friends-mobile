@@ -100,8 +100,14 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               const SizedBox(height: 10),
 
               //!fullname
-              TextField(
-                decoration: InputDecoration(labelText: 'fullname'),
+              // TextField(
+              //   decoration: InputDecoration(labelText: 'fullname'),
+              //   controller: updateController.fullnameController =
+              //       TextEditingController(text: currentUser.fullname),
+              // ),
+
+              CustomTextFormField(
+                labelText: 'Fullname',
                 controller: updateController.fullnameController =
                     TextEditingController(text: currentUser.fullname),
               ),
@@ -111,50 +117,94 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               TextField(
                 decoration: InputDecoration(
                   labelText: 'about',
+                  filled: true,
+                  fillColor: Colors.white54,
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: Colors.transparent,
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 2,
+                      color: Theme.of(context).primaryColor.withAlpha(90),
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
                 ),
                 controller: updateController.aboutController =
                     TextEditingController(text: currentUser.about),
                 minLines: 1,
                 maxLines: 5,
               ),
+              // const SizedBox(height: 10),
+
+              // CustomTextFormField(
+              //   labelText: 'About',
+              //   controller: updateController.aboutController =
+              //       TextEditingController(text: currentUser.about),
+
+              // ),
+              // TextFormField(
+              //   controller: updateController.aboutController =
+              //       TextEditingController(text: currentUser.about),
+              //   decoration: InputDecoration(),
+              // ),
+              const SizedBox(height: 10),
+              //!gender and dob
+              Obx(
+                () {
+                  return CustomGenderDropDown(
+                    value: updateController.genderValue.value,
+                    onChanged: (value) {
+                      updateController.genderValue.value = value.toString();
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: CustomDoBPicker(
+                    controller: updateController.dobController =
+                        TextEditingController(text: currentUser.dateOfBirth),
+                    onConfirm: (date) {
+                      print(date);
+                      updateController.dobController.text =
+                          '${date.day}-${date.month}-${date.year}';
+                    }),
+              ),
               const SizedBox(height: 10),
 
-              //!gender and dob
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Obx(
-                    () {
-                      return CustomGenderDropDown(
-                        value: updateController.genderValue.value,
-                        onChanged: (value) {
-                          updateController.genderValue.value = value.toString();
-                        },
-                      );
-                    },
-                  ),
-                  CustomDoBPicker(
-                      controller: updateController.dobController =
-                          TextEditingController(text: currentUser.dateOfBirth),
-                      onConfirm: (date) {
-                        print(date);
-                        updateController.dobController.text =
-                            '${date.day}-${date.month}-${date.year}';
-                      }),
-                ],
-              ),
-
               //!major
-              TextField(
-                decoration: InputDecoration(labelText: 'Major'),
+              // TextField(
+              //   decoration: InputDecoration(labelText: 'Major'),
+              //   controller: updateController.majorController =
+              //       TextEditingController(text: currentUser.major),
+              // ),
+
+              CustomTextFormField(
+                labelText: 'Major',
                 controller: updateController.majorController =
                     TextEditingController(text: currentUser.major),
               ),
 
               //!location
               const SizedBox(height: 10),
-              TextField(
-                decoration: InputDecoration(labelText: 'Location'),
+              // TextField(
+              //   decoration: InputDecoration(labelText: 'Location'),
+              //   controller: updateController.locationController =
+              //       TextEditingController(text: currentUser.location),
+              // ),
+
+              CustomTextFormField(
+                labelText: 'Location',
                 controller: updateController.locationController =
                     TextEditingController(text: currentUser.location),
               ),
@@ -197,10 +247,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          updateController.interests
-                                              .add(addInterestController.text);
-                                          addInterestController.text = '';
-                                          Get.back();
+                                          if (addInterestController.text ==
+                                              '') {
+                                            Navigator.of(context).pop();
+                                          } else {
+                                            updateController.interests.add(
+                                                addInterestController.text);
+                                            addInterestController.text = '';
+                                            Get.back();
+                                          }
                                         },
                                         child: const Text('Add'),
                                       ),

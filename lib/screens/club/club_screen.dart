@@ -1,12 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/group_controller.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
+import 'package:get/get.dart';
+
+import '../../widgets/widgets.dart';
 
 class ClubScreen extends StatelessWidget {
   const ClubScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final groupController = Get.put(GroupController());
     return Scaffold(
       appBar: CustomAppBar(),
       body: SingleChildScrollView(
@@ -210,136 +215,76 @@ class ClubScreen extends StatelessWidget {
                               'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
                         ),
                         const SizedBox(width: 20),
+                        // Obx(
+                        //   () {
+                        //     return ClubContainer(
+                        //         name: groupController.groupList[0].name!,
+                        //         coverImg:
+                        //             groupController.groupList[0].avatarUrl!,
+                        //         category: 'Entertainng');
+                        //   },
+                        // ),
                       ],
                     ),
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Test fetch Clubs',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          print('pressed');
+                        },
+                        icon: Icon(
+                          Icons.arrow_right_alt,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  //! clubs row
+                  Obx(
+                    () {
+                      if (groupController.isLoading.value) {
+                        return const CircularProgressIndicator();
+                      } else {
+                        return SizedBox(
+                          height: 210,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: groupController.groupList.length,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                children: [
+                                  ClubContainer(
+                                    name:
+                                        groupController.groupList[index].name!,
+                                    coverImg: groupController
+                                        .groupList[index].avatarUrl!,
+                                    category: 'Entertaining',
+                                    numberOfMembers: groupController
+                                        .groupList[index].members!.length,
+                                  ),
+                                  const SizedBox(width: 20),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ClubContainer extends StatelessWidget {
-  final String name;
-  final String coverImg;
-  final String category;
-  const ClubContainer({
-    Key? key,
-    required this.name,
-    required this.coverImg,
-    required this.category,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        // color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(15),
-        // border: Border.all(),
-      ),
-      // height: 100,
-      child: Column(
-        children: [
-          //!club name and image
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            height: 70,
-            width: 250,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-              image: DecorationImage(
-                image: NetworkImage(coverImg),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //!club name
-                    Text(
-                      name,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w900),
-                    ),
-                    //!category
-                    Text(
-                      category,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-                IconButton(
-                  onPressed: () {
-                    print('pressed');
-                  },
-                  icon: Icon(Icons.more_horiz),
-                  color: Colors.white,
-                )
-              ],
-            ),
-          ),
-
-          //!club member info
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withAlpha(40),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15)),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            width: 250,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Members',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  '52 members ',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.black54),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Posts',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  '100 and more posts',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: Colors.black54),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(35),
-                    elevation: 0,
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  onPressed: () {},
-                  child: Text('Join'),
-                )
-              ],
-            ),
-          )
-        ],
       ),
     );
   }

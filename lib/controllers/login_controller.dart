@@ -13,6 +13,7 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late TextEditingController usernameController;
   late TextEditingController passwordController;
+  var loginedUser = User().obs;
   var isHidden = true.obs;
   var username = '';
   var password = '';
@@ -74,7 +75,7 @@ class LoginController extends GetxController {
       //   return errorString.value;
     } else {
       User currentUser = User.fromJson(data);
-
+      loginedUser.value = currentUser;
       // print("current user logined: ${currentUser.toString()}");
       Get.offAll(const BottomNavScreen(), arguments: currentUser);
     }

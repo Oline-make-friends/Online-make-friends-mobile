@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter_making_friends_app_2/models/post_model.dart';
-import 'package:flutter_making_friends_app_2/models/user_model.dart';
+import 'package:equatable/equatable.dart';
+
+import 'models.dart';
 
 List<Group> groupFromJson(String str) =>
     List<Group>.from(json.decode(str).map((x) => Group.fromJson(x)));
@@ -9,7 +11,7 @@ List<Group> groupFromJson(String str) =>
 String groupToJson(List<Group> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Group {
+class Group extends Equatable {
   Group({
     this.avatarUrl,
     this.id,
@@ -22,7 +24,7 @@ class Group {
     this.groupsRequest,
     DateTime? createdAt,
     DateTime? updatedAt,
-    this.v = 0,
+    this.v,
   })  : this.createdAt = createdAt ?? DateTime.now(),
         this.updatedAt = updatedAt ?? DateTime.now();
 
@@ -32,44 +34,76 @@ class Group {
   final String? name;
   final String? content;
   final bool? isDeleted;
-  final List<Post>? posts;
+  final List<User>? posts;
   final List<User>? members;
   final List<dynamic>? groupsRequest;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int v;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
-        avatarUrl: json["avatar_url"],
-        id: json["_id"],
-        admins: List<User>.from(json["admins"].map((x) => User.fromJson(x))),
-        name: json["name"],
-        content: json["content"],
-        isDeleted: json["is_deleted"],
-        posts: List<Post>.from(json["posts"].map((x) => x)),
-        members: List<User>.from(json["members"].map((x) => User.fromJson(x))),
+        avatarUrl: json["avatar_url"] == null ? null : json["avatar_url"],
+        id: json["_id"] == null ? null : json["_id"],
+        admins: json["admins"] == null
+            ? null
+            : List<User>.from(json["admins"].map((x) => User.fromJson(x))),
+        name: json["name"] == null ? null : json["name"],
+        content: json["content"] == null ? null : json["content"],
+        isDeleted: json["is_deleted"] == null ? null : json["is_deleted"],
+        posts: json["posts"] == null
+            ? null
+            : List<User>.from(json["posts"].map((x) => x)),
+        members: json["members"] == null
+            ? null
+            : List<User>.from(json["members"].map((x) => User.fromJson(x))),
         groupsRequest: json["groups_request"] == null
             ? null
             : List<dynamic>.from(json["groups_request"].map((x) => x)),
-        createdAt: DateTime.parse(json["createdAt"]),
-        updatedAt: DateTime.parse(json["updatedAt"]),
-        v: json["__v"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        v: json["__v"] == null ? null : json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
-        "avatar_url": avatarUrl,
-        "_id": id,
-        "admins": List<User>.from(admins!.map((x) => x.toJson())),
-        "name": name,
-        "content": content,
-        "is_deleted": isDeleted,
-        "posts": List<Post>.from(posts!.map((x) => x)),
-        "members": List<User>.from(members!.map((x) => x.toJson())),
+        "avatar_url": avatarUrl == null ? null : avatarUrl,
+        "_id": id == null ? null : id,
+        "admins": admins == null
+            ? null
+            : List<User>.from(admins!.map((x) => x.toJson())),
+        "name": name == null ? null : name,
+        "content": content == null ? null : content,
+        "is_deleted": isDeleted == null ? null : isDeleted,
+        "posts": posts == null ? null : List<User>.from(posts!.map((x) => x)),
+        "members": members == null
+            ? null
+            : List<User>.from(members!.map((x) => x.toJson())),
         "groups_request": groupsRequest == null
             ? null
             : List<dynamic>.from(groupsRequest!.map((x) => x)),
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
+        "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "__v": v == null ? null : v,
       };
+
+  @override
+  List<Object?> get props {
+    return [
+      avatarUrl,
+      id,
+      admins,
+      name,
+      content,
+      isDeleted,
+      posts,
+      members,
+      groupsRequest,
+      createdAt,
+      updatedAt,
+      v,
+    ];
+  }
 }

@@ -80,10 +80,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     key: registerController.registerFormKey,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         //!email textfield
                         CustomTextFormField(
                           hintTxt: 'Email',
+                          prefixicon: const Icon(Icons.email),
                           controller: registerController.emailController,
                           onSaved: (value) {
                             registerController.email = value!;
@@ -98,6 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         //!password textfield
                         CustomTextFormField(
                           hintTxt: 'Password',
+                          prefixicon: const Icon(Icons.lock),
                           isObscure: true,
                           controller: registerController.passwordController,
                           onSaved: (value) {
@@ -135,30 +138,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            //!Gender DropList
-                            CustomGenderDropDown(
-                              value: registerController.genderValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  registerController.genderValue =
-                                      value.toString();
-                                  // print(dropValue);
-                                });
-                              },
-                            ),
-                            //!DOB textfield
-                            CustomDoBPicker(
-                              controller: registerController.doBController,
-                              onConfirm: (date) {
-                                print('confirm ${date}');
-                                registerController.doBController.text =
-                                    '${date.day}-${date.month}-${date.year}';
-                              },
-                            ),
-                          ],
+                        Container(
+                          width: double.infinity,
+                          child: CustomGenderDropDown(
+                            value: registerController.genderValue,
+                            onChanged: (value) {
+                              setState(() {
+                                registerController.genderValue =
+                                    value.toString();
+                                // print(dropValue);
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        //!DOB textfield
+                        Container(
+                          width: double.infinity,
+                          child: CustomDoBPicker(
+                            controller: registerController.doBController,
+                            onConfirm: (date) {
+                              print('confirm ${date}');
+                              registerController.doBController.text =
+                                  '${date.day}-${date.month}-${date.year}';
+                            },
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Obx(

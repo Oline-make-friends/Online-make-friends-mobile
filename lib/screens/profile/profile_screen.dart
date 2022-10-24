@@ -24,6 +24,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // var data = Get.arguments;
     final User currentUser = Get.arguments;
+    final loginController = Get.put(LoginController());
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Column(

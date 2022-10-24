@@ -10,9 +10,10 @@ class GroupRepository {
     var response = await client.get(
       BuildServer.buildUrl(endpoint),
     );
-    // print("${response.statusCode}: ${response.body}");
+    print("${response.statusCode}: ${response.body}");
     if (response.statusCode == 200) {
       var resultString = response.body;
+      print("getAllGroup: $resultString");
       return groupFromJson(resultString);
     } else {
       return null;

@@ -11,33 +11,32 @@ class CustomGenderDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          'Gender: ',
-          style: Theme.of(context)
-              .textTheme
-              .headline6!
-              .copyWith(fontWeight: FontWeight.normal),
-        ),
-        const SizedBox(width: 10),
-        DropdownButton<dynamic>(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          value: value,
-          items: const <DropdownMenuItem>[
-            DropdownMenuItem(
-              child: Text('Male'),
-              value: 'Male',
-            ),
-            DropdownMenuItem(
-              child: Text('Female'),
-              value: 'Female',
-            ),
-          ],
-          onChanged: onChanged,
-        ),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: BoxDecoration(
+          color: Colors.white54,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.transparent)),
+      child: DropdownButton<dynamic>(
+        underline: SizedBox.shrink(),
+        isExpanded: true,
+        value: value,
+        items: const <DropdownMenuItem>[
+          DropdownMenuItem(
+            child: Text('Male'),
+            value: 'Male',
+          ),
+          DropdownMenuItem(
+            child: Text('Female'),
+            value: 'Female',
+          ),
+          DropdownMenuItem(
+            child: Text('Prefer not to say'),
+            value: 'Prefer not to say',
+          ),
+        ],
+        onChanged: onChanged,
+      ),
     );
   }
 }

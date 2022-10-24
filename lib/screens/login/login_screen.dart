@@ -82,6 +82,7 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       //!Username field
                       CustomTextFormField(
+                        prefixicon: const Icon(Icons.email),
                         controller: loginController.usernameController,
                         onSaved: (value) {
                           loginController.username = value!;
@@ -99,6 +100,7 @@ class LoginScreen extends StatelessWidget {
                       Obx(
                         () {
                           return CustomTextFormField(
+                            prefixicon: const Icon(Icons.lock),
                             controller: loginController.passwordController,
                             onSaved: (value) {
                               loginController.password = value!;
@@ -175,6 +177,27 @@ class LoginScreen extends StatelessWidget {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+      bottomSheet: Container(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        decoration:
+            BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor),
+        height: 50,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: InkWell(
+            onTap: () {
+              print('tapped');
+            },
+            child: Text(
+              'Forgot password?',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1!
+                  .copyWith(color: Colors.black54),
+            ),
           ),
         ),
       ),

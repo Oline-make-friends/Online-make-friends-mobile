@@ -13,7 +13,7 @@ class NewProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User currentUser = Get.arguments;
-    final postController = Get.put(PostController());
+    final loginController = Get.put(LoginController());
 
     return Scaffold(
       appBar: AppBar(

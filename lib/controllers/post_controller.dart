@@ -29,13 +29,7 @@ class PostController extends GetxController {
   Future<void> fetchPosts() async {
     var posts = await PostRepository.getAllPost("post/getAll");
     if (posts != null) {
-      // for (Post post in posts) {
-      //   if (posts["is_deleted"] == false) {
-      //     postList.value.add(post);
-      //   }
-      // }
       postList.value = posts.reversed.toList();
-
       print(postList.toString());
     }
     isLoading.value = false;

@@ -18,126 +18,128 @@ class MeetingDetailScreen extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
-              IconButton(
-                onPressed: () {
-                  Get.back();
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
+                IconButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 100),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Glowing Art Performance',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1!
-                          .copyWith(fontSize: 40, color: Colors.white),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Showing featuring artists who create a spectate of light, color and movement',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.white, fontSize: 20),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Dance & Art',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.white, fontSize: 20),
-                        ),
-                        Text(
-                          '07:00',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.white, fontSize: 20),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                const SizedBox(height: 100),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Glowing Art Performance',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline1!
+                            .copyWith(fontSize: 40, color: Colors.white),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://i.insider.com/5c954296dc67671dc8346930?width=1136&format=jpeg"),
-                                    fit: BoxFit.cover),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Showing featuring artists who create a spectate of light, color and movement',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(color: Colors.white, fontSize: 20),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Dance & Art',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.white, fontSize: 20),
+                          ),
+                          Text(
+                            '07:00',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.white, fontSize: 20),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://i.insider.com/5c954296dc67671dc8346930?width=1136&format=jpeg"),
+                                      fit: BoxFit.cover),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'FPT University, Ho Chi Minh city',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            )
-                          ],
+                              const SizedBox(height: 10),
+                              Text(
+                                'FPT University, Ho Chi Minh city',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        FaIcon(
-                          FontAwesomeIcons.faceLaugh,
+                      const SizedBox(height: 20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          FaIcon(
+                            FontAwesomeIcons.faceLaugh,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            '545 participants',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        height: 70,
+                        decoration: BoxDecoration(
                           color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                        const SizedBox(width: 5),
-                        Text(
-                          '545 participants',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Colors.white),
+                        child: Center(
+                          child: Text(
+                            'Join Now',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Container(
-                      height: 70,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Join Now',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

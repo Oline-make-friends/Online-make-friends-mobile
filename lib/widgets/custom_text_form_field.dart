@@ -1,20 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final String hintTxt;
+  String? hintTxt;
+  String? labelText;
   void Function(String?)? onSaved;
   String? Function(String?)? validator;
   TextEditingController? controller;
   Widget? suffixIcon;
+  Widget? prefixicon;
+
   bool isObscure;
 
   CustomTextFormField({
     Key? key,
-    required this.hintTxt,
+    this.hintTxt,
+    this.labelText,
     this.onSaved,
     this.validator,
     this.controller,
     this.suffixIcon,
+    this.prefixicon,
     this.isObscure = false,
   }) : super(key: key);
 
@@ -26,23 +32,24 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       controller: controller,
       decoration: InputDecoration(
+        prefixIcon: prefixicon,
         filled: true,
         fillColor: Colors.white54,
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 1,
-            color: Color(0xFF116ddd),
+            color: Colors.transparent,
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(15),
           ),
         ),
-        focusedBorder: const OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             width: 2,
-            color: Color(0xFF116ddd),
+            color: Theme.of(context).primaryColor.withAlpha(90),
           ),
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(15),
           ),
         ),
@@ -58,7 +65,7 @@ class CustomTextFormField extends StatelessWidget {
         focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 2,
-            color: Color(0xFF116ddd),
+            color: Color.fromARGB(255, 221, 24, 17),
           ),
           borderRadius: BorderRadius.all(
             Radius.circular(15),
@@ -66,6 +73,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         suffixIcon: suffixIcon,
         hintText: hintTxt,
+        labelText: labelText,
       ),
     );
   }
