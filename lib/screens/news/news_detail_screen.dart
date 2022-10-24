@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:flutter_making_friends_app_2/screens/news/image_view_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,12 +8,17 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-class NewsDetailScreen extends StatelessWidget {
-  const NewsDetailScreen({super.key});
+class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
+  final PreferredSizeWidget? bottom;
+
+  NewsDetailScreen({super.key, this.bottom});
 
   @override
   Widget build(BuildContext context) {
-    Post currentPost = Get.arguments;
+    Post currentPost = Get.arguments[0];
+    User currentUser = Get.arguments[1];
+    var userController = Get.put(UserController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -57,13 +63,15 @@ class NewsDetailScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 5),
-                  Text(
-                    currentPost.content,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(color: Colors.black, height: 2),
-                  ),
+                  currentPost.content != null
+                      ? Text(
+                          currentPost.content!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.black, height: 2),
+                        )
+                      : Container(),
                   const SizedBox(height: 5),
                   currentPost.imageUrl != null
                       ? GestureDetector(
@@ -80,7 +88,7 @@ class NewsDetailScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: NetworkImage(currentPost.imageUrl),
+                                  image: NetworkImage(currentPost.imageUrl!),
                                 ),
                               ),
                             ),
@@ -89,7 +97,7 @@ class NewsDetailScreen extends StatelessWidget {
                       : const SizedBox(),
                   const Divider(thickness: 2),
                   Text(
-                    '${currentPost.comments.length} Comments ${currentPost.likes.length} Likes',
+                    '${currentPost.comments!.length} Comments ${currentPost.likes!.length} Likes',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const Divider(thickness: 2),
@@ -126,59 +134,65 @@ class NewsDetailScreen extends StatelessWidget {
               ),
             ),
             const Divider(thickness: 3),
-            currentPost.comments.length != 0
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            currentPost.comments!.length != 0
+                ? ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: currentPost.comments!.length,
+                    itemBuilder: (context, index) {
+                      int postDay = (DateTime.now().day -
+                              currentPost.comments![index].createdAt!.day)
+                          .abs();
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
                           children: [
-                            Align(
-                              alignment: Alignment.topLeft,
-                              child: CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(User.users[0].avatarUrl!),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    User.users[0].fullname!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(color: Colors.black),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(User.users[0].avatarUrl!),
                                   ),
-                                  const Text("11:45 20, Sep, 2022"),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    'Your computer is hecked? No worry, call Hecker: 01234566789',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText1!
-                                        .copyWith(
-                                          color: Colors.black,
-                                        ),
+                                ),
+                                const SizedBox(width: 10),
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        User.users[0].fullname!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: Colors.black),
+                                      ),
+                                      Text("$postDay"),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        currentPost.comments![index].content!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: Colors.black,
+                                            ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                            const Divider(thickness: 1.5),
+                            const SizedBox(height: 2),
                           ],
                         ),
-                        const Divider(thickness: 1.5),
-                        Center(
-                          child: Text(
-                            '.',
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                      ],
-                    ),
+                      );
+                    },
                   )
                 : Center(
                     child: Text(
@@ -189,17 +203,49 @@ class NewsDetailScreen extends StatelessWidget {
           ],
         ),
       ),
+
+      //!comment
+      bottomSheet: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context).scaffoldBackgroundColor,
+        ),
+        // width: 100,
+        height: 80,
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(currentUser.avatarUrl!),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: const TextField(
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.transparent,
+                  hintText: 'Type here...',
+                  contentPadding:
+                      const EdgeInsets.only(left: 20, bottom: 5, top: 5),
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: FaIcon(
+                FontAwesomeIcons.paperPlane,
+                color: Theme.of(context).primaryColor,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
-  // Future<void> _onOpen(LinkableElement link) async {
-  //   if (await canLaunchUrl(Uri.parse(link.url))) {
-  //     await launchUrl(
-  //       Uri.parse(link.url),
-  //       mode: LaunchMode.externalApplication,
-  //     );
-  //   } else {
-  //     throw 'Could not launch $link';
-  //   }
-  // }
+  @override
+  Size get preferredSize =>
+      bottom != null ? const Size.fromHeight(100) : const Size.fromHeight(50);
 }

@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_making_friends_app_2/controllers/register_controller.dart';
 import 'package:get/get.dart';
+
+import 'package:flutter_making_friends_app_2/controllers/register_controller.dart';
 
 import '../../widgets/widgets.dart';
 
@@ -96,6 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         //!password textfield
                         CustomTextFormField(
                           hintTxt: 'Password',
+                          isObscure: true,
                           controller: registerController.passwordController,
                           onSaved: (value) {
                             registerController.password = value!;
@@ -108,6 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         //!rePassword textfield
                         CustomTextFormField(
                           hintTxt: 'Retype Password',
+                          isObscure: true,
                           controller: registerController.rePasswordController,
                           onSaved: (value) {
                             registerController.rePassword = value!;
@@ -130,75 +134,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        //!Gender DropList
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              // mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              // crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'Gender: ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(fontWeight: FontWeight.normal),
-                                ),
-                                const SizedBox(width: 20),
-                                DropdownButton<dynamic>(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                  value: registerController.genderValue,
-                                  items: const <DropdownMenuItem>[
-                                    DropdownMenuItem(
-                                      child: Text('Male'),
-                                      value: 'Male',
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Female'),
-                                      value: 'Female',
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      registerController.genderValue =
-                                          value.toString();
-                                      // print(dropValue);
-                                    });
-                                  },
-                                ),
-                              ],
+                            //!Gender DropList
+                            CustomGenderDropDown(
+                              value: registerController.genderValue,
+                              onChanged: (value) {
+                                setState(() {
+                                  registerController.genderValue =
+                                      value.toString();
+                                  // print(dropValue);
+                                });
+                              },
                             ),
-
                             //!DOB textfield
-                            Container(
-                              width: 170,
-                              child: CustomTextFormField(
-                                hintTxt: 'Date of birth',
-                                controller: registerController.doBController,
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      DatePicker.showDatePicker(
-                                        context,
-                                        showTitleActions: true,
-                                        minTime: DateTime(1940, 1, 1),
-                                        maxTime: DateTime(2015, 12, 31),
-                                        currentTime: DateTime(2000, 1, 1),
-                                        onChanged: (date) {
-                                          print('change $date');
-                                        },
-                                        onConfirm: (date) {
-                                          print('confirm ${date}');
-                                          registerController
-                                                  .doBController.text =
-                                              '${date.day}-${date.month}-${date.year}';
-                                        },
-                                      );
-                                    },
-                                    icon: const Icon(Icons.date_range)),
-                              ),
+                            CustomDoBPicker(
+                              controller: registerController.doBController,
+                              onConfirm: (date) {
+                                print('confirm ${date}');
+                                registerController.doBController.text =
+                                    '${date.day}-${date.month}-${date.year}';
+                              },
                             ),
                           ],
                         ),

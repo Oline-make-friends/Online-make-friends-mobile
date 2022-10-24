@@ -6,23 +6,23 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter_making_friends_app_2/models/models.dart';
 
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 
 List<Post> postFromJson(String str) =>
     List<Post>.from(json.decode(str).map((x) => Post.fromJson(x)));
 
-String postToJson(List<Post> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String postToJson(Post data) => json.encode(data.toJson());
 
 class Post extends Equatable {
   Post({
-    required this.id,
+    this.id,
     required this.createdBy,
-    required this.content,
-    required this.imageUrl,
-    required this.likes,
-    required this.comments,
+    this.content,
+    this.imageUrl,
+    this.likes,
+    this.comments,
     this.isDeleted = false,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -30,12 +30,12 @@ class Post extends Equatable {
   })  : this.createdAt = createdAt ?? DateTime.now(),
         this.updatedAt = updatedAt ?? DateTime.now();
 
-  final String id;
+  final String? id;
   final User createdBy;
-  final String content;
-  final String imageUrl;
-  final List<dynamic> likes;
-  final List<dynamic> comments;
+  final String? content;
+  final String? imageUrl;
+  final List<dynamic>? likes;
+  final List<Comment>? comments;
   final bool isDeleted;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -47,7 +47,8 @@ class Post extends Equatable {
         content: json["content"],
         imageUrl: json["imageUrl"],
         likes: List<dynamic>.from(json["likes"].map((x) => x)),
-        comments: List<dynamic>.from(json["comments"].map((x) => x)),
+        comments: List<Comment>.from(
+            json["comments"].map((x) => Comment.fromJson(x))),
         isDeleted: json["is_deleted"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
@@ -55,20 +56,13 @@ class Post extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
         "created_by": createdBy.toJson(),
         "content": content,
         "imageUrl": imageUrl,
-        "likes": List<dynamic>.from(likes.map((x) => x)),
-        "comments": List<dynamic>.from(comments.map((x) => x)),
-        "is_deleted": isDeleted,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
-        "__v": v,
       };
 
   @override
-  List<Object> get props {
+  List<Object?> get props {
     return [
       id,
       createdBy,

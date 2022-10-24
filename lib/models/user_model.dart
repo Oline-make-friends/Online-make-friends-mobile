@@ -18,6 +18,10 @@ String registerToJson(User data) {
   return json.encode(data.registerToJson());
 }
 
+String updateToJson(User data) {
+  return json.encode(data.updateToJson());
+}
+
 class User extends Equatable {
   User({
     this.id,
@@ -92,7 +96,7 @@ class User extends Equatable {
         "password": password,
         "gender": gender,
         "location": location,
-        "interrests": interests,
+        "interrests": List<dynamic>.from(interests!.map((x) => x)),
         "major": major,
         "about": about,
         "follos": List<dynamic>.from(follows!.map((x) => x)),
@@ -113,6 +117,17 @@ class User extends Equatable {
         "password": password,
         "gender": gender,
         "date_of_birth": dateOfBirth,
+      };
+
+  Map<String, dynamic> updateToJson() => {
+        "fullname": fullname,
+        "gender": gender,
+        "location": location,
+        "interrests": List<dynamic>.from(interests!.map((x) => x)),
+        "major": major,
+        "about": about,
+        "date_of_birth": dateOfBirth,
+        "avatar_url": avatarUrl,
       };
 
   @override

@@ -101,7 +101,6 @@ class RegisterController extends GetxController {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Account created!')));
       User currentUser = User.fromJson(data);
-      // print("current user logined: ${currentUser.toString()}");
       Get.to(const BottomNavScreen(), arguments: currentUser);
     }
   }

@@ -23,7 +23,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usercontroller = Get.put(UserController());
-    var currentUser = Get.arguments;
+    User currentUser = Get.arguments;
+    print(currentUser.friends.toString());
     final users = usercontroller.userList..remove(currentUser);
     return Scaffold(
       appBar: CustomAppBar(),
@@ -80,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      usercontroller.addFriend(context, currentUser.id,
+                      usercontroller.addFriend(context, currentUser.id!,
                           usercontroller.userList[0].id.toString());
                     },
                     child: ChoiceButton(

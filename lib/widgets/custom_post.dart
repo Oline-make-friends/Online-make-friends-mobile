@@ -8,7 +8,7 @@ import '../models/models.dart';
 class CustomPost extends StatelessWidget {
   final String? image;
   final User user;
-  final String content;
+  final String? content;
   final List<dynamic> likes;
   final List<dynamic> comments;
   final void Function()? onTap;
@@ -17,7 +17,7 @@ class CustomPost extends StatelessWidget {
     Key? key,
     this.image,
     required this.user,
-    required this.content,
+    this.content,
     required this.likes,
     required this.comments,
     this.onTap,
@@ -59,7 +59,7 @@ class CustomPost extends StatelessWidget {
                         Text(
                           postDay < 7 && postDay > 1
                               ? '$postDay days ago'
-                              : "${createdAt.day}/${createdAt.month} ${createdAt.hour}h:${createdAt.minute}'",
+                              : "${createdAt.day}/${createdAt.month} ${createdAt.hour}:${createdAt.minute}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -67,15 +67,17 @@ class CustomPost extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Linkify(
-                      text: content,
-                      maxLines: 7,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.black),
-                      onOpen: ((link) => print("Clicked ${link.url}!")),
-                    ),
+                    content != null
+                        ? Linkify(
+                            text: content!,
+                            maxLines: 7,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.black),
+                            onOpen: ((link) => print("Clicked ${link.url}!")),
+                          )
+                        : Container(),
                     const SizedBox(height: 5),
                     image != null
                         ? Container(
@@ -85,7 +87,7 @@ class CustomPost extends StatelessWidget {
                               border: Border.all(color: Colors.transparent),
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fitHeight,
                                 image: NetworkImage(image!),
                               ),
                             ),
@@ -113,13 +115,13 @@ class CustomPost extends StatelessWidget {
                               ),
                               number: comments.length,
                             ),
-                            CustomPostButton(
-                              icon: FaIcon(
-                                FontAwesomeIcons.share,
-                                size: 12,
-                              ),
-                              number: 15,
-                            ),
+                            // CustomPostButton(
+                            //   icon: FaIcon(
+                            //     FontAwesomeIcons.share,
+                            //     size: 12,
+                            //   ),
+                            //   number: 15,
+                            // ),
                           ],
                         ),
                         PopupMenuButton(

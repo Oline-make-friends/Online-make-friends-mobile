@@ -18,4 +18,23 @@ class PostRepository {
       return null;
     }
   }
+
+  static createPost(String endpoint, var body) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: body,
+      headers: {"Content-type": "application/json"},
+    );
+    print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
+
+  static getPostByUserId(String endpoint) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    print('${response.statusCode}: ${response.body}');
+    return postFromJson(response.body);
+  }
 }

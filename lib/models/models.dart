@@ -1,5 +1,6 @@
 export 'account_model.dart';
 export 'chat_model.dart';
+export 'comment_model.dart';
 export 'login_model.dart';
 export 'message_model.dart';
 export 'notification_model.dart';

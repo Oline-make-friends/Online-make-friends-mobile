@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 
 import 'package:flutter_making_friends_app_2/models/models.dart';
+import 'package:flutter_making_friends_app_2/screens/profile/update_profile_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:get/get.dart';
@@ -139,7 +141,7 @@ class ProfileScreen extends StatelessWidget {
                 //       .bodyText1!
                 //       .copyWith(height: 1.5),
                 // ),
-                Row(
+                Wrap(
                   children: currentUser.interests!
                       .map(
                         (interest) => Container(
@@ -165,13 +167,30 @@ class ProfileScreen extends StatelessWidget {
                       )
                       .toList(),
                 ),
-                Text(currentUser.toString()),
+                // Text(currentUser.toString()),
 
-                ElevatedButton(
-                    onPressed: () {
-                      Get.to(UserPostsScreen(), arguments: currentUser);
-                    },
-                    child: Text('Your posts')),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(UserPostsScreen(), arguments: currentUser);
+                      },
+                      child: Text('Your posts'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(SplashScreen());
+                      },
+                      child: Text('Log out'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.to(UpdateProfileScreen(), arguments: currentUser);
+                      },
+                      child: Text('Update profile'),
+                    ),
+                  ],
+                ),
                 // Row(
                 //   children: [
                 //     CustomTextContainer(text: 'GAME'),

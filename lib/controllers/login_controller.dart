@@ -1,19 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_making_friends_app_2/models/login_model.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
-import 'package:flutter_making_friends_app_2/screens/home/home_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:flutter_making_friends_app_2/widgets/alert.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
 class LoginController extends GetxController {
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late TextEditingController usernameController;
   late TextEditingController passwordController;
+  var isHidden = true.obs;
   var username = '';
   var password = '';
   var errorString = "".obs;
@@ -59,7 +59,7 @@ class LoginController extends GetxController {
     var response =
         await UserRepository.postLogin(loginToJson(loginModl), 'auth/login');
     if (response ==
-        'TimeoutException after 0:00:10.000000: Future not completed') {
+        'TimeoutException after 0:00:30.000000: Future not completed') {
       Navigator.of(context).pop();
       errorString.value = "Server timeout! Please try again!";
       return errorString.value;
@@ -74,8 +74,9 @@ class LoginController extends GetxController {
       //   return errorString.value;
     } else {
       User currentUser = User.fromJson(data);
+
       // print("current user logined: ${currentUser.toString()}");
-      Get.to(const BottomNavScreen(), arguments: currentUser);
+      Get.offAll(const BottomNavScreen(), arguments: currentUser);
     }
     return null;
   }

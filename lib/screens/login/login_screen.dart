@@ -3,6 +3,7 @@ import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/account_model.dart';
 import 'package:flutter_making_friends_app_2/screens/test_screen/test.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -21,6 +22,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isHidden = true;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -94,15 +96,29 @@ class LoginScreen extends StatelessWidget {
                       ),
 
                       //!Password Field
-                      CustomTextFormField(
-                        controller: loginController.passwordController,
-                        onSaved: (value) {
-                          loginController.password = value!;
+                      Obx(
+                        () {
+                          return CustomTextFormField(
+                            controller: loginController.passwordController,
+                            onSaved: (value) {
+                              loginController.password = value!;
+                            },
+                            validator: (value) {
+                              return loginController.validatePassword(value!);
+                            },
+                            hintTxt: 'Password',
+                            isObscure: loginController.isHidden.value,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                loginController.isHidden.value =
+                                    !loginController.isHidden.value;
+                              },
+                              icon: loginController.isHidden.value
+                                  ? FaIcon(FontAwesomeIcons.eye)
+                                  : FaIcon(FontAwesomeIcons.eyeSlash),
+                            ),
+                          );
                         },
-                        validator: (value) {
-                          return loginController.validatePassword(value!);
-                        },
-                        hintTxt: 'Password',
                       ),
                       //!
                       const SizedBox(height: 10),

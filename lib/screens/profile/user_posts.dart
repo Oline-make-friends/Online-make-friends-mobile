@@ -48,7 +48,7 @@ class UserPostsScreen extends StatelessWidget {
                 // print(data.toString());
                 return CustomUserPost(
                   user: postController.postList[index].createdBy,
-                  content: postController.postList[index].content,
+                  content: postController.postList[index].content!,
                   image: postController.postList[index].imageUrl,
                 );
               }),

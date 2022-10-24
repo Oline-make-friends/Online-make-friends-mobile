@@ -6,6 +6,7 @@ class CustomTextFormField extends StatelessWidget {
   String? Function(String?)? validator;
   TextEditingController? controller;
   Widget? suffixIcon;
+  bool isObscure;
 
   CustomTextFormField({
     Key? key,
@@ -14,11 +15,13 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.controller,
     this.suffixIcon,
+    this.isObscure = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      obscureText: isObscure,
       onSaved: onSaved,
       validator: validator,
       controller: controller,

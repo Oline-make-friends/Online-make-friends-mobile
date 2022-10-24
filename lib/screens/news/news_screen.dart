@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_making_friends_app_2/models/models.dart';
+import 'package:flutter_making_friends_app_2/screens/news/create_post_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +14,7 @@ import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
 import '../../controllers/post_controller.dart';
 import '../../widgets/widgets.dart';
 
-class NewsFeedScreen extends StatelessWidget {
+class NewsFeedScreen extends StatefulWidget {
   static const String routeName = '/news';
 
   static Route route() {
@@ -24,12 +26,22 @@ class NewsFeedScreen extends StatelessWidget {
   const NewsFeedScreen({super.key});
 
   @override
+  State<NewsFeedScreen> createState() => _NewsFeedScreenState();
+}
+
+class _NewsFeedScreenState extends State<NewsFeedScreen> {
+  @override
   Widget build(BuildContext context) {
     final postController = Get.put(PostController());
+    User currentUser = Get.arguments;
+    print('${currentUser.fullname}');
+    List<Post> reverseList = postController.postList.reversed.toList();
     return Scaffold(
       appBar: const CustomAppBar(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.to(CreatePostScreen(), arguments: currentUser);
+        },
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 5,
         foregroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -48,23 +60,35 @@ class NewsFeedScreen extends StatelessWidget {
             //     child: Text("You don't have any post"),
             //   );
           } else {
-            return ListView.builder(
-              itemCount: postController.postList.length,
-              itemBuilder: ((context, index) {
-                // print(data.toString());
-                return CustomPost(
-                  onTap: () {
-                    Get.to(NewsDetailScreen(),
-                        arguments: postController.postList[index]);
-                  },
-                  user: postController.postList[index].createdBy,
-                  content: postController.postList[index].content,
-                  image: postController.postList[index].imageUrl,
-                  likes: postController.postList[index].likes,
-                  comments: postController.postList[index].comments,
-                  createdAt: postController.postList[index].createdAt,
-                );
-              }),
+            return RefreshIndicator(
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: postController.postList.length,
+                itemBuilder: ((context, index) {
+                  // print(data.toString());
+                  return CustomPost(
+                    onTap: () {
+                      Get.to(NewsDetailScreen(), arguments: [
+                        postController.postList[index],
+                        currentUser
+                      ]);
+                    },
+                    user: postController.postList[index].createdBy,
+                    content: postController.postList[index].content,
+                    image: postController.postList[index].imageUrl,
+                    likes: postController.postList[index].likes!,
+                    comments: postController.postList[index].comments!,
+                    createdAt: postController.postList[index].createdAt,
+                  );
+                }),
+              ),
+              onRefresh: () {
+                return Future.delayed(const Duration(seconds: 1), () {
+                  setState(() {
+                    postController.fetchPosts();
+                  });
+                });
+              },
             );
           }
         }),

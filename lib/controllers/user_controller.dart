@@ -9,6 +9,7 @@ class UserController extends GetxController {
   var userList = <User>[].obs;
   var isLoading = true.obs;
   var errorString = "".obs;
+  var foundUser = User().obs;
 
   @override
   void onInit() {
@@ -39,5 +40,12 @@ class UserController extends GetxController {
     ScaffoldMessenger.of(context)
         .showSnackBar(const SnackBar(content: Text('Friend Added')));
     print(data);
+  }
+
+  Future<void> findUserById({required String userId}) async {
+    var response = await UserRepository.getUserById('user/getUser/$userId');
+    var data = json.decode(response);
+    User user = User.fromJson(data);
+    foundUser.value = user;
   }
 }
