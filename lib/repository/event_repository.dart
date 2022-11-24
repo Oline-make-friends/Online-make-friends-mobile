@@ -1,40 +1,48 @@
-import 'package:flutter_making_friends_app_2/models/post_model.dart';
-import 'package:flutter_making_friends_app_2/repository/repository.dart';
+import 'dart:convert';
+
+import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:http/http.dart' as http;
 
-class PostRepository {
+import 'build_server.dart';
+
+class EventRepository {
   static final client = http.Client();
 
-  static getAllPost(String endpoint) async {
+  static getAllEvent(String endpoint) async {
     var response = await client.get(
       BuildServer.buildUrl(endpoint),
     );
-    // print("${response.statusCode}: ${response.body}");
     if (response.statusCode == 200) {
       var resultString = response.body;
-      // print('posts result: $resultString');
-      return postFromJson(resultString);
+      return eventFromJson(resultString);
     } else {
       return null;
     }
   }
 
-  static createPost(String endpoint, var body) async {
+  static joinEvent(String endpoint, String eventId, String userId) async {
     var response = await client.post(
       BuildServer.buildUrl(endpoint),
-      body: body,
+      body: jsonEncode(<String, String>{
+        "eventId": eventId,
+        "userId": userId,
+      }),
       headers: {"Content-type": "application/json"},
     );
     // print('${response.statusCode}: ${response.body}');
     return response.body;
   }
 
-  static getPostByUserId(String endpoint) async {
+  static leaveEvent(String endpoint, String eventId, String userId) async {
     var response = await client.post(
       BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "eventId": eventId,
+        "userId": userId,
+      }),
       headers: {"Content-type": "application/json"},
     );
     // print('${response.statusCode}: ${response.body}');
-    return postFromJson(response.body);
+    return response.body;
   }
 }

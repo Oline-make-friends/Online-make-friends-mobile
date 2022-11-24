@@ -1,17 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:flutter_making_friends_app_2/models/models.dart';
-import 'package:flutter_making_friends_app_2/screens/news/create_post_screen.dart';
+
+import 'package:flutter_making_friends_app_2/screens/news/course_screen.dart';
+import 'package:flutter_making_friends_app_2/screens/news/post_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter_making_friends_app_2/models/user_model.dart';
-import 'package:flutter_making_friends_app_2/screens/news/news_detail_screen.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
-
-import '../../controllers/post_controller.dart';
 import '../../widgets/widgets.dart';
 
 class NewsFeedScreen extends StatefulWidget {
@@ -30,69 +26,90 @@ class NewsFeedScreen extends StatefulWidget {
 }
 
 class _NewsFeedScreenState extends State<NewsFeedScreen> {
+  int currentPage = 1;
   @override
   Widget build(BuildContext context) {
-    final postController = Get.put(PostController());
-    User currentUser = Get.arguments;
-    print('${currentUser.fullname}');
-    List<Post> reverseList = postController.postList.reversed.toList();
+    GlobalKey<ScaffoldState>? _key = GlobalKey();
+
     return Scaffold(
-      appBar: const CustomAppBar(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(CreatePostScreen(), arguments: currentUser);
-        },
-        backgroundColor: Theme.of(context).primaryColor,
-        elevation: 5,
-        foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // mini: true,
-        child: const FaIcon(FontAwesomeIcons.plus),
+      key: _key,
+      appBar: CustomAppBar(
+        leading: IconButton(
+          onPressed: () {
+            _key.currentState!.openDrawer();
+          },
+          icon: Icon(
+            Icons.menu_rounded,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Obx(() {
-          if (postController.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-            // } else if (postController.postList.isEmpty) {
-            //   return const Center(
-            //     child: Text("You don't have any post"),
-            //   );
-          } else {
-            return RefreshIndicator(
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: postController.postList.length,
-                itemBuilder: ((context, index) {
-                  // print(data.toString());
-                  return CustomPost(
-                    onTap: () {
-                      Get.to(NewsDetailScreen(), arguments: [
-                        postController.postList[index],
-                        currentUser
-                      ]);
-                    },
-                    user: postController.postList[index].createdBy,
-                    content: postController.postList[index].content,
-                    image: postController.postList[index].imageUrl,
-                    likes: postController.postList[index].likes!,
-                    comments: postController.postList[index].comments!,
-                    createdAt: postController.postList[index].createdAt,
-                  );
-                }),
-              ),
-              onRefresh: () {
-                return Future.delayed(const Duration(seconds: 1), () {
+      body: _buidWidget(),
+      drawer: Container(
+        // height: 500,
+        width: 150,
+        child: Drawer(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          child: ListView(
+            shrinkWrap: true,
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.symmetric(vertical: 30),
+            children: [
+              // const DrawerHeader(
+              //   child: Text('Drawer Header'),
+              // ),
+              ListTile(
+                title: Text(
+                  'Posts',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                leading: Icon(
+                  Icons.newspaper,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
                   setState(() {
-                    postController.fetchPosts();
+                    currentPage = 1;
                   });
-                });
-              },
-            );
-          }
-        }),
+                  print(currentPage);
+                  // Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text(
+                  'Courses',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+                leading: FaIcon(
+                  FontAwesomeIcons.graduationCap,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    currentPage = 2;
+                  });
+                  print(currentPage);
+                  // Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
+  }
+
+  Widget _buidWidget() {
+    if (currentPage == 1) {
+      return PostScreen();
+    } else if (currentPage == 2) {
+      return CourseScreen();
+    } else {
+      return const Center(
+        child: Text("Error route!"),
+      );
+    }
   }
 }

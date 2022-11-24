@@ -1,3 +1,5 @@
+export 'event_controller.dart';
+export 'group_controller.dart';
 export 'login_controller.dart';
 export 'noti_contrroller.dart';
 export 'post_controller.dart';

@@ -8,21 +8,21 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
+class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
 
-  NewsDetailScreen({super.key, this.bottom});
+  GroupPostDetailScreen({super.key, this.bottom});
 
   @override
   Widget build(BuildContext context) {
-    Post currentPost = Get.arguments[0];
-    final postController = Get.put(PostController());
+    GroupPost currentPost = Get.arguments[0];
+    var loginController = Get.put(LoginController());
     User currentUser = Get.arguments[1];
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${currentPost.createdBy.fullname}'s post",
+          "${currentPost.createdBy!.fullname}'s post",
           style: Theme.of(context).textTheme.headline5,
         ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -42,14 +42,14 @@ class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
                     children: [
                       CircleAvatar(
                         backgroundImage:
-                            NetworkImage(currentPost.createdBy.avatarUrl!),
+                            NetworkImage(currentPost.createdBy!.avatarUrl!),
                       ),
                       const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            currentPost.createdBy.fullname!,
+                            currentPost.createdBy!.fullname!,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline6!
@@ -66,27 +66,7 @@ class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
 
                   //! content
                   const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text(
-                        '#${currentPost.type}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 5),
-                      currentPost.hashtag != null
-                          ? Text(
-                              '#${currentPost.hashtag}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            )
-                          : Container(),
-                    ],
-                  ),
+
                   const SizedBox(height: 5),
                   currentPost.content != null
                       ? Text(
@@ -159,79 +139,58 @@ class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
             currentPost.comments!.isNotEmpty
                 ? ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: currentPost.comments!.length,
                     itemBuilder: (context, index) {
-                      int postDay = (DateTime.now().day -
-                              currentPost.comments![index].createdAt!.day)
-                          .abs();
-
                       return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Obx(
-                            () {
-                              return ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: postController.commentUsers.length,
-                                itemBuilder: (context, index) {
-                                  return Column(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(User.users[0].avatarUrl!),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  postController
-                                                      .commentUsers[index]
-                                                      .avatarUrl!),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Flexible(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  postController
-                                                      .commentUsers[index]
-                                                      .fullname!,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6!
-                                                      .copyWith(
-                                                          color: Colors.black),
-                                                ),
-                                                Text(
-                                                    "${currentPost.createdAt.day}/${currentPost.createdAt.month}/${currentPost.createdAt.year} ${DateFormat.Hm().format(currentPost.createdAt)}"),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  currentPost.comments![index]
-                                                      .content!,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .copyWith(
-                                                        color: Colors.black,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      Text(
+                                        User.users[0].fullname!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: Colors.black),
                                       ),
-                                      const Divider(thickness: 1.5),
-                                      const SizedBox(height: 2),
+                                      // Text("$postDay"),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        'Content',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(
+                                              color: Colors.black,
+                                            ),
+                                      ),
                                     ],
-                                  );
-                                },
-                              );
-                            },
-                          ));
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Divider(thickness: 1.5),
+                            const SizedBox(height: 2),
+                          ],
+                        ),
+                      );
                     },
                   )
                 : Center(

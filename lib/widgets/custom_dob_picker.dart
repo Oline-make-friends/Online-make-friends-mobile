@@ -17,7 +17,8 @@ class CustomDoBPicker extends StatelessWidget {
     return Container(
       width: 170,
       child: CustomTextFormField(
-        hintTxt: 'Date of birth',
+        enable: false,
+        labelText: 'Date of birth',
         controller: controller,
         suffixIcon: IconButton(
             onPressed: () {
@@ -25,7 +26,7 @@ class CustomDoBPicker extends StatelessWidget {
                 context,
                 showTitleActions: true,
                 minTime: DateTime(1940, 1, 1),
-                maxTime: DateTime(2015, 12, 31),
+                maxTime: DateTime.now(),
                 currentTime: DateTime(2000, 1, 1),
                 onChanged: (date) {
                   print('change $date');

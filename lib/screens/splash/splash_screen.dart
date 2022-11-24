@@ -43,17 +43,17 @@ class SplashScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('META',
+            Text('F',
                 style: Theme.of(context)
                     .textTheme
                     .headline4!
                     .copyWith(fontWeight: FontWeight.bold)),
             // const SizedBox(width: 5),
             Text(
-              'MATCH',
+              'Study',
               style: Theme.of(context)
                   .textTheme
                   .headline4!
@@ -175,8 +175,7 @@ class SplashScreen extends StatelessWidget {
                                             },
                                             image:
                                                 'https://cdn.icon-icons.com/icons2/2751/PNG/512/email_icon_176156.png',
-                                            title:
-                                                'Login with email or username',
+                                            title: 'Login with email',
                                             color:
                                                 Theme.of(context).primaryColor,
                                           ),

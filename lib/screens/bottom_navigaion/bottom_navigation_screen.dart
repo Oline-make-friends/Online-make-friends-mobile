@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_making_friends_app_2/screens/club/club_screen.dart';
-import 'package:flutter_making_friends_app_2/screens/home/home_screen.dart';
-import 'package:flutter_making_friends_app_2/screens/meeting/meeting_screen.dart';
-import 'package:flutter_making_friends_app_2/screens/profile/new_profile_screen.dart';
+
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -25,11 +22,12 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
+    // TabBarScreen(),
     NewsFeedScreen(),
-    ClubScreen(),
+    FindFriendScreen(),
+    GroupsScreen(),
     // MeetingScreen(),
-    NewMeetingScreen(),
+    EventScreen(),
     // ProfileScreen(),
     NewProfileScreen(),
   ];
@@ -57,13 +55,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.newspaper),
-              label: 'News',
+              icon: Icon(Icons.search),
+              label: 'Find Friend',
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.peopleGroup),
-              label: 'Club',
+              label: 'Group',
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             BottomNavigationBarItem(

@@ -43,13 +43,13 @@ class LoginScreen extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Get.to(TestScreen());
-              },
-              icon: Icon(Icons.warning_amber)),
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         Get.to(TestScreen());
+        //       },
+        //       icon: Icon(Icons.warning_amber)),
+        // ],
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -169,7 +169,7 @@ class LoginScreen extends StatelessWidget {
                               },
                               title: 'Join us now !',
                               buttonColor: Colors.white54,
-                              textColor: const Color(0xFF116ddd)),
+                              textColor: Theme.of(context).primaryColor),
                         ),
                       ),
                     ],

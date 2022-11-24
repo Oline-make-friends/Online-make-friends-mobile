@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_making_friends_app_2/controllers/login_controller.dart';
 import 'package:flutter_making_friends_app_2/controllers/user_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -8,46 +9,41 @@ import 'package:get/get.dart';
 import '../../models/models.dart';
 import '../../widgets/widgets.dart';
 
-class HomeScreen extends StatelessWidget {
-  static const String routeName = '/home';
+class FindFriendScreen extends StatelessWidget {
+  static const String routeName = '/findFriend';
 
   static Route route() {
     return MaterialPageRoute(
-      builder: (context) => const HomeScreen(),
+      builder: (context) => const FindFriendScreen(),
       settings: const RouteSettings(name: routeName),
     );
   }
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const FindFriendScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final usercontroller = Get.put(UserController());
-    User currentUser = Get.arguments;
-    print(currentUser.friends.toString());
+    final loginController = Get.put(LoginController());
+    var currentUser = loginController.loginedUser.value;
+    // print(
+    //     "Number of friends: ${loginController.loginedUser.value.friends!.length}");
     final users = usercontroller.userList..remove(currentUser);
     return Scaffold(
       appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Obx(
-            //   (() {
-            //     if (usercontroller.isLoading.value) {
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     } else {
-            //       return UserCard(user: usercontroller.userList[0]);
-            //     }
-            //   }),
-            // ),
             Obx((() {
               // print('Argument: ${Get.arguments.toString()}');
 
               if (usercontroller.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 1.45,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
                 );
               } else {
                 // print("current user: ${currentUser.toString()}");

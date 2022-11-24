@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return registerController.validateFullname(value!);
                           },
                         ),
-                        const SizedBox(height: 20),
+                        // const SizedBox(height: 20),
 
                         Container(
                           width: double.infinity,
@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        // const SizedBox(height: 20),
                         //!DOB textfield
                         Container(
                           width: double.infinity,

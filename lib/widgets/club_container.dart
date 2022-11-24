@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 class ClubContainer extends StatelessWidget {
   final String name;
   final String coverImg;
-  final String category;
   final int? numberOfMembers;
-  const ClubContainer({
+  void Function()? onPressed;
+  bool isJoined;
+  ClubContainer({
     Key? key,
     required this.name,
     required this.coverImg,
-    required this.category,
+    this.onPressed,
+    this.isJoined = false,
     this.numberOfMembers = 52,
   }) : super(key: key);
 
@@ -46,26 +48,24 @@ class ClubContainer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //!club name
-                    Text(
-                      name,
-                      style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w900),
-                    ),
-                    //!category
-                    Text(
-                      category,
-                      style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w400),
+                    Container(
+                      width: 150,
+                      child: Text(
+                        name,
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                            color: Colors.white, fontWeight: FontWeight.w900),
+                      ),
                     ),
                   ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    print('pressed');
-                  },
-                  icon: Icon(Icons.more_horiz),
-                  color: Colors.white,
-                )
+                //! more button
+                // IconButton(
+                //   onPressed: () {
+                //     print('pressed');
+                //   },
+                //   icon: Icon(Icons.more_horiz),
+                //   color: Colors.white,
+                // )
               ],
             ),
           ),
@@ -107,14 +107,15 @@ class ClubContainer extends StatelessWidget {
                       .bodyText1!
                       .copyWith(color: Colors.black54),
                 ),
+                //! join or view button
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size.fromHeight(35),
                     elevation: 0,
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  onPressed: () {},
-                  child: Text('Join'),
+                  onPressed: onPressed,
+                  child: isJoined ? Text('View') : Text('Join'),
                 )
               ],
             ),

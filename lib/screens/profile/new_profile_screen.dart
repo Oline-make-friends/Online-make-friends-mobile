@@ -12,7 +12,7 @@ class NewProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User currentUser = Get.arguments;
+    // User currentUser = Get.arguments;
     final loginController = Get.put(LoginController());
 
     return Scaffold(
@@ -26,7 +26,9 @@ class NewProfileScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              loginController.logout(context);
+            },
             icon: Icon(
               Icons.logout,
               color: Theme.of(context).primaryColor,
@@ -38,7 +40,12 @@ class NewProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             //!User card
-            CustomUserCard(currentUser: currentUser),
+            Obx(
+              () {
+                return CustomUserCard(
+                    currentUser: loginController.loginedUser.value);
+              },
+            ),
             const SizedBox(height: 10),
           ],
         ),

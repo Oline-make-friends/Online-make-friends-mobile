@@ -9,8 +9,8 @@ class AppRouter {
     print('current page: ${settings.name}');
 
     switch (settings.name) {
-      case HomeScreen.routeName:
-        return HomeScreen.route();
+      case FindFriendScreen.routeName:
+        return FindFriendScreen.route();
       case SplashScreen.routeName:
         return SplashScreen.route();
       case LoginScreen.routeName:
@@ -25,8 +25,6 @@ class AppRouter {
         return FriendsScreen.route();
       case NotificationScreen.routeName:
         return NotificationScreen.route();
-      case ProfileScreen.routeName:
-        return ProfileScreen.route();
       case NewsFeedScreen.routeName:
         return NewsFeedScreen.route();
       case BottomNavScreen.routeName:

@@ -19,6 +19,8 @@ class Post extends Equatable {
   Post({
     this.id,
     required this.createdBy,
+    this.type,
+    this.hashtag,
     this.content,
     this.imageUrl,
     this.likes,
@@ -32,6 +34,8 @@ class Post extends Equatable {
 
   final String? id;
   final User createdBy;
+  final String? type;
+  final String? hashtag;
   final String? content;
   final String? imageUrl;
   final List<dynamic>? likes;
@@ -44,6 +48,8 @@ class Post extends Equatable {
   factory Post.fromJson(Map<String, dynamic> json) => Post(
         id: json["_id"],
         createdBy: User.fromJson(json["created_by"]),
+        type: json["type"],
+        hashtag: json["hashtag"],
         content: json["content"],
         imageUrl: json["imageUrl"],
         likes: List<dynamic>.from(json["likes"].map((x) => x)),

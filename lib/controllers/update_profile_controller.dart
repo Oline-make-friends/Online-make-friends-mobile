@@ -94,6 +94,5 @@ class UpdateProfileController extends GetxController {
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('Updated!')));
-    Get.back(result: updateUser);
   }
 }

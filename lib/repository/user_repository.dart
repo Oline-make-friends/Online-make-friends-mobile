@@ -18,7 +18,7 @@ class UserRepository {
       // print("${response.statusCode}: ${response.body}");
       return response.body;
     } on TimeoutException catch (e) {
-      print(e.toString());
+      // print(e.toString());
       return e.toString();
     }
   }
@@ -42,7 +42,7 @@ class UserRepository {
       body: body,
       headers: {"Content-type": "application/json"},
     );
-    print('${respone.statusCode}: ${respone.body}');
+    // print('${respone.statusCode}: ${respone.body}');
     return respone.body;
   }
 
@@ -55,7 +55,7 @@ class UserRepository {
       }),
       headers: {"Content-type": "application/json"},
     );
-    print('add friend post: ${respone.statusCode} : ${respone.body}');
+    // print('add friend post: ${respone.statusCode} : ${respone.body}');
     return respone.body;
   }
 
@@ -65,7 +65,7 @@ class UserRepository {
       body: body,
       headers: {"Content-type": "application/json"},
     );
-    print('${respone.statusCode}: ${respone.body}');
+    // print('${respone.statusCode}: ${respone.body}');
     return respone.body;
   }
 
@@ -74,7 +74,7 @@ class UserRepository {
       BuildServer.buildUrl(endpoint),
       headers: {"Content-type": "application/json"},
     );
-    print('${respone.statusCode}: ${respone.body}');
+    // print('${respone.statusCode}: ${respone.body}');
     return respone.body;
   }
 }

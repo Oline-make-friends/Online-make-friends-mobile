@@ -8,6 +8,8 @@ import '../models/models.dart';
 class CustomPost extends StatelessWidget {
   final String? image;
   final User user;
+  final String? type;
+  final String? hashtag;
   final String? content;
   final List<dynamic> likes;
   final List<dynamic> comments;
@@ -16,6 +18,8 @@ class CustomPost extends StatelessWidget {
   const CustomPost({
     Key? key,
     this.image,
+    this.type,
+    this.hashtag,
     required this.user,
     this.content,
     required this.likes,
@@ -48,6 +52,7 @@ class CustomPost extends StatelessWidget {
                   children: [
                     Row(
                       children: [
+                        //! name
                         Text(
                           user.fullname!,
                           style: Theme.of(context)
@@ -56,6 +61,7 @@ class CustomPost extends StatelessWidget {
                               .copyWith(color: Colors.black),
                         ),
                         const SizedBox(width: 5),
+                        //! create day
                         Text(
                           postDay < 7 && postDay > 1
                               ? '$postDay days ago'
@@ -67,6 +73,33 @@ class CustomPost extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        type != null
+                            ? Text(
+                                '#${type}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              )
+                            : Container(),
+                        const SizedBox(width: 5),
+                        hashtag != null
+                            ? Text(
+                                '#${hashtag}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              )
+                            : Container(),
+                      ],
+                    ),
+
+                    const SizedBox(height: 5),
+                    //!content
                     content != null
                         ? Linkify(
                             text: content!,
@@ -79,6 +112,8 @@ class CustomPost extends StatelessWidget {
                           )
                         : Container(),
                     const SizedBox(height: 5),
+
+                    //!img
                     image != null
                         ? Container(
                             height: 180,
@@ -87,7 +122,8 @@ class CustomPost extends StatelessWidget {
                               border: Border.all(color: Colors.transparent),
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                fit: BoxFit.fitHeight,
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
                                 image: NetworkImage(image!),
                               ),
                             ),

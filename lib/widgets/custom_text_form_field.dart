@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   TextEditingController? controller;
   Widget? suffixIcon;
   Widget? prefixicon;
+  bool? enable;
 
   bool isObscure;
 
@@ -22,11 +23,13 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.prefixicon,
     this.isObscure = false,
+    this.enable = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enableInteractiveSelection: enable,
       obscureText: isObscure,
       onSaved: onSaved,
       validator: validator,
@@ -35,6 +38,15 @@ class CustomTextFormField extends StatelessWidget {
         prefixIcon: prefixicon,
         filled: true,
         fillColor: Colors.white54,
+        disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 1,
+            color: Colors.transparent,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 1,

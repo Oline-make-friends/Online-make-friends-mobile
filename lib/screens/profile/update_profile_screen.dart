@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/controllers/update_profile_controller.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_dob_picker.dart';
@@ -18,6 +19,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final updateController = Get.put(UpdateProfileController());
+    final loginController = Get.put(LoginController());
     User currentUser = Get.arguments;
     updateController.interests.value = currentUser.interests!;
     final addInterestController = TextEditingController();
@@ -156,7 +158,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               //       TextEditingController(text: currentUser.about),
               //   decoration: InputDecoration(),
               // ),
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
               //!gender and dob
               Obx(
                 () {
@@ -168,7 +170,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
               SizedBox(
                 width: double.infinity,
                 child: CustomDoBPicker(
@@ -327,6 +329,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         backgroundColor: Theme.of(context).primaryColor),
                     onPressed: () {
                       updateController.updateProfile(context, currentUser.id!);
+                      loginController.findLoginUserById(
+                          userId: currentUser.id!);
+                      Get.back();
                     },
                     icon: Icon(Icons.check),
                     label: const Text('Confirm'),
