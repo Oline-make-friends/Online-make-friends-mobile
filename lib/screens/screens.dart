@@ -12,7 +12,7 @@ export 'map/map_screen.dart';
 export 'news/course_screen.dart';
 export 'news/create_post_screen.dart';
 export 'news/image_view_screen.dart';
-export 'news/news_detail_screen.dart';
+export 'news/post_detail_screen.dart';
 export 'news/news_screen.dart';
 export 'notification/notification_screen.dart';
 export 'profile/new_profile_screen.dart';

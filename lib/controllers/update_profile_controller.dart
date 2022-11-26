@@ -1,5 +1,6 @@
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cometchat/cometchat_sdk.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:flutter_making_friends_app_2/repository/repository.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../config/settings.dart';
 import '../widgets/widgets.dart';
 
 class UpdateProfileController extends GetxController {
@@ -78,7 +80,7 @@ class UpdateProfileController extends GetxController {
 
   Future<void> updateProfile(BuildContext context, String userId) async {
     Alert.showLoadingIndicatorDialog(context);
-    User updateUser = User(
+    UserModel updateUser = UserModel(
       fullname: fullnameController.text,
       gender: genderValue.value,
       location: locationController.text,
@@ -91,8 +93,22 @@ class UpdateProfileController extends GetxController {
     print(updateUser.avatarUrl);
     var response = await UserRepository.updateProfile(
         'user/update/$userId', updateToJson(updateUser));
+    await updateComet(updateUser, userId);
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('Updated!')));
+  }
+
+  Future<void> updateComet(UserModel user, String uid) async {
+    CometChat.updateUser(
+      User(name: user.fullname!, avatar: user.avatarUrl!, uid: uid),
+      apiKey,
+      onSuccess: (message) {
+        debugPrint('Update successfully: $message');
+      },
+      onError: (CometChatException ce) {
+        debugPrint('Create user failed: ${ce.message}');
+      },
+    );
   }
 }

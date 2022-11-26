@@ -17,7 +17,7 @@ class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     GroupPost currentPost = Get.arguments[0];
     var loginController = Get.put(LoginController());
-    User currentUser = Get.arguments[1];
+    UserModel currentUser = Get.arguments[1];
 
     return Scaffold(
       appBar: AppBar(
@@ -153,8 +153,8 @@ class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
                                 Align(
                                   alignment: Alignment.topLeft,
                                   child: CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(User.users[0].avatarUrl!),
+                                    backgroundImage: NetworkImage(
+                                        UserModel.users[0].avatarUrl!),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
@@ -164,7 +164,7 @@ class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        User.users[0].fullname!,
+                                        UserModel.users[0].fullname!,
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline6!

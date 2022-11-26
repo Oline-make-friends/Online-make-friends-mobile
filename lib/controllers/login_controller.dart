@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cometchat/cometchat_sdk.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_making_friends_app_2/models/login_model.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
@@ -10,11 +11,13 @@ import 'package:flutter_making_friends_app_2/widgets/alert.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../config/settings.dart';
+
 class LoginController extends GetxController {
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late TextEditingController usernameController;
   late TextEditingController passwordController;
-  var loginedUser = User().obs;
+  var loginedUser = UserModel().obs;
   var isHidden = true.obs;
   var username = '';
   var password = '';
@@ -78,14 +81,15 @@ class LoginController extends GetxController {
     }
     //! login success
     else {
-      loginedUser.value = User.fromJson(data);
+      loginedUser.value = UserModel.fromJson(data);
       await prefs.setString('loginUser', loginedUser.value.id!);
+      await loginComet(loginedUser.value);
       Get.offAll(const BottomNavScreen(), arguments: loginedUser);
     }
     return null;
   }
 
-  Future<User?> findLoginUserById({required String userId}) async {
+  Future<UserModel?> findLoginUserById({required String userId}) async {
     var response = await UserRepository.getUserById('user/getUser/$userId');
     // print('respone: ${response.toString()}');
     var data = json.decode(response);
@@ -96,7 +100,7 @@ class LoginController extends GetxController {
     } else {
       // print(isLoading.toString());
       // isLoading.value = false;
-      loginedUser.value = User.fromJson(data);
+      loginedUser.value = UserModel.fromJson(data);
       // print(loginedUser.toString());
       return loginedUser.value;
     }
@@ -107,8 +111,28 @@ class LoginController extends GetxController {
     Alert.showLoadingIndicatorDialog(context);
     final prefs = await SharedPreferences.getInstance();
     final status = await prefs.remove('loginUser');
+    logoutComet();
     print(status);
     Navigator.of(context).pop();
     Get.offAll(SplashScreen());
+  }
+
+  Future<void> loginComet(UserModel loginUser) async {
+    final user = await CometChat.getLoggedInUser();
+    if (user == null) {
+      await CometChat.login(loginUser.id!, authKey, onSuccess: (User user) {
+        debugPrint("Login Successful : $user");
+      }, onError: (CometChatException ce) {
+        debugPrint("Login failed with exception:  ${ce.message}");
+      });
+    }
+  }
+
+  void logoutComet() {
+    CometChat.logout(onSuccess: (message) {
+      debugPrint("Logout successful with message $message");
+    }, onError: (CometChatException ce) {
+      debugPrint("Logout failed with exception:  ${ce.message}");
+    });
   }
 }

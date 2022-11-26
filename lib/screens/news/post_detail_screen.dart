@@ -8,16 +8,25 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
+class PostDetailScreen extends StatefulWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
 
-  NewsDetailScreen({super.key, this.bottom});
+  PostDetailScreen({super.key, this.bottom});
 
+  @override
+  State<PostDetailScreen> createState() => _PostDetailScreenState();
+
+  @override
+  Size get preferredSize =>
+      bottom != null ? const Size.fromHeight(100) : const Size.fromHeight(50);
+}
+
+class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
     Post currentPost = Get.arguments[0];
     final postController = Get.put(PostController());
-    User currentUser = Get.arguments[1];
+    UserModel currentUser = Get.arguments[1];
 
     return Scaffold(
       appBar: AppBar(
@@ -136,11 +145,24 @@ class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
                           FontAwesomeIcons.comment,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const FaIcon(
-                          FontAwesomeIcons.heart,
-                        ),
+                      Obx(
+                        () {
+                          return IconButton(
+                            onPressed: () async {
+                              await postController.likePost(
+                                  currentPost.id!, currentUser.id!);
+                              await postController.fetchPosts();
+                              // setState(() {});
+                            },
+                            icon: postController.isLiked.value
+                                ? FaIcon(
+                                    FontAwesomeIcons.solidHeart,
+                                  )
+                                : FaIcon(
+                                    FontAwesomeIcons.heart,
+                                  ),
+                          );
+                        },
                       ),
                       IconButton(
                         onPressed: () {},
@@ -286,6 +308,7 @@ class NewsDetailScreen extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize =>
-      bottom != null ? const Size.fromHeight(100) : const Size.fromHeight(50);
+  Size get preferredSize => widget.bottom != null
+      ? const Size.fromHeight(100)
+      : const Size.fromHeight(50);
 }

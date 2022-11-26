@@ -13,7 +13,7 @@ class GroupController extends GetxController {
   var isLoading = true.obs;
   var errorString = ''.obs;
   final loginController = Get.put(LoginController());
-  late User currentUser;
+  late UserModel currentUser;
 
   @override
   void onInit() {

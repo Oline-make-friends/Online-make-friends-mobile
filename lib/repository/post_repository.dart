@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_making_friends_app_2/models/post_model.dart';
 import 'package:flutter_making_friends_app_2/repository/repository.dart';
 import 'package:http/http.dart' as http;
@@ -36,5 +38,18 @@ class PostRepository {
     );
     // print('${response.statusCode}: ${response.body}');
     return postFromJson(response.body);
+  }
+
+  static likePost(String endpoint, String postId, String userId) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "_id": postId,
+        "userId": userId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
   }
 }

@@ -15,10 +15,8 @@ class UserRepository {
         body: body,
         headers: {"Content-type": "application/json"},
       ).timeout(const Duration(seconds: 30));
-      // print("${response.statusCode}: ${response.body}");
       return response.body;
     } on TimeoutException catch (e) {
-      // print(e.toString());
       return e.toString();
     }
   }
@@ -27,7 +25,6 @@ class UserRepository {
     var response = await client.get(
       BuildServer.buildUrl(endpoint),
     );
-    // print("${response.statusCode}: ${response.body}");
     if (response.statusCode == 200) {
       var resultString = response.body;
       return userFromJson(resultString);
@@ -42,7 +39,6 @@ class UserRepository {
       body: body,
       headers: {"Content-type": "application/json"},
     );
-    // print('${respone.statusCode}: ${respone.body}');
     return respone.body;
   }
 
@@ -55,7 +51,6 @@ class UserRepository {
       }),
       headers: {"Content-type": "application/json"},
     );
-    // print('add friend post: ${respone.statusCode} : ${respone.body}');
     return respone.body;
   }
 
@@ -65,7 +60,6 @@ class UserRepository {
       body: body,
       headers: {"Content-type": "application/json"},
     );
-    // print('${respone.statusCode}: ${respone.body}');
     return respone.body;
   }
 
@@ -74,7 +68,6 @@ class UserRepository {
       BuildServer.buildUrl(endpoint),
       headers: {"Content-type": "application/json"},
     );
-    // print('${respone.statusCode}: ${respone.body}');
     return respone.body;
   }
 }

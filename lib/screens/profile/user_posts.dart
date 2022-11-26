@@ -23,7 +23,7 @@ class UserPostsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User data = Get.arguments;
+    UserModel data = Get.arguments;
     final postController = Get.put(PostController());
     final posts = postController.postList
         .where((post) => post.createdBy.fullname == data.fullname)
@@ -62,7 +62,7 @@ class UserPostsScreen extends StatelessWidget {
 
 class CustomUserPost extends StatelessWidget {
   final String? image;
-  final User user;
+  final UserModel user;
   final String content;
   const CustomUserPost({
     Key? key,

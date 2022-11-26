@@ -4,7 +4,7 @@ import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import '../models/models.dart';
 
 class UserCard extends StatelessWidget {
-  final User user;
+  final UserModel user;
   const UserCard({
     Key? key,
     required this.user,

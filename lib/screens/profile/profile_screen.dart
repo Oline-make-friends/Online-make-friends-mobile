@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // var data = Get.arguments;
-    final User currentUser = Get.arguments;
+    final UserModel currentUser = Get.arguments;
     final loginController = Get.put(LoginController());
     return Scaffold(
       appBar: const CustomAppBar(),

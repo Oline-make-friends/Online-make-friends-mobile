@@ -20,7 +20,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Widget build(BuildContext context) {
     final updateController = Get.put(UpdateProfileController());
     final loginController = Get.put(LoginController());
-    User currentUser = Get.arguments;
+    UserModel currentUser = Get.arguments;
     updateController.interests.value = currentUser.interests!;
     final addInterestController = TextEditingController();
     return Scaffold(
@@ -68,6 +68,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: Theme.of(context).primaryColor),
                     onPressed: () async {
                       await updateController.updateImgUrlByCamera().then((img) {
                         if (img == null) {
@@ -82,6 +85,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     child: Text('Take a photo'),
                   ),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: Theme.of(context).primaryColor),
                     onPressed: () async {
                       await updateController
                           .updateImgUrlByGallery()
@@ -327,9 +333,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor),
-                    onPressed: () {
-                      updateController.updateProfile(context, currentUser.id!);
-                      loginController.findLoginUserById(
+                    onPressed: () async {
+                      await updateController.updateProfile(
+                          context, currentUser.id!);
+                      await loginController.findLoginUserById(
                           userId: currentUser.id!);
                       Get.back();
                     },

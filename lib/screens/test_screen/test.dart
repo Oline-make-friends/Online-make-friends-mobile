@@ -29,7 +29,7 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     final loginController = Get.put(LoginController());
     String? loginUser;
-    Future<User?> checkLoginUser() async {
+    Future<UserModel?> checkLoginUser() async {
       final prefs = await SharedPreferences.getInstance();
       loginUser = prefs.getString('loginUser');
       return loginController.findLoginUserById(userId: loginUser ?? "");

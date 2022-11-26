@@ -120,7 +120,7 @@ class GroupPost extends Equatable {
         this.updatedAt = updatedAt ?? DateTime.now();
 
   final String? id;
-  final User? createdBy;
+  final UserModel? createdBy;
   final String? content;
   final String? imageUrl;
   final List<String>? likes;
@@ -135,7 +135,7 @@ class GroupPost extends Equatable {
         id: json["_id"] == null ? null : json["_id"],
         createdBy: json["created_by"] == null
             ? null
-            : User.fromJson(json["created_by"]),
+            : UserModel.fromJson(json["created_by"]),
         content: json["content"] == null ? null : json["content"],
         imageUrl: json["imageUrl"] == null ? null : json["imageUrl"],
         likes: json["likes"] == null

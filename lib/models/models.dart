@@ -3,6 +3,7 @@ export 'chat_model.dart';
 export 'comment_model.dart';
 export 'course_model.dart';
 export 'event_model.dart';
+export 'friend_model.dart';
 export 'group_model.dart';
 export 'login_model.dart';
 export 'message_model.dart';

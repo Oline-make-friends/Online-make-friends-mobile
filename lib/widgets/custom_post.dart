@@ -1,13 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_making_friends_app_2/controllers/post_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 import '../models/models.dart';
 
-class CustomPost extends StatelessWidget {
+class CustomPost extends StatefulWidget {
+  final Post? currentPost;
   final String? image;
-  final User user;
+  final UserModel user;
   final String? type;
   final String? hashtag;
   final String? content;
@@ -15,25 +18,34 @@ class CustomPost extends StatelessWidget {
   final List<dynamic> comments;
   final void Function()? onTap;
   final DateTime createdAt;
+  final UserModel? currentUser;
   const CustomPost({
     Key? key,
     this.image,
+    this.currentPost,
+    required this.user,
     this.type,
     this.hashtag,
-    required this.user,
     this.content,
     required this.likes,
     required this.comments,
     this.onTap,
     required this.createdAt,
+    this.currentUser,
   }) : super(key: key);
 
   @override
+  State<CustomPost> createState() => _CustomPostState();
+}
+
+class _CustomPostState extends State<CustomPost> {
+  @override
   Widget build(BuildContext context) {
-    int postDay = (DateTime.now().day - createdAt.day).abs();
+    int postDay = (DateTime.now().day - widget.createdAt.day).abs();
+    final postController = Get.put(PostController());
     print('days: $postDay');
     return InkWell(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Column(
         children: [
           Row(
@@ -42,7 +54,7 @@ class CustomPost extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(user.avatarUrl!),
+                  backgroundImage: NetworkImage(widget.user.avatarUrl!),
                 ),
               ),
               const SizedBox(width: 5),
@@ -54,7 +66,7 @@ class CustomPost extends StatelessWidget {
                       children: [
                         //! name
                         Text(
-                          user.fullname!,
+                          widget.user.fullname!,
                           style: Theme.of(context)
                               .textTheme
                               .headline6!
@@ -65,7 +77,7 @@ class CustomPost extends StatelessWidget {
                         Text(
                           postDay < 7 && postDay > 1
                               ? '$postDay days ago'
-                              : "${createdAt.day}/${createdAt.month} ${createdAt.hour}:${createdAt.minute}",
+                              : "${widget.createdAt.day}/${widget.createdAt.month} ${widget.createdAt.hour}:${widget.createdAt.minute}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
@@ -76,9 +88,9 @@ class CustomPost extends StatelessWidget {
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        type != null
+                        widget.type != null
                             ? Text(
-                                '#${type}',
+                                '#${widget.type}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -86,9 +98,9 @@ class CustomPost extends StatelessWidget {
                               )
                             : Container(),
                         const SizedBox(width: 5),
-                        hashtag != null
+                        widget.hashtag != null
                             ? Text(
-                                '#${hashtag}',
+                                '#${widget.hashtag}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -100,9 +112,9 @@ class CustomPost extends StatelessWidget {
 
                     const SizedBox(height: 5),
                     //!content
-                    content != null
+                    widget.content != null
                         ? Linkify(
-                            text: content!,
+                            text: widget.content!,
                             maxLines: 7,
                             style: Theme.of(context)
                                 .textTheme
@@ -114,7 +126,7 @@ class CustomPost extends StatelessWidget {
                     const SizedBox(height: 5),
 
                     //!img
-                    image != null
+                    widget.image != null
                         ? Container(
                             height: 180,
                             width: double.infinity,
@@ -124,7 +136,7 @@ class CustomPost extends StatelessWidget {
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
-                                image: NetworkImage(image!),
+                                image: NetworkImage(widget.image!),
                               ),
                             ),
                           )
@@ -138,18 +150,31 @@ class CustomPost extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CustomPostButton(
-                              icon: FaIcon(
-                                FontAwesomeIcons.heart,
-                                size: 15,
-                              ),
-                              number: likes.length,
+                              icon:
+                                  widget.likes.contains(widget.currentUser!.id)
+                                      ? FaIcon(
+                                          FontAwesomeIcons.solidHeart,
+                                          size: 15,
+                                        )
+                                      : FaIcon(
+                                          FontAwesomeIcons.heart,
+                                          size: 15,
+                                        ),
+                              number: widget.likes.length,
+                              onPressed: () async {
+                                await postController.likePost(
+                                    widget.currentPost!.id!,
+                                    widget.currentUser!.id!);
+                                await postController.fetchPosts();
+                                setState(() {});
+                              },
                             ),
                             CustomPostButton(
                               icon: FaIcon(
                                 FontAwesomeIcons.comment,
                                 size: 12,
                               ),
-                              number: comments.length,
+                              number: widget.comments.length,
                             ),
                             // CustomPostButton(
                             //   icon: FaIcon(
@@ -199,9 +224,11 @@ class CustomPost extends StatelessWidget {
 class CustomPostButton extends StatelessWidget {
   final Widget icon;
   final int number;
+  void Function()? onPressed;
 
-  const CustomPostButton({
+  CustomPostButton({
     Key? key,
+    this.onPressed,
     required this.icon,
     required this.number,
   }) : super(key: key);
@@ -211,7 +238,7 @@ class CustomPostButton extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
+          onPressed: onPressed,
           icon: icon,
         ),
         // const SizedBox(width: ),

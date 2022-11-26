@@ -6,7 +6,7 @@ import 'package:flutter_making_friends_app_2/models/models.dart';
 class UserMatch extends Equatable {
   final int id;
   final int userId;
-  final User matchedUser;
+  final UserModel matchedUser;
   final List<Chat>? chats;
 
   const UserMatch({
@@ -23,7 +23,7 @@ class UserMatch extends Equatable {
     UserMatch(
       id: 1,
       userId: 1,
-      matchedUser: User.users[1],
+      matchedUser: UserModel.users[1],
       chats: Chat.chats
           .where((chat) => chat.userId == 1 && chat.matchedUserId == 2)
           .toList(),
@@ -31,7 +31,7 @@ class UserMatch extends Equatable {
     UserMatch(
       id: 2,
       userId: 1,
-      matchedUser: User.users[2],
+      matchedUser: UserModel.users[2],
       chats: Chat.chats
           .where((chat) => chat.userId == 1 && chat.matchedUserId == 3)
           .toList(),
@@ -39,7 +39,7 @@ class UserMatch extends Equatable {
     UserMatch(
       id: 3,
       userId: 1,
-      matchedUser: User.users[3],
+      matchedUser: UserModel.users[3],
       chats: Chat.chats
           .where((chat) => chat.userId == 1 && chat.matchedUserId == 4)
           .toList(),
@@ -47,7 +47,7 @@ class UserMatch extends Equatable {
     UserMatch(
       id: 4,
       userId: 1,
-      matchedUser: User.users[4],
+      matchedUser: UserModel.users[4],
       chats: Chat.chats
           .where((chat) => chat.userId == 1 && chat.matchedUserId == 5)
           .toList(),

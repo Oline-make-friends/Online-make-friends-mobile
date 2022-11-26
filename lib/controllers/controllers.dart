@@ -1,3 +1,4 @@
+export 'course_controller.dart';
 export 'event_controller.dart';
 export 'group_controller.dart';
 export 'login_controller.dart';

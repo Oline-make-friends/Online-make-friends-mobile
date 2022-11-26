@@ -53,7 +53,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
           child: ListView(
             shrinkWrap: true,
             // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.symmetric(vertical: 30),
+            padding: const EdgeInsets.symmetric(vertical: 30),
             children: [
               // const DrawerHeader(
               //   child: Text('Drawer Header'),

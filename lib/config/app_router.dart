@@ -20,7 +20,7 @@ class AppRouter {
       case ChatScreen.routeName:
         return ChatScreen.route(userMatch: settings.arguments as UserMatch);
       case UsersScreen.routeName:
-        return UsersScreen.route(user: settings.arguments as User);
+        return UsersScreen.route(user: settings.arguments as UserModel);
       case FriendsScreen.routeName:
         return FriendsScreen.route();
       case NotificationScreen.routeName:

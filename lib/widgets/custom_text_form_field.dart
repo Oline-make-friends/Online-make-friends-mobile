@@ -35,58 +35,58 @@ class CustomTextFormField extends StatelessWidget {
       validator: validator,
       controller: controller,
       decoration: InputDecoration(
-        prefixIcon: prefixicon,
-        filled: true,
-        fillColor: Colors.white54,
-        disabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1,
-            color: Colors.transparent,
+          prefixIcon: prefixicon,
+          filled: true,
+          fillColor: Colors.white54,
+          disabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: Colors.transparent,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 1,
+              color: Colors.transparent,
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
           ),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1,
-            color: Colors.transparent,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 2,
+              color: Theme.of(context).primaryColor.withAlpha(90),
+            ),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
           ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
+          errorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 2,
+              color: Color.fromARGB(255, 221, 24, 17),
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
           ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2,
-            color: Theme.of(context).primaryColor.withAlpha(90),
+          focusedErrorBorder: const OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 2,
+              color: Color.fromARGB(255, 221, 24, 17),
+            ),
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
           ),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2,
-            color: Color.fromARGB(255, 221, 24, 17),
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2,
-            color: Color.fromARGB(255, 221, 24, 17),
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        suffixIcon: suffixIcon,
-        hintText: hintTxt,
-        labelText: labelText,
-      ),
+          suffixIcon: suffixIcon,
+          hintText: hintTxt,
+          labelText: labelText,
+          suffixIconColor: Theme.of(context).primaryColor),
     );
   }
 }

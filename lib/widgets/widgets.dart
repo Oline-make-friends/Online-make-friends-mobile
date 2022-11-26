@@ -1,6 +1,7 @@
 export 'alert.dart';
 export 'choice_button.dart';
 export 'club_container.dart';
+export 'course_card.dart';
 export 'custom_appbar.dart';
 export 'custom_button.dart';
 export 'custom_dob_picker.dart';

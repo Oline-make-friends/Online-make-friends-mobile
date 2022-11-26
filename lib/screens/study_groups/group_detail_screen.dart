@@ -15,6 +15,7 @@ class GroupDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Group currentGroup = Get.arguments;
     List<GroupPost> groupPosts = currentGroup.posts!;
+    final groupController = Get.put(GroupController());
     print(groupPosts.toString());
     return Scaffold(
       body: SingleChildScrollView(
@@ -140,9 +141,10 @@ class GroupDetailScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   final loginController = Get.put(LoginController());
-                  User currentUser = loginController.loginedUser.value;
+                  UserModel currentUser = loginController.loginedUser.value;
                   return CustomPost(
                     user: groupPosts[index].createdBy!,
+                    currentUser: currentUser,
                     likes: groupPosts[index].likes!,
                     content: groupPosts[index].content,
                     image: groupPosts[index].imageUrl,

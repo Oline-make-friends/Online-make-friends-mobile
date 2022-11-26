@@ -33,7 +33,7 @@ class Post extends Equatable {
         this.updatedAt = updatedAt ?? DateTime.now();
 
   final String? id;
-  final User createdBy;
+  final UserModel createdBy;
   final String? type;
   final String? hashtag;
   final String? content;
@@ -47,7 +47,7 @@ class Post extends Equatable {
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
         id: json["_id"],
-        createdBy: User.fromJson(json["created_by"]),
+        createdBy: UserModel.fromJson(json["created_by"]),
         type: json["type"],
         hashtag: json["hashtag"],
         content: json["content"],

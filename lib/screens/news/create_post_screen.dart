@@ -10,7 +10,7 @@ class CreatePostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User currentUser = Get.arguments;
+    UserModel currentUser = Get.arguments;
     final imageController = Get.put(UpdateProfileController());
     final postController = Get.put(PostController());
     return Scaffold(

@@ -8,22 +8,22 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-List<User> userFromJson(String str) =>
-    List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
+List<UserModel> userFromJson(String str) =>
+    List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
 
-String userToJson(List<User> data) =>
+String userToJson(List<UserModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-String registerToJson(User data) {
+String registerToJson(UserModel data) {
   return json.encode(data.registerToJson());
 }
 
-String updateToJson(User data) {
+String updateToJson(UserModel data) {
   return json.encode(data.updateToJson());
 }
 
-class User extends Equatable {
-  User({
+class UserModel extends Equatable {
+  UserModel({
     this.id,
     this.username,
     this.fullname,
@@ -66,7 +66,7 @@ class User extends Equatable {
   final DateTime updatedAt;
   final int? v;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
         username: json["username"],
         fullname: json["fullname"],
@@ -160,8 +160,8 @@ class User extends Equatable {
     return "id: ${id}, fullname: ${fullname}, gender: {$gender}, location: ${location}, interests: ${interests}, major: ${major}, about: ${about}, friends: ${friends}, DOB: ${dateOfBirth}, ";
   }
 
-  static List<User> users = [
-    User(
+  static List<UserModel> users = [
+    UserModel(
       id: "1",
       fullname: "Beluga",
       gender: "Male",
@@ -175,7 +175,7 @@ class User extends Equatable {
       avatarUrl:
           'https://static.wikia.nocookie.net/beluga/images/9/99/Beluga_d.png/revision/latest?cb=20211229190719',
     ),
-    User(
+    UserModel(
       id: "2",
       fullname: "Hecker",
       gender: "Male",
@@ -190,7 +190,7 @@ class User extends Equatable {
       avatarUrl:
           'https://yt3.ggpht.com/arWtsAqaTamuoTbdT2z-QXL121Qbv80wbsOE_1ty6I98JV3ocpKmfZ3A-UcyAVKiqikznFpc=s900-c-k-c0x00ffffff-no-rj',
     ),
-    User(
+    UserModel(
       id: "3",
       fullname: "Skittle",
       gender: "Male",
@@ -205,7 +205,7 @@ class User extends Equatable {
       avatarUrl:
           'https://static.wikia.nocookie.net/beluga/images/f/f6/Skittle.jpg/revision/latest?cb=20210730213705',
     ),
-    User(
+    UserModel(
       id: "4",
       fullname: "Scemmer",
       gender: "Male",
@@ -219,7 +219,7 @@ class User extends Equatable {
       avatarUrl:
           'https://static.wikia.nocookie.net/beluga/images/b/b1/ScemerPic.png/revision/latest?cb=20211225164758',
     ),
-    User(
+    UserModel(
       id: "5",
       fullname: "Eugnene",
       gender: "Male",

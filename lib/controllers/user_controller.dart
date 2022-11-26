@@ -6,10 +6,10 @@ import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
 import 'package:get/state_manager.dart';
 
 class UserController extends GetxController {
-  var userList = <User>[].obs;
+  var userList = <UserModel>[].obs;
   var isLoading = true.obs;
   var errorString = "".obs;
-  var foundUser = User().obs;
+  var foundUser = UserModel().obs;
 
   @override
   void onInit() {
@@ -28,8 +28,8 @@ class UserController extends GetxController {
     update();
   }
 
-  void swipeLeft(User currentUser) {
-    List<User> users = userList.value;
+  void swipeLeft(UserModel currentUser) {
+    List<UserModel> users = userList.value;
     userList.value = List.from(users)..remove(currentUser);
   }
 

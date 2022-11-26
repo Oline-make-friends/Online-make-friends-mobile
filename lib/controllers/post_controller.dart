@@ -13,9 +13,11 @@ import 'package:get/state_manager.dart';
 class PostController extends GetxController {
   var isLoading = true.obs;
   var postList = <Post>[].obs;
-  var commentUsers = <User>[].obs;
+  var commentUsers = <UserModel>[].obs;
+  var isLiked = false.obs;
   var userPostList = <Post>[].obs;
   var imageUrl = ''.obs;
+  Comment? comment;
   TextEditingController? content;
 
   @override
@@ -42,7 +44,7 @@ class PostController extends GetxController {
   }
 
   Future<void> createPost(BuildContext context,
-      {required User createdBy}) async {
+      {required UserModel createdBy}) async {
     Alert.showLoadingIndicatorDialog(context);
     Post post = Post(
       createdBy: createdBy,
@@ -72,19 +74,20 @@ class PostController extends GetxController {
     for (Comment com in post.comments!) {
       var response =
           await UserRepository.getUserById('user/getUser/${com.userId}');
-      // print('respone: ${response.toString()}');
       var data = json.decode(response);
       if (data.toString().contains('Cast to ObjectId failed')) {
-        // print(isLoading.toString());
-        // print('can not find user');
         return;
       } else {
-        // print(isLoading.toString());
-        // isLoading.value = false;
-        User user = User.fromJson(data);
+        UserModel user = UserModel.fromJson(data);
         commentUsers.add(user);
-        print("Comment User list: ${commentUsers.toString()}");
+        return;
       }
     }
+  }
+
+  Future<void> likePost(String postId, String userId) async {
+    var response = await PostRepository.likePost('post/like', postId, userId);
+    print(response);
+    isLiked.value = !isLiked.value;
   }
 }

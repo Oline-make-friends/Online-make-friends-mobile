@@ -13,7 +13,7 @@ class EventController extends GetxController {
   var isLoading = true.obs;
   var errorString = "".obs;
   final loginController = Get.put(LoginController());
-  late User currentUser;
+  late UserModel currentUser;
 
   @override
   void onInit() {
@@ -31,7 +31,7 @@ class EventController extends GetxController {
     }
     joinedEventList.clear();
     for (Event e in eventList) {
-      for (User u in e.userJoined!) {
+      for (UserModel u in e.userJoined!) {
         if (u.id == currentUser.id) {
           joinedEventList.add(e);
           print("Joined events: ${joinedEventList.toString()}");

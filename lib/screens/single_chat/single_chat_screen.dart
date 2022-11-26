@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/login_controller.dart';
 import 'package:flutter_making_friends_app_2/models/models.dart';
-import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
 import 'package:flutter_making_friends_app_2/widgets/user_image_small.dart';
+import 'package:get/get.dart';
 
 class SingleChatScreen extends StatelessWidget {
   const SingleChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final inactiveMatches = UserMatch.matches
-        .where((match) => match.userId == 1 && match.chats!.isEmpty)
-        .toList();
     final activeMatches = UserMatch.matches
         .where((match) => match.userId == 1 && match.chats!.isNotEmpty)
         .toList();
+
+    final loginController = Get.put(LoginController());
+    List<dynamic> friends = loginController.loginedUser.value.friends!;
+    // print(Friend.fromJson(friends[1]).toString());
+    List<Friend> myFriends = [];
+
+    for (dynamic f in friends) {
+      Friend friend = Friend.fromJson(f);
+      myFriends.add(friend);
+    }
+
+    print(myFriends.toString());
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -23,7 +33,7 @@ class SingleChatScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Your Likes',
+                'Your Friends',
                 style: Theme.of(context)
                     .textTheme
                     .headline4!
@@ -34,18 +44,17 @@ class SingleChatScreen extends StatelessWidget {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
-                  itemCount: inactiveMatches.length,
+                  itemCount: myFriends.length,
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
                         UserImageSmall(
                           height: 70,
                           width: 70,
-                          imageUrl:
-                              inactiveMatches[index].matchedUser.avatarUrl!,
+                          imageUrl: myFriends[index].avatarUrl!,
                         ),
                         Text(
-                          inactiveMatches[index].matchedUser.fullname!,
+                          myFriends[index].fullname!,
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!

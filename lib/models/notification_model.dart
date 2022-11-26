@@ -13,7 +13,7 @@ String notiToJson(List<Notification> data) =>
 
 class Notification extends Equatable {
   final int id;
-  final User user;
+  final UserModel user;
   final String content;
   final DateTime createdTime;
 
@@ -29,7 +29,7 @@ class Notification extends Equatable {
 
   Notification copyWith({
     int? id,
-    User? user,
+    UserModel? user,
     String? content,
     DateTime? createdTime,
   }) {
@@ -41,8 +41,7 @@ class Notification extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap
-  () {
+  Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
       'user': user.toJson(),
@@ -54,7 +53,7 @@ class Notification extends Equatable {
   factory Notification.fromMap(Map<String, dynamic> map) {
     return Notification(
       id: map['id'] as int,
-      user: User.fromJson(map['user'] as Map<String, dynamic>),
+      user: UserModel.fromJson(map['user'] as Map<String, dynamic>),
       content: map['content'] as String,
       createdTime:
           DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),

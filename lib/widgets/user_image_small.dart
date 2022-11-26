@@ -24,7 +24,7 @@ class UserImageSmall extends StatelessWidget {
           image: NetworkImage(imageUrl),
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(40),
       ),
     );
   }

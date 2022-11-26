@@ -6,10 +6,10 @@ import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class UsersScreen extends StatelessWidget {
-  final User user;
+  final UserModel user;
   static const String routeName = '/users';
 
-  static Route route({required User user}) {
+  static Route route({required UserModel user}) {
     return MaterialPageRoute(
       builder: (context) => UsersScreen(user: user),
       settings: RouteSettings(name: routeName),

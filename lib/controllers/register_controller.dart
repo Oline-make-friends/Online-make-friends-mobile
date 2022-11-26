@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:cometchat/cometchat_sdk.dart';
+import 'package:cometchat/models/user.dart' as CometUser;
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/login_controller.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 
+import '../config/settings.dart';
 import '../repository/repository.dart';
 import '../screens/screens.dart';
 import '../widgets/alert.dart';
@@ -16,6 +19,7 @@ class RegisterController extends GetxController {
   late TextEditingController fullnameController;
   late TextEditingController doBController;
   late TextEditingController rePasswordController;
+  final loginController = Get.put(LoginController());
   late String genderValue;
 
   var email = '';
@@ -77,11 +81,11 @@ class RegisterController extends GetxController {
   Future<void> register(BuildContext context) async {
     final isValid = registerFormKey.currentState!.validate();
     if (!isValid) {
-      return null;
+      return;
     }
     registerFormKey.currentState!.save();
     Alert.showLoadingIndicatorDialog(context);
-    User registerUser = User(
+    UserModel registerUser = UserModel(
       username: emailController.text,
       password: passwordController.text,
       fullname: fullnameController.text,
@@ -100,8 +104,28 @@ class RegisterController extends GetxController {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('Account created!')));
-      User currentUser = User.fromJson(data);
-      Get.to(const BottomNavScreen(), arguments: currentUser);
+      UserModel currentUser = UserModel.fromJson(data);
+      // loginController.loginedUser.value = currentUser;
+      await registerComet(currentUser);
+      // Get.to(const BottomNavScreen());
+      Get.back();
     }
+  }
+
+  Future<void> registerComet(UserModel user) async {
+    CometChat.createUser(
+      CometUser.User(
+        name: user.fullname!,
+        uid: user.id!,
+        avatar: user.avatarUrl,
+      ),
+      authKey,
+      onSuccess: (message) {
+        debugPrint('Register successfully: $message');
+      },
+      onError: (CometChatException ce) {
+        debugPrint('Create user failed: ${ce.message}');
+      },
+    );
   }
 }

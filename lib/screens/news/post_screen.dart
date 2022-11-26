@@ -19,7 +19,7 @@ class _PostScreenState extends State<PostScreen> {
   Widget build(BuildContext context) {
     final postController = Get.put(PostController());
     final loginController = Get.put(LoginController());
-    User currentUser = loginController.loginedUser.value;
+    UserModel currentUser = loginController.loginedUser.value;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -47,15 +47,23 @@ class _PostScreenState extends State<PostScreen> {
                   // print(data.toString());
                   // print(postController.postList[index].toString());
                   return CustomPost(
-                    onTap: () {
-                      postController
+                    onTap: () async {
+                      if (postController.postList[index].likes!
+                          .contains(currentUser.id)) {
+                        postController.isLiked.value = true;
+                      } else {
+                        postController.isLiked.value = false;
+                      }
+                      await postController
                           .getCommentUser(postController.postList[index]);
-                      Get.to(NewsDetailScreen(), arguments: [
+                      Get.to(PostDetailScreen(), arguments: [
                         postController.postList[index],
                         currentUser,
                       ]);
                     },
                     user: postController.postList[index].createdBy,
+                    currentPost: postController.postList[index],
+                    currentUser: currentUser,
                     type: postController.postList[index].type ?? "",
                     hashtag: postController.postList[index].hashtag,
                     content: postController.postList[index].content,

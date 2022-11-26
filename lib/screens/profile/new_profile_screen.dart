@@ -18,11 +18,28 @@ class NewProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        titleSpacing: 50,
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text(
-          'Your profile',
-          style: Theme.of(context).textTheme.headline5,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('F',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontWeight: FontWeight.bold)),
+            // const SizedBox(width: 5),
+            Text(
+              'Study',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4!
+                  .copyWith(color: Colors.black54),
+            )
+          ],
         ),
         actions: [
           IconButton(
@@ -60,7 +77,7 @@ class CustomUserCard extends StatelessWidget {
     required this.currentUser,
   }) : super(key: key);
 
-  final User currentUser;
+  final UserModel currentUser;
 
   @override
   Widget build(BuildContext context) {

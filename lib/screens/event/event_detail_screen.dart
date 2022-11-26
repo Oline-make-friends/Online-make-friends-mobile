@@ -15,7 +15,7 @@ class EventDetailSCreen extends StatelessWidget {
     final eventController = Get.put(EventController());
     // print(currentEvent.toString());
     bool? isJoined;
-    for (User u in currentEvent.userJoined!) {
+    for (UserModel u in currentEvent.userJoined!) {
       if (loginController.loginedUser.value.id == u.id) {
         isJoined = true;
       } else {

@@ -27,12 +27,12 @@ class Event extends Equatable {
         this.updatedAt = updatedAt ?? DateTime.now();
 
   final String? id;
-  final User? createdBy;
+  final UserModel? createdBy;
   final String? title;
   final String? description;
   final String? type;
   final String? dateTime;
-  final List<User>? userJoined;
+  final List<UserModel>? userJoined;
   final DateTime createdAt;
   final DateTime updatedAt;
   final int? v;
@@ -41,14 +41,15 @@ class Event extends Equatable {
         id: json["_id"] == null ? null : json["_id"],
         createdBy: json["created_by"] == null
             ? null
-            : User.fromJson(json["created_by"]),
+            : UserModel.fromJson(json["created_by"]),
         title: json["title"] == null ? null : json["title"],
         description: json["description"] == null ? null : json["description"],
         type: json["type"] == null ? null : json["type"],
         dateTime: json["date_time"] == null ? null : json["date_time"],
         userJoined: json["user_joined"] == null
             ? null
-            : List<User>.from(json["user_joined"].map((x) => User.fromJson(x))),
+            : List<UserModel>.from(
+                json["user_joined"].map((x) => UserModel.fromJson(x))),
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
