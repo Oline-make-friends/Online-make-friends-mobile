@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_making_friends_app_2/screens/news/course_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/news/post_screen.dart';
+import 'package:flutter_making_friends_app_2/screens/report/report_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -50,47 +51,67 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
         width: 150,
         child: Drawer(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          child: ListView(
-            shrinkWrap: true,
-            // Important: Remove any padding from the ListView.
-            padding: const EdgeInsets.symmetric(vertical: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // const DrawerHeader(
-              //   child: Text('Drawer Header'),
-              // ),
-              ListTile(
-                title: Text(
-                  'Posts',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                leading: Icon(
-                  Icons.newspaper,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  setState(() {
-                    currentPage = 1;
-                  });
-                  print(currentPage);
-                  // Navigator.pop(context);
-                },
+              ListView(
+                shrinkWrap: true,
+                // Important: Remove any padding from the ListView.
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                children: [
+                  // const DrawerHeader(
+                  //   child: Text('Drawer Header'),
+                  // ),
+                  ListTile(
+                    title: Text(
+                      'Posts',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    leading: Icon(
+                      Icons.newspaper,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        currentPage = 1;
+                      });
+                      print(currentPage);
+                      // Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Courses',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    leading: FaIcon(
+                      FontAwesomeIcons.graduationCap,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      setState(() {
+                        currentPage = 2;
+                      });
+                      print(currentPage);
+                      // Navigator.pop(context);
+                    },
+                  ),
+                ],
               ),
               ListTile(
                 title: Text(
-                  'Courses',
+                  'Report',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 leading: FaIcon(
-                  FontAwesomeIcons.graduationCap,
+                  FontAwesomeIcons.bug,
                   color: Theme.of(context).primaryColor,
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  setState(() {
-                    currentPage = 2;
-                  });
-                  print(currentPage);
+                  Get.to(ReportScreen());
                   // Navigator.pop(context);
                 },
               ),

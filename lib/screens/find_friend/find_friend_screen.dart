@@ -77,7 +77,7 @@ class FindFriendScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      usercontroller.addFriend(context, currentUser.id!,
+                      usercontroller.sendFriendRequest(currentUser.id!,
                           usercontroller.userList[0].id.toString());
                     },
                     child: ChoiceButton(
@@ -90,7 +90,7 @@ class FindFriendScreen extends StatelessWidget {
                   ),
                   ChoiceButton(
                     color: Theme.of(context).accentColor,
-                    icon: Icons.watch_later,
+                    icon: Icons.add,
                   ),
                 ],
               ),

@@ -28,6 +28,8 @@ class _TestScreenState extends State<TestScreen> {
   @override
   Widget build(BuildContext context) {
     final loginController = Get.put(LoginController());
+    final postController = Get.put(PostController());
+    final userController = Get.put(UserController());
     String? loginUser;
     Future<UserModel?> checkLoginUser() async {
       final prefs = await SharedPreferences.getInstance();
@@ -35,25 +37,20 @@ class _TestScreenState extends State<TestScreen> {
       return loginController.findLoginUserById(userId: loginUser ?? "");
     }
 
+    Post testPost = postController.postList[4];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test screen'),
       ),
       body: Column(
         children: [
-          Text('user id: ${loginController.loginedUser.value.id!}'),
-          FutureBuilder(
-            future: checkLoginUser(),
-            builder: (context, snapshot) {
-              var foundUser;
-              if (snapshot.hasData) {
-                foundUser = snapshot;
-                return Text(snapshot.toString());
-              } else if (!snapshot.hasData) {
-                return Text('none');
-              }
-              return Text('error');
+          Text(testPost.comments.toString()),
+          ElevatedButton(
+            onPressed: () async {
+              postController.getCommentUser(testPost.comments![0]);
             },
+            child: Text('Test get post by id'),
           )
         ],
       ),

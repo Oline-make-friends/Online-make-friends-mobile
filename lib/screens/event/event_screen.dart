@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/event_controller.dart';
+import 'package:flutter_making_friends_app_2/screens/event/create_event_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/event/event_detail_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/event/event_search_screen.dart.dart';
 
@@ -15,6 +16,15 @@ class EventScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventController = Get.put(EventController());
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(CreateEventScreen());
+        },
+        backgroundColor: Theme.of(context).primaryColor,
+        child: const Icon(
+          Icons.add,
+        ),
+      ),
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(

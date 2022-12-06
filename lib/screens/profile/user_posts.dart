@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/post_model.dart';
+import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class UserPostsScreen extends StatelessWidget {
   static const String routeName = '/userPosts';
@@ -23,13 +25,10 @@ class UserPostsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserModel data = Get.arguments;
     final postController = Get.put(PostController());
-    final posts = postController.postList
-        .where((post) => post.createdBy.fullname == data.fullname)
-        .toList();
+
     return Scaffold(
-      appBar: const CustomAppBar(),
+      // appBar: const CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Obx(() {
@@ -37,19 +36,21 @@ class UserPostsScreen extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (postController.postList.isEmpty) {
+          } else if (postController.userPostList.isEmpty) {
             return const Center(
               child: Text("You don't have any post"),
             );
           } else {
             return ListView.builder(
-              itemCount: postController.postList.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: postController.userPostList.length,
               itemBuilder: ((context, index) {
                 // print(data.toString());
                 return CustomUserPost(
-                  user: postController.postList[index].createdBy,
-                  content: postController.postList[index].content!,
-                  image: postController.postList[index].imageUrl,
+                  post: postController.userPostList[index],
+                  content: postController.userPostList[index].content!,
+                  image: postController.userPostList[index].imageUrl,
                 );
               }),
             );
@@ -62,17 +63,19 @@ class UserPostsScreen extends StatelessWidget {
 
 class CustomUserPost extends StatelessWidget {
   final String? image;
-  final UserModel user;
+  final Post post;
   final String content;
   const CustomUserPost({
     Key? key,
     this.image,
-    required this.user,
+    required this.post,
     required this.content,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int postDay = (DateTime.now().day - post.createdAt.day).abs();
+
     return InkWell(
       onTap: () {
         // Get.to(NewsDetailScreen());
@@ -85,7 +88,7 @@ class CustomUserPost extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(user.avatarUrl!),
+                  backgroundImage: NetworkImage(post.createdBy!.avatarUrl!),
                 ),
               ),
               const SizedBox(width: 5),
@@ -96,31 +99,56 @@ class CustomUserPost extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          user.fullname!,
+                          post.createdBy!.fullname!,
                           style: Theme.of(context)
                               .textTheme
                               .headline6!
                               .copyWith(color: Colors.black),
                         ),
                         const SizedBox(width: 5),
-                        Text(
-                          '- 5d',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Colors.black),
-                        ),
+                        postDay == 0
+                            ? Text(
+                                "today",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(color: Colors.black),
+                              )
+                            : Text(
+                                postDay < 7 && postDay > 0
+                                    ? '$postDay days ago'
+                                    : "${post.createdAt.day}/${post.createdAt.month}/${post.createdAt.year} ${DateFormat.Hm().format(post.createdAt)}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(color: Colors.black),
+                              ),
                       ],
                     ),
-                    // Text(
-                    //   content,
-                    //   overflow: TextOverflow.ellipsis,
-                    //   style: Theme.of(context)
-                    //       .textTheme
-                    //       .bodyText1!
-                    //       .copyWith(color: Colors.black),
-                    //   maxLines: 7,
-                    // ),
+                    Row(
+                      children: [
+                        post.type != null
+                            ? Text(
+                                '#${post.type}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              )
+                            : Container(),
+                        const SizedBox(width: 5),
+                        post.hashtag != null
+                            ? Text(
+                                '#${post.hashtag}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
                     Linkify(
                       text: content,
                       maxLines: 7,
@@ -133,75 +161,21 @@ class CustomUserPost extends StatelessWidget {
                     const SizedBox(height: 5),
                     image != null
                         ? Container(
-                            height: 100,
+                            height: 180,
+                            width: double.infinity,
                             decoration: BoxDecoration(
+                              border: Border.all(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
+                                fit: BoxFit.cover,
+                                alignment: Alignment.center,
                                 image: NetworkImage(image!),
                               ),
                             ),
                           )
                         : Container(),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            CustomUserPostButton(
-                              icon: FaIcon(
-                                FontAwesomeIcons.heart,
-                                size: 15,
-                              ),
-                              number: '12',
-                            ),
-                            CustomUserPostButton(
-                              icon: FaIcon(
-                                FontAwesomeIcons.comment,
-                                size: 12,
-                              ),
-                              number: '15',
-                            ),
-                            CustomUserPostButton(
-                              icon: FaIcon(
-                                FontAwesomeIcons.share,
-                                size: 12,
-                              ),
-                              number: '15',
-                            ),
-                          ],
-                        ),
-                        // IconButton(
-                        //   onPressed: () {},
-                        //   icon: FaIcon(
-                        //     FontAwesomeIcons.ellipsis,
-                        //     size: 12,
-                        //   ),
-                        // ),
-                        PopupMenuButton(
-                          icon: const FaIcon(
-                            FontAwesomeIcons.ellipsis,
-                            size: 12,
-                          ),
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.triangleExclamation,
-                                    ),
-                                  ),
-                                  const Text('Report post')
-                                ],
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                    SizedBox(height: 10),
+                    const Divider(thickness: 2),
                   ],
                 ),
               )
@@ -209,31 +183,6 @@ class CustomUserPost extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CustomUserPostButton extends StatelessWidget {
-  final Widget icon;
-  final String number;
-
-  const CustomUserPostButton({
-    Key? key,
-    required this.icon,
-    required this.number,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () {},
-          icon: icon,
-        ),
-        // const SizedBox(width: ),
-        Text(number),
-      ],
     );
   }
 }

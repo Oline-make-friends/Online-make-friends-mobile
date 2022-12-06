@@ -12,11 +12,11 @@ class CommentRepository {
       BuildServer.buildUrl(endpoint),
       body: jsonEncode(<String, String>{
         "content": content,
-        "userId": userId,
+        "user_id": userId,
       }),
       headers: {"Content-type": "application/json"},
     );
-    print('${response.statusCode}: ${response.body}');
+    print('${response.statusCode}: ${response.body} ');
     return commentFromJson(response.body);
   }
 }

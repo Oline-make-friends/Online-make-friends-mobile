@@ -1,9 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart' as CometUIKIt;
+import 'package:flutter_making_friends_app_2/screens/test_screen/test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter_making_friends_app_2/screens/screens.dart';
+import '../controllers/controllers.dart';
+import '../models/models.dart';
+import '../screens/screens.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
@@ -16,6 +20,22 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loginController = Get.put(LoginController());
+    final notiController = Get.put(NotiController(), permanent: true);
+    List<dynamic> friends = loginController.loginedUser.value.friends!;
+    // print(Friend.fromJson(friends[1]).toString());
+    List<Friend> myFriends = [];
+
+    for (dynamic f in friends) {
+      Friend friend = Friend.fromJson(f);
+      myFriends.add(friend);
+    }
+
+    List<String> friendsId = [];
+    for (Friend f in myFriends) {
+      friendsId.add(f.id!);
+    }
+
     return AppBar(
       titleSpacing: 50,
       centerTitle: true,
@@ -48,18 +68,88 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/noti');
+        Obx(
+          () {
+            int numOfNoti = notiController.friendReqList.length;
+
+            return IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/noti');
+              },
+              icon: numOfNoti == 0
+                  ? FaIcon(
+                      FontAwesomeIcons.solidBell,
+                      color: Theme.of(context).primaryColor,
+                    )
+                  : Stack(
+                      children: [
+                        Icon(
+                          Icons.notifications_active,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        Positioned(
+                          top: 1.0,
+                          right: 1.0,
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                  "${notiController.friendReqList.length}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                          color:
+                                              Theme.of(context).primaryColor)),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+            );
           },
-          icon: FaIcon(
-            FontAwesomeIcons.solidBell,
-            color: Theme.of(context).primaryColor,
-          ),
         ),
         IconButton(
           onPressed: () {
+            // print("f Id:  ${friendsId.toString()}");
+
             Navigator.pushNamed(context, '/friends');
+            // Get.to(
+            //   CometUIKIt.CometChatUsersWithMessages(
+            //     theme: CometUIKIt.CometChatTheme(
+            //         palette: CometUIKIt.Palette(
+            //           mode: CometUIKIt.PaletteThemeModes.dark,
+            //           primary: CometUIKIt.PaletteModel(
+            //               dark: Theme.of(context).primaryColor,
+            //               light: Theme.of(context).primaryColor),
+            //           secondary900: CometUIKIt.PaletteModel(
+            //               dark: Colors.white,
+            //               light: Theme.of(context).primaryColor),
+            //           accent: CometUIKIt.PaletteModel(
+            //               dark: Colors.black54,
+            //               light: Theme.of(context).primaryColor),
+            //           backGroundColor: CometUIKIt.PaletteModel(
+            //               dark: Theme.of(context).scaffoldBackgroundColor,
+            //               light: Theme.of(context).primaryColor),
+            // primary: CometUIKIt.PaletteModel(
+            //     dark: Colors.black54,
+            //     light: Theme.of(context).primaryColor),
+            // secondary: CometUIKIt.PaletteModel(
+            //     dark: Theme.of(context).primaryColor,
+            //     light: Theme.of(context).primaryColor),
+            //         ),
+            //         typography: CometUIKIt.Typography.fromDefault()),
+            //     usersConfiguration: CometUIKIt.UsersConfiguration(
+            //       title: 'Friends',
+            //       userListConfiguration:
+            //           CometUIKIt.UserListConfiguration(uids: friendsId),
+            //     ),
+            //   ),
+            // );
           },
           icon: FaIcon(
             FontAwesomeIcons.solidMessage,
@@ -68,13 +158,13 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         ),
         // IconButton(
         //   onPressed: () {
-        //     Get.to(TestScreen(), arguments: Get.arguments);
+        //     Get.to(ReportScreen());
         //   },
-        //   icon: FaIcon(
-        //     FontAwesomeIcons.warning,
-        //     color: Theme.of(context).primaryColor,
+        //   icon: Icon(
+        //     Icons.abc,
+        //     color: Colors.amber,
         //   ),
-        // ),
+        // )
       ],
       leading: leading,
     );

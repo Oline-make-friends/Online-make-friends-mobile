@@ -7,6 +7,8 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'models.dart';
+
 Comment commentFromJson(String str) => Comment.fromJson(json.decode(str));
 
 String commentToJson(Comment data) => json.encode(data.toJson());
@@ -21,6 +23,7 @@ class Comment extends Equatable {
     DateTime? updatedAt,
     this.v = 0,
     this.postId,
+    this.commentUser,
   })  : this.createdAt = createdAt ?? DateTime.now(),
         this.updatedAt = updatedAt ?? DateTime.now();
 
@@ -32,6 +35,7 @@ class Comment extends Equatable {
   final DateTime? updatedAt;
   final int? v;
   final String? postId;
+  UserModel? commentUser;
 
   factory Comment.fromJson(Map<String, dynamic> json) => Comment(
         id: json["_id"],
@@ -66,6 +70,10 @@ class Comment extends Equatable {
       updatedAt,
       v,
       postId,
+      commentUser,
     ];
   }
+
+  @override
+  bool get stringify => true;
 }

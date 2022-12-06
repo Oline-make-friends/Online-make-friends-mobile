@@ -4,11 +4,12 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_making_friends_app_2/controllers/post_controller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../models/models.dart';
 
 class CustomPost extends StatefulWidget {
-  final Post? currentPost;
+  final String? currentPostId;
   final String? image;
   final UserModel user;
   final String? type;
@@ -22,7 +23,7 @@ class CustomPost extends StatefulWidget {
   const CustomPost({
     Key? key,
     this.image,
-    this.currentPost,
+    this.currentPostId,
     required this.user,
     this.type,
     this.hashtag,
@@ -43,7 +44,7 @@ class _CustomPostState extends State<CustomPost> {
   Widget build(BuildContext context) {
     int postDay = (DateTime.now().day - widget.createdAt.day).abs();
     final postController = Get.put(PostController());
-    print('days: $postDay');
+    // print('days: $postDay');
     return InkWell(
       onTap: widget.onTap,
       child: Column(
@@ -74,18 +75,27 @@ class _CustomPostState extends State<CustomPost> {
                         ),
                         const SizedBox(width: 5),
                         //! create day
-                        Text(
-                          postDay < 7 && postDay > 1
-                              ? '$postDay days ago'
-                              : "${widget.createdAt.day}/${widget.createdAt.month} ${widget.createdAt.hour}:${widget.createdAt.minute}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Colors.black),
-                        ),
+                        postDay == 0
+                            ? Text(
+                                "today",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(color: Colors.black),
+                              )
+                            : Text(
+                                postDay < 7 && postDay > 0
+                                    ? '$postDay days ago'
+                                    : "${widget.createdAt.day}/${widget.createdAt.month}/${widget.createdAt.year} ${DateFormat.Hm().format(widget.createdAt)}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(color: Colors.black),
+                              ),
                       ],
                     ),
                     const SizedBox(height: 5),
+                    //!tags
                     Row(
                       children: [
                         widget.type != null
@@ -163,7 +173,7 @@ class _CustomPostState extends State<CustomPost> {
                               number: widget.likes.length,
                               onPressed: () async {
                                 await postController.likePost(
-                                    widget.currentPost!.id!,
+                                    widget.currentPostId!,
                                     widget.currentUser!.id!);
                                 await postController.fetchPosts();
                                 setState(() {});

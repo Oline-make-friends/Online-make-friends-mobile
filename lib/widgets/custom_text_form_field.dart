@@ -83,6 +83,8 @@ class CustomTextFormField extends StatelessWidget {
               Radius.circular(15),
             ),
           ),
+          prefixIconColor: Theme.of(context).primaryColor,
+          focusColor: Theme.of(context).primaryColor,
           suffixIcon: suffixIcon,
           hintText: hintTxt,
           labelText: labelText,

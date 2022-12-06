@@ -52,4 +52,26 @@ class PostRepository {
     // print('${response.statusCode}: ${response.body}');
     return response.body;
   }
+
+  static commentPost(String endpoint, String commentId, String postId) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "postid": commentId,
+        "id": postId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
+
+  static getPostById(String endpoint) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
 }

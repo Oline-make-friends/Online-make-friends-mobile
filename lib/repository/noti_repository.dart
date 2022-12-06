@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter_making_friends_app_2/models/friendRequest_model.dart';
 import 'package:flutter_making_friends_app_2/repository/repository.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,5 +20,17 @@ class NotiRepository {
     } else {
       return null;
     }
+  }
+
+  static getUserNoti(String endpoint, String receiverId) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "receiver_id": receiverId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print(respone.body);
+    return friendRequestFromJson(respone.body);
   }
 }

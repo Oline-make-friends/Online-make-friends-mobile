@@ -52,7 +52,7 @@ class GroupDetailScreen extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.arrow_back,
-                            color: Colors.white,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                           ),
                         ),
                       ),
@@ -79,7 +79,9 @@ class GroupDetailScreen extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .headline1!
-                                .copyWith(color: Colors.white),
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor),
                           ),
                         ),
                         SizedBox(
@@ -90,7 +92,8 @@ class GroupDetailScreen extends StatelessWidget {
                                 .textTheme
                                 .headline6!
                                 .copyWith(
-                                    color: Colors.white,
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
                                     fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -102,14 +105,17 @@ class GroupDetailScreen extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText1!
-                                  .copyWith(color: Colors.white),
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor),
                             ),
                             IconButton(
                               onPressed: () {},
                               icon: Icon(
                                 Icons.info,
                                 size: 20,
-                                color: Colors.white,
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
                               ),
                             )
                           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -21,19 +22,52 @@ class _PostScreenState extends State<PostScreen> {
     final loginController = Get.put(LoginController());
     UserModel currentUser = loginController.loginedUser.value;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(CreatePostScreen(), arguments: currentUser);
-        },
+      floatingActionButton: SpeedDial(
         backgroundColor: Theme.of(context).primaryColor,
         elevation: 5,
-        foregroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // mini: true,
-        child: const FaIcon(FontAwesomeIcons.plus),
+        icon: Icons.add,
+        animatedIcon: AnimatedIcons.menu_close,
+        spacing: 10,
+        children: [
+          SpeedDialChild(
+              child: Icon(
+                Icons.meeting_room_outlined,
+                color: Theme.of(context).primaryColor,
+              ),
+              label: 'New Meeting room',
+              onTap: () {
+                Get.to(MeetingScreen());
+              }),
+          SpeedDialChild(
+            child: Icon(
+              Icons.groups_outlined,
+              color: Theme.of(context).primaryColor,
+            ),
+            label: 'Join meeting room',
+            onTap: () {
+              Get.to(JoinMeetingScreen());
+            },
+          ),
+          SpeedDialChild(
+            child: FaIcon(
+              FontAwesomeIcons.featherPointed,
+              color: Theme.of(context).primaryColor,
+            ),
+            label: 'Create new post',
+            onTap: () {
+              postController.content = TextEditingController();
+              postController.hashtag = TextEditingController();
+              postController.imageUrl.value = "";
+              Get.to(CreatePostScreen(), arguments: currentUser);
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Obx(() {
+          List<Post> fetchedPosts = postController.postList.reversed.toList();
+          // print(fetchedPosts.toString());
           if (postController.isLoading.value) {
             return const Center(
               child: CircularProgressIndicator(),
@@ -42,35 +76,40 @@ class _PostScreenState extends State<PostScreen> {
             return RefreshIndicator(
               child: ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: postController.postList.length,
+                itemCount: fetchedPosts.length,
                 itemBuilder: ((context, index) {
                   // print(data.toString());
                   // print(postController.postList[index].toString());
                   return CustomPost(
                     onTap: () async {
-                      if (postController.postList[index].likes!
-                          .contains(currentUser.id)) {
+                      if (fetchedPosts[index].likes!.contains(currentUser.id)) {
                         postController.isLiked.value = true;
                       } else {
                         postController.isLiked.value = false;
                       }
-                      await postController
-                          .getCommentUser(postController.postList[index]);
+                      // await postController.getCommentUser(fetchedPosts[index]);
+                      for (int i = 0;
+                          i <= fetchedPosts[index].comments!.length - 1;
+                          i++) {
+                        await postController
+                            .getCommentUser(fetchedPosts[index].comments![i]);
+                      }
+                      postController.currentPost.value = fetchedPosts[index];
                       Get.to(PostDetailScreen(), arguments: [
-                        postController.postList[index],
+                        fetchedPosts[index],
                         currentUser,
                       ]);
                     },
-                    user: postController.postList[index].createdBy,
-                    currentPost: postController.postList[index],
+                    user: fetchedPosts[index].createdBy!,
+                    currentPostId: fetchedPosts[index].id,
                     currentUser: currentUser,
-                    type: postController.postList[index].type ?? "",
-                    hashtag: postController.postList[index].hashtag,
-                    content: postController.postList[index].content,
-                    image: postController.postList[index].imageUrl,
-                    likes: postController.postList[index].likes!,
-                    comments: postController.postList[index].comments!,
-                    createdAt: postController.postList[index].createdAt,
+                    type: fetchedPosts[index].type ?? "",
+                    hashtag: fetchedPosts[index].hashtag,
+                    content: fetchedPosts[index].content,
+                    image: fetchedPosts[index].imageUrl,
+                    likes: fetchedPosts[index].likes!,
+                    comments: fetchedPosts[index].comments!,
+                    createdAt: fetchedPosts[index].createdAt,
                   );
                 }),
               ),

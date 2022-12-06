@@ -38,14 +38,14 @@ class CourseScreen extends StatelessWidget {
                         children: [
                           // const SizedBox(height: 15),
                           Text(
-                            "This is a course page",
+                            "Courses",
                             style: Theme.of(context)
                                 .textTheme
                                 .headline2!
                                 .copyWith(color: Colors.white),
                           ),
                           Text(
-                            "Please help me",
+                            "Learn more from community course",
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                         ],

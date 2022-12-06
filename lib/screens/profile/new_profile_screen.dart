@@ -8,13 +8,13 @@ import '../../widgets/widgets.dart';
 import '../screens.dart';
 
 class NewProfileScreen extends StatelessWidget {
-  const NewProfileScreen({super.key});
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     // User currentUser = Get.arguments;
     final loginController = Get.put(LoginController());
-
+    final postController = Get.put(PostController());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -42,19 +42,36 @@ class NewProfileScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              loginController.logout(context);
-            },
+          PopupMenuButton(
             icon: Icon(
-              Icons.logout,
+              Icons.more_horiz_rounded,
               color: Theme.of(context).primaryColor,
             ),
+            itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
+              PopupMenuItem(
+                value: 1,
+                child: Text('Logout'),
+              ),
+              PopupMenuItem(
+                value: 2,
+                child: Text('Change password'),
+              ),
+            ],
+            onSelected: (item) {
+              if (item == 1) {
+                final notiController = Get.put(NotiController());
+                notiController.notiTimer!.cancel();
+                loginController.logout(context);
+              } else if (item == 2) {
+                Get.to(ResetPasswordScreen());
+              }
+            },
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
+          // shrinkWrap: true,
           children: [
             //!User card
             Obx(
@@ -63,7 +80,8 @@ class NewProfileScreen extends StatelessWidget {
                     currentUser: loginController.loginedUser.value);
               },
             ),
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
+            CustomTabBar(),
           ],
         ),
       ),
@@ -71,107 +89,42 @@ class NewProfileScreen extends StatelessWidget {
   }
 }
 
-class CustomUserCard extends StatelessWidget {
-  const CustomUserCard({
-    Key? key,
-    required this.currentUser,
-  }) : super(key: key);
-
-  final UserModel currentUser;
+class CustomTabBar extends StatelessWidget {
+  const CustomTabBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Theme.of(context).primaryColor.withAlpha(40),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return DefaultTabController(
+      length: 3,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TabBar(
+            indicatorColor: Theme.of(context).primaryColor,
+            labelColor: Theme.of(context).primaryColor,
+            unselectedLabelColor: Colors.black54,
+            indicatorSize: TabBarIndicatorSize.label,
+            tabs: [
+              Tab(text: "Posts"),
+              Tab(text: "Events"),
+              Tab(text: "Courses"),
+            ],
+          ),
+          Container(
+            height: 2500,
+            child: TabBarView(
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(currentUser.avatarUrl!),
-                  radius: 40,
+                UserPostsScreen(),
+                Container(
+                  child: Text("Articles Body"),
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      Get.to(UpdateProfileScreen(), arguments: currentUser);
-                    },
-                    icon: Icon(Icons.edit),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              currentUser.fullname!,
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.location_on,
-                  size: 15,
-                  color: Theme.of(context).primaryColor.withAlpha(70),
-                ),
-                Text(currentUser.location!),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Text(
-              currentUser.about!,
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Text(
-                  '${currentUser.follows!.length}',
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(width: 5),
-                Text(
-                  'Following',
-                  style: Theme.of(context).textTheme.bodyText1,
+                Container(
+                  child: Text("User Body"),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Wrap(
-              children: currentUser.interests!
-                  .map(
-                    (interest) => Card(
-                      elevation: 0,
-                      color: Theme.of(context).primaryColor.withAlpha(40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        child: Text(
-                          interest,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

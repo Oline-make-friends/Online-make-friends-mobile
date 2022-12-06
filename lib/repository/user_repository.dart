@@ -70,4 +70,33 @@ class UserRepository {
     );
     return respone.body;
   }
+
+  static sendFriendRequest(
+      String endpoint, String senderId, String receiverId) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "sender_id": senderId,
+        "receiver_id": receiverId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    return respone.body;
+  }
+
+  static deleletFriendRequest(String endpoint) async {
+    var respone = await client.delete(
+      BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    return respone.body;
+  }
+
+  static sendEmailResetPassword(String endpoint) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    return respone.body;
+  }
 }

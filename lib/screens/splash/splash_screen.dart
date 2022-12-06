@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/login_controller.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../widgets/widgets.dart';
@@ -26,6 +29,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loginController = Get.put(LoginController());
     final List<Widget> imageSliders = imgList
         .map((item) => Stack(
               children: [
@@ -181,7 +185,9 @@ class SplashScreen extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 50),
                                           CustomLoginButton(
-                                            onTap: () {},
+                                            onTap: () {
+                                              loginController.loginGoogle();
+                                            },
                                             image:
                                                 'http://pngimg.com/uploads/google/google_PNG19635.png',
                                             title: 'Login with FPT account',

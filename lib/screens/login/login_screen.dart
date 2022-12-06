@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/account_model.dart';
+import 'package:flutter_making_friends_app_2/screens/register/former_register_screen.dart';
+import 'package:flutter_making_friends_app_2/screens/reset_password/send_email_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/test_screen/test.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -165,7 +167,40 @@ class LoginScreen extends StatelessWidget {
                         child: IntrinsicWidth(
                           child: CustomButton(
                               onTap: () {
-                                Navigator.of(context).pushNamed('/register');
+                                // Navigator.of(context).pushNamed('/register');
+                                showDialog(
+                                    context: context,
+                                    builder: ((context) {
+                                      return SimpleDialog(
+                                        title: const Text('Register for: '),
+                                        children: [
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Navigator.of(context)
+                                                  .pushNamed('/register');
+                                            },
+                                            child: Text('FPT student',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          SimpleDialogOption(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              Get.to(FormerRegisterScreen());
+                                            },
+                                            child: Text('Former student',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!),
+                                          ),
+                                        ],
+                                      );
+                                    }));
                               },
                               title: 'Join us now !',
                               buttonColor: Colors.white54,
@@ -189,7 +224,7 @@ class LoginScreen extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: InkWell(
             onTap: () {
-              print('tapped');
+              Get.to(SendEmailScreen());
             },
             child: Text(
               'Forgot password?',

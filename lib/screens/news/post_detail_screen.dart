@@ -8,17 +8,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-class PostDetailScreen extends StatefulWidget with PreferredSizeWidget {
+class PostDetailScreen extends StatefulWidget {
   final PreferredSizeWidget? bottom;
 
   PostDetailScreen({super.key, this.bottom});
 
   @override
   State<PostDetailScreen> createState() => _PostDetailScreenState();
-
-  @override
-  Size get preferredSize =>
-      bottom != null ? const Size.fromHeight(100) : const Size.fromHeight(50);
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
@@ -27,11 +23,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     Post currentPost = Get.arguments[0];
     final postController = Get.put(PostController());
     UserModel currentUser = Get.arguments[1];
+    final commentController = TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${currentPost.createdBy.fullname}'s post",
+          "${currentPost.createdBy!.fullname}'s post",
           style: Theme.of(context).textTheme.headline5,
         ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -39,230 +36,215 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  //! creator
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(currentPost.createdBy.avatarUrl!),
-                      ),
-                      const SizedBox(width: 10),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            currentPost.createdBy.fullname!,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(color: Colors.black),
-                          ),
-                          Text(
-                            "${currentPost.createdAt.day}/${currentPost.createdAt.month}/${currentPost.createdAt.year} ${currentPost.createdAt.hour}h:${currentPost.createdAt.minute}'",
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-
-                  //! content
-                  const SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Text(
-                        '#${currentPost.type}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(width: 5),
-                      currentPost.hashtag != null
-                          ? Text(
-                              '#${currentPost.hashtag}',
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 70),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //! creator
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage:
+                              NetworkImage(currentPost.createdBy!.avatarUrl!),
+                        ),
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              currentPost.createdBy!.fullname!,
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText1!
-                                  .copyWith(fontWeight: FontWeight.bold),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  currentPost.content != null
-                      ? Text(
-                          currentPost.content!,
+                                  .headline6!
+                                  .copyWith(color: Colors.black),
+                            ),
+                            Text(
+                              "${currentPost.createdAt.day}/${currentPost.createdAt.month}/${currentPost.createdAt.year} ${DateFormat.Hm().format(currentPost.createdAt)}",
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    //! content
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Text(
+                          '#${currentPost.type}',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
-                              .copyWith(color: Colors.black, height: 2),
-                        )
-                      : Container(),
-                  const SizedBox(height: 5),
-                  currentPost.imageUrl != null
-                      ? GestureDetector(
-                          onTap: () {
-                            Get.to(ImageViewScreen(),
-                                arguments: currentPost.imageUrl);
-                          },
-                          child: Hero(
-                            tag: 'image_hero',
-                            child: Container(
-                              height: 200,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.transparent),
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(currentPost.imageUrl!),
+                              .copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 5),
+                        currentPost.hashtag != null
+                            ? Text(
+                                '#${currentPost.hashtag}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(fontWeight: FontWeight.bold),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    currentPost.content != null
+                        ? Text(
+                            currentPost.content!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.black, height: 2),
+                          )
+                        : Container(),
+                    const SizedBox(height: 5),
+                    currentPost.imageUrl != null
+                        ? GestureDetector(
+                            onTap: () {
+                              Get.to(ImageViewScreen(),
+                                  arguments: currentPost.imageUrl);
+                            },
+                            child: Hero(
+                              tag: 'image_hero',
+                              child: Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(currentPost.imageUrl!),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      : const SizedBox(),
-                  const Divider(thickness: 2),
-                  Text(
-                    '${currentPost.comments!.length} Comments ${currentPost.likes!.length} Likes',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const Divider(thickness: 2),
-                  //! action buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const FaIcon(
-                          FontAwesomeIcons.comment,
-                        ),
-                      ),
-                      Obx(
-                        () {
-                          return IconButton(
-                            onPressed: () async {
-                              await postController.likePost(
-                                  currentPost.id!, currentUser.id!);
-                              await postController.fetchPosts();
-                              // setState(() {});
-                            },
-                            icon: postController.isLiked.value
-                                ? FaIcon(
-                                    FontAwesomeIcons.solidHeart,
-                                  )
-                                : FaIcon(
-                                    FontAwesomeIcons.heart,
-                                  ),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const FaIcon(
-                          FontAwesomeIcons.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            //! Comments
-            const Divider(thickness: 3),
-            currentPost.comments!.isNotEmpty
-                ? ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: currentPost.comments!.length,
-                    itemBuilder: (context, index) {
-                      int postDay = (DateTime.now().day -
-                              currentPost.comments![index].createdAt!.day)
-                          .abs();
-
-                      return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Obx(
-                            () {
-                              return ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: postController.commentUsers.length,
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  postController
-                                                      .commentUsers[index]
-                                                      .avatarUrl!),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10),
-                                          Flexible(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  postController
-                                                      .commentUsers[index]
-                                                      .fullname!,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline6!
-                                                      .copyWith(
-                                                          color: Colors.black),
-                                                ),
-                                                Text(
-                                                    "${currentPost.createdAt.day}/${currentPost.createdAt.month}/${currentPost.createdAt.year} ${DateFormat.Hm().format(currentPost.createdAt)}"),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  currentPost.comments![index]
-                                                      .content!,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .copyWith(
-                                                        color: Colors.black,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const Divider(thickness: 1.5),
-                                      const SizedBox(height: 2),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ));
-                    },
-                  )
-                : Center(
-                    child: Text(
-                      '.',
-                      style: Theme.of(context).textTheme.headline5,
+                          )
+                        : const SizedBox(),
+                    const Divider(thickness: 2),
+                    Text(
+                      '${currentPost.comments!.length} Comments ${currentPost.likes!.length} Likes',
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
-                  ),
-          ],
+                    const Divider(thickness: 2),
+                    //! action buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const FaIcon(
+                            FontAwesomeIcons.comment,
+                          ),
+                        ),
+                        Obx(
+                          () {
+                            return IconButton(
+                              onPressed: () async {
+                                await postController.likePost(
+                                    currentPost.id!, currentUser.id!);
+                                await postController.fetchPosts();
+                              },
+                              icon: postController.isLiked.value
+                                  ? FaIcon(
+                                      FontAwesomeIcons.solidHeart,
+                                    )
+                                  : FaIcon(
+                                      FontAwesomeIcons.heart,
+                                    ),
+                            );
+                          },
+                        ),
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: const FaIcon(
+                        //     FontAwesomeIcons.ellipsis,
+                        //   ),
+                        // ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              //! Comments
+              const Divider(thickness: 3),
+              currentPost.comments!.isNotEmpty
+                  ? ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: currentPost.comments!.length,
+                      itemBuilder: (context, index) {
+                        // UserModel commentUser = postController.getCommentUser(currentPost.comments![index]);
+                        Comment currenComment = currentPost.comments![index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: CircleAvatar(
+                                      backgroundImage: NetworkImage(currenComment
+                                              .commentUser!.avatarUrl ??
+                                          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          currenComment.commentUser!.fullname ??
+                                              "Comment user",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(color: Colors.black),
+                                        ),
+                                        Text(
+                                            "${currenComment.createdAt!.day}/${currenComment.createdAt!.month}/${currenComment.createdAt!.year} ${DateFormat.Hm().format(currenComment.createdAt!)}"),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          currenComment.content!,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(
+                                                color: Colors.black,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const Divider(thickness: 1.5),
+                              const SizedBox(height: 2),
+                            ],
+                          ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        '.',
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+            ],
+          ),
         ),
       ),
 
@@ -284,8 +266,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
               width: 10,
             ),
             Expanded(
-              child: const TextField(
-                decoration: InputDecoration(
+              child: TextField(
+                controller: commentController,
+                decoration: const InputDecoration(
                   filled: true,
                   fillColor: Colors.transparent,
                   hintText: 'Type here...',
@@ -294,21 +277,42 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
               ),
             ),
-            IconButton(
-              onPressed: () {},
-              icon: FaIcon(
-                FontAwesomeIcons.paperPlane,
-                color: Theme.of(context).primaryColor,
-              ),
+            Obx(
+              () {
+                if (postController.isPosting.value) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return IconButton(
+                    onPressed: () async {
+                      if (commentController.text == "") {
+                        return;
+                      }
+                      postController.isPosting.value = true;
+                      await postController.commentPost(currentUser.id!,
+                          commentController.text, currentPost.id!);
+                      await postController.getPostById(
+                          currentPost.id!, currentPost);
+                      for (int i = 0;
+                          i <= currentPost.comments!.length - 1;
+                          i++) {
+                        await postController
+                            .getCommentUser(currentPost.comments![i]);
+                      }
+                      await postController.fetchPosts();
+                      postController.isPosting.value = false;
+                      setState(() {});
+                    },
+                    icon: FaIcon(
+                      FontAwesomeIcons.paperPlane,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  );
+                }
+              },
             )
           ],
         ),
       ),
     );
   }
-
-  @override
-  Size get preferredSize => widget.bottom != null
-      ? const Size.fromHeight(100)
-      : const Size.fromHeight(50);
 }

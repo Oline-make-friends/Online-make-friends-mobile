@@ -15,8 +15,8 @@ class AppRouter {
         return SplashScreen.route();
       case LoginScreen.routeName:
         return LoginScreen.route();
-      case RegisterScreen.routeName:
-        return RegisterScreen.route();
+      case FPTRegisterScreen.routeName:
+        return FPTRegisterScreen.route();
       case ChatScreen.routeName:
         return ChatScreen.route(userMatch: settings.arguments as UserMatch);
       case UsersScreen.routeName:

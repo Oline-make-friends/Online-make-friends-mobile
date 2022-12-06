@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cometchat/cometchat_sdk.dart';
 import 'package:flutter/widgets.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:flutter_making_friends_app_2/widgets/alert.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/settings.dart';
@@ -17,6 +19,12 @@ class LoginController extends GetxController {
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   late TextEditingController usernameController;
   late TextEditingController passwordController;
+  var googleAcount = Rx<GoogleSignInAccount?>(null);
+  var _googleSignIn = GoogleSignIn(
+    scopes: <String>[
+      'email',
+    ],
+  );
   var loginedUser = UserModel().obs;
   var isHidden = true.obs;
   var username = '';
@@ -84,6 +92,9 @@ class LoginController extends GetxController {
       loginedUser.value = UserModel.fromJson(data);
       await prefs.setString('loginUser', loginedUser.value.id!);
       await loginComet(loginedUser.value);
+      errorString.value = "";
+      usernameController = TextEditingController();
+      passwordController = TextEditingController();
       Get.offAll(const BottomNavScreen(), arguments: loginedUser);
     }
     return null;
@@ -107,7 +118,7 @@ class LoginController extends GetxController {
     // print('data: ${data.toString()}');
   }
 
-  void logout(BuildContext context) async {
+  Future<void> logout(BuildContext context) async {
     Alert.showLoadingIndicatorDialog(context);
     final prefs = await SharedPreferences.getInstance();
     final status = await prefs.remove('loginUser');
@@ -134,5 +145,11 @@ class LoginController extends GetxController {
     }, onError: (CometChatException ce) {
       debugPrint("Logout failed with exception:  ${ce.message}");
     });
+  }
+
+  loginGoogle() async {
+    await _googleSignIn.signOut();
+    googleAcount.value = await _googleSignIn.signIn();
+    log("google email: ${googleAcount.value?.email}");
   }
 }

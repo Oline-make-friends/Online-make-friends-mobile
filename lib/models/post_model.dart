@@ -6,8 +6,8 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_making_friends_app_2/models/models.dart';
 
+import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 
 List<Post> postFromJson(String str) =>
@@ -18,7 +18,7 @@ String postToJson(Post data) => json.encode(data.toJson());
 class Post extends Equatable {
   Post({
     this.id,
-    required this.createdBy,
+    this.createdBy,
     this.type,
     this.hashtag,
     this.content,
@@ -33,7 +33,7 @@ class Post extends Equatable {
         this.updatedAt = updatedAt ?? DateTime.now();
 
   final String? id;
-  final UserModel createdBy;
+  final UserModel? createdBy;
   final String? type;
   final String? hashtag;
   final String? content;
@@ -62,9 +62,11 @@ class Post extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "created_by": createdBy.toJson(),
+        "created_by": createdBy!.toJson(),
         "content": content,
         "imageUrl": imageUrl,
+        "type": type,
+        "hashtag": hashtag,
       };
 
   @override
@@ -72,6 +74,8 @@ class Post extends Equatable {
     return [
       id,
       createdBy,
+      type,
+      hashtag,
       content,
       imageUrl,
       likes,

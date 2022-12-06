@@ -34,7 +34,7 @@ class EventController extends GetxController {
       for (UserModel u in e.userJoined!) {
         if (u.id == currentUser.id) {
           joinedEventList.add(e);
-          print("Joined events: ${joinedEventList.toString()}");
+          // print("Joined events: ${joinedEventList.toString()}");
         }
       }
     }

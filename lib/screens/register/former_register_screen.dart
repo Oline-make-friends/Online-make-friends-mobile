@@ -7,25 +7,25 @@ import 'package:flutter_making_friends_app_2/controllers/register_controller.dar
 
 import '../../widgets/widgets.dart';
 
-class RegisterScreen extends StatefulWidget {
-  static const String routeName = '/register';
+class FormerRegisterScreen extends StatefulWidget {
+  static const String routeName = '/formerRegister';
 
   static Route route() {
     return MaterialPageRoute(
-      builder: (context) => const RegisterScreen(),
+      builder: (context) => const FormerRegisterScreen(),
       settings: const RouteSettings(),
     );
   }
 
-  const RegisterScreen({Key? key}) : super(key: key);
+  const FormerRegisterScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<FormerRegisterScreen> createState() => _FPTRegisterScreenState();
 }
 
 var registerController = Get.put(RegisterController());
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _FPTRegisterScreenState extends State<FormerRegisterScreen> {
   String dropValue = 'Male';
   var dobController = TextEditingController();
   @override
@@ -33,10 +33,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Register',
+          'Former Student Register',
           style: Theme.of(context)
               .textTheme
-              .headline1!
+              .headline3!
               .copyWith(fontWeight: FontWeight.w400),
         ),
         backgroundColor: Colors.transparent,
@@ -165,6 +165,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
+                        Text('Former student indentity: '),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 100,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey,
+                              ),
+                              child: const Center(
+                                child: Text('FPT student card'),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                backgroundColor: Colors.white,
+                              ),
+                              onPressed: () {},
+                              child: Text(
+                                'choose image',
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                         Obx(
                           () {
                             return Text(
@@ -176,13 +206,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           width: double.infinity,
                           child: IntrinsicWidth(
                             child: CustomButton(
                                 onTap: () {
-                                  registerController.register(context);
+                                  // registerController.register(context);
                                   // ScaffoldMessenger.of(context).showSnackBar(
                                   //   SnackBar(
                                   //     content: const Text('Account created !'),

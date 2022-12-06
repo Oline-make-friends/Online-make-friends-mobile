@@ -45,4 +45,16 @@ class EventRepository {
     // print('${response.statusCode}: ${response.body}');
     return response.body;
   }
+
+  static getUserEvent(String endpoint, String username) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "username": username,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
 }

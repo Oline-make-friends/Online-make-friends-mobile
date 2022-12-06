@@ -49,6 +49,9 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_screenutil: ^5.5.3+2
   zego_uikit_prebuilt_call: ^1.1.4
+  flutter_chat_ui_kit: ^3.0.3-pluto.beta.1
+  firebase_core: ^2.3.0
+  google_sign_in: ^5.4.2
   # url_launcher: ^6.1.5
 
 dev_dependencies:
