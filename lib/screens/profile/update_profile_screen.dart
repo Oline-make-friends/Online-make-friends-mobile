@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/controllers/update_profile_controller.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
+import 'package:flutter_making_friends_app_2/screens/bottom_navigaion/bottom_navigation_screen.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_dob_picker.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_text_form_field.dart';
 import 'package:flutter_making_friends_app_2/widgets/gender_drop_down.dart';
@@ -20,22 +21,26 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   Widget build(BuildContext context) {
     final updateController = Get.put(UpdateProfileController());
     final loginController = Get.put(LoginController());
-    UserModel currentUser = Get.arguments;
-    updateController.interests.value = currentUser.interests!;
+    // UserModel currentUser = Get.arguments;
+    updateController.interests.value =
+        loginController.loginedUser.value.interests!;
     final addInterestController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Text('Update profile',
             style: Theme.of(context).textTheme.headline5),
         elevation: 0,
-        leading: IconButton(
-            onPressed: () {
-              Get.back();
-            },
-            icon: Icon(
-              Icons.close,
-              color: Theme.of(context).primaryColor,
-            )),
+        leading: updateController.statusIsBlank.value == false
+            ? IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: Theme.of(context).primaryColor,
+                ),
+              )
+            : Container(),
         backgroundColor: Colors.transparent,
       ),
       body: Padding(
@@ -56,7 +61,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       borderRadius: BorderRadius.circular(20),
                       image: DecorationImage(
                         image: updateController.imgUrl == ''
-                            ? NetworkImage(currentUser.avatarUrl!)
+                            ? NetworkImage(
+                                loginController.loginedUser.value.avatarUrl!)
                             : NetworkImage(updateController.imgUrl.value),
                       ),
                     ),
@@ -75,7 +81,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       await updateController.updateImgUrlByCamera().then((img) {
                         if (img == null) {
                           updateController.imgUrl.value =
-                              currentUser.avatarUrl!;
+                              loginController.loginedUser.value.avatarUrl!;
                         } else {
                           updateController.imgUrl.value = img;
                         }
@@ -94,7 +100,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           .then((img) {
                         if (img == null) {
                           updateController.imgUrl.value =
-                              currentUser.avatarUrl!;
+                              loginController.loginedUser.value.avatarUrl!;
                         } else {
                           updateController.imgUrl.value = img;
                         }
@@ -117,7 +123,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               CustomTextFormField(
                 labelText: 'Fullname',
                 controller: updateController.fullnameController =
-                    TextEditingController(text: currentUser.fullname),
+                    TextEditingController(
+                        text: loginController.loginedUser.value.fullname),
               ),
               const SizedBox(height: 10),
 
@@ -147,7 +154,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                 ),
                 controller: updateController.aboutController =
-                    TextEditingController(text: currentUser.about),
+                    TextEditingController(
+                        text: loginController.loginedUser.value.about),
                 minLines: 1,
                 maxLines: 5,
               ),
@@ -181,7 +189,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 width: double.infinity,
                 child: CustomDoBPicker(
                     controller: updateController.dobController =
-                        TextEditingController(text: currentUser.dateOfBirth),
+                        TextEditingController(
+                            text:
+                                loginController.loginedUser.value.dateOfBirth),
                     onConfirm: (date) {
                       print(date);
                       updateController.dobController.text =
@@ -200,7 +210,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               CustomTextFormField(
                 labelText: 'Major',
                 controller: updateController.majorController =
-                    TextEditingController(text: currentUser.major),
+                    TextEditingController(
+                        text: loginController.loginedUser.value.major),
               ),
 
               //!location
@@ -214,7 +225,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               CustomTextFormField(
                 labelText: 'Location',
                 controller: updateController.locationController =
-                    TextEditingController(text: currentUser.location),
+                    TextEditingController(
+                        text: loginController.loginedUser.value.location),
               ),
               const SizedBox(height: 10),
 
@@ -334,11 +346,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor),
                     onPressed: () async {
-                      await updateController.updateProfile(
-                          context, currentUser.id!);
-                      await loginController.findLoginUserById(
-                          userId: currentUser.id!);
-                      Get.back();
+                      if (updateController.statusIsBlank.value == false) {
+                        await updateController.updateProfile(
+                            context, loginController.loginedUser.value.id!);
+                        await loginController.findLoginUserById(
+                            userId: loginController.loginedUser.value.id!);
+                        Get.back();
+                      } else {
+                        await updateController.updateProfile(
+                            context, loginController.loginedUser.value.id!);
+                        await loginController.findLoginUserById(
+                            userId: loginController.loginedUser.value.id!);
+                        updateController.statusIsBlank.value = false;
+                        Get.offAll(BottomNavScreen());
+                      }
                     },
                     icon: Icon(Icons.check),
                     label: const Text('Confirm'),

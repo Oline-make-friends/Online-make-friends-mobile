@@ -43,16 +43,20 @@ class _TestScreenState extends State<TestScreen> {
       appBar: AppBar(
         title: const Text('Test screen'),
       ),
-      body: Column(
-        children: [
-          Text(testPost.comments.toString()),
-          ElevatedButton(
-            onPressed: () async {
-              postController.getCommentUser(testPost.comments![0]);
-            },
-            child: Text('Test get post by id'),
-          )
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(testPost.comments.toString()),
+            ElevatedButton(
+              onPressed: () async {
+                Alert.showLoadingIndicatorDialog(context);
+                await Future.delayed(const Duration(seconds: 10), () => "Done");
+                Navigator.pop(context);
+              },
+              child: Text('Test get post by id'),
+            )
+          ],
+        ),
       ),
     );
   }

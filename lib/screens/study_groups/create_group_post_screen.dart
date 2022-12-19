@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
-import 'package:flutter_making_friends_app_2/controllers/update_profile_controller.dart';
-import 'package:flutter_making_friends_app_2/models/models.dart';
-import 'package:flutter_making_friends_app_2/widgets/custom_text_form_field.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../widgets/post_type.dart';
+import '../../controllers/controllers.dart';
+import '../../widgets/widgets.dart';
 
-class CreatePostScreen extends StatelessWidget {
-  const CreatePostScreen({super.key});
+class CreateGroupPostScreen extends StatelessWidget {
+  const CreateGroupPostScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    UserModel currentUser = Get.arguments;
     final imageController = Get.put(UpdateProfileController());
     final postController = Get.put(PostController());
+    final groupController = Get.put(GroupController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -40,7 +37,8 @@ class CreatePostScreen extends StatelessWidget {
                   elevation: 0,
                   backgroundColor: Theme.of(context).primaryColor),
               onPressed: () {
-                postController.createPost(context, createdBy: currentUser);
+                groupController
+                    .uploadPost(groupController.currentGroup.value.id!);
               },
               child: Text('Post',
                   style: Theme.of(context)
@@ -56,20 +54,19 @@ class CreatePostScreen extends StatelessWidget {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    PostTypeDropDown(
-                      type: postController.postType.value,
-                    ),
-                    const SizedBox(height: 5),
+                    //! type and tag
+                    // PostTypeDropDown(),
+                    // const SizedBox(height: 5),
 
-                    CustomTextFormField(
-                      labelText: 'Hashtag',
-                      controller: postController.hashtag,
-                    ),
+                    // CustomTextFormField(
+                    //   labelText: 'Hashtag',
+                    //   controller: postController.hashtag,
+                    // ),
                     //! textfield
                     TextField(
                       style: Theme.of(context).textTheme.headline5,
-                      maxLines: postController.imageUrl != '' ? 11 : 30,
-                      controller: postController.content,
+                      maxLines: groupController.imgUrl != '' ? 18 : 30,
+                      controller: groupController.contentController,
                       decoration: InputDecoration(
                         hintText: 'What are you thinking?',
                         border: InputBorder.none,
@@ -77,7 +74,7 @@ class CreatePostScreen extends StatelessWidget {
                     ),
 
                     //! image
-                    postController.imageUrl != ''
+                    groupController.imgUrl != ''
                         ? Stack(
                             children: [
                               Padding(
@@ -95,8 +92,8 @@ class CreatePostScreen extends StatelessWidget {
                                                   BorderRadius.circular(20),
                                               image: DecorationImage(
                                                 image: NetworkImage(
-                                                    postController
-                                                        .imageUrl.value),
+                                                    groupController
+                                                        .imgUrl.value),
                                                 fit: BoxFit.fill,
                                               ),
                                             ),
@@ -120,7 +117,7 @@ class CreatePostScreen extends StatelessWidget {
                                 alignment: Alignment.topRight,
                                 child: IconButton(
                                   onPressed: () {
-                                    postController.imageUrl.value = '';
+                                    groupController.imgUrl.value = '';
                                   },
                                   icon: Icon(Icons.close_rounded),
                                 ),
@@ -154,7 +151,7 @@ class CreatePostScreen extends StatelessWidget {
                     if (img == null) {
                       return;
                     } else {
-                      postController.imageUrl.value = img;
+                      groupController.imgUrl.value = img;
                     }
                   });
                 },

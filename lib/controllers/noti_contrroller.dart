@@ -23,9 +23,9 @@ class NotiController extends GetxController {
     // fetchNoti();
     currentUser = loginController.loginedUser.value;
     getUserNoti();
-    notiTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      // print("Repeating inside notiConmtroller");
-      // getUserNoti();
+    notiTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      print("Repeating inside notiConmtroller");
+      getUserNoti();
     });
   }
 

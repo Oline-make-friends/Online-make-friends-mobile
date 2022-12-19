@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_making_friends_app_2/controllers/register_controller.dart';
@@ -24,6 +25,7 @@ class FormerRegisterScreen extends StatefulWidget {
 }
 
 var registerController = Get.put(RegisterController());
+final updateController = Get.put(UpdateProfileController());
 
 class _FPTRegisterScreenState extends State<FormerRegisterScreen> {
   String dropValue = 'Male';
@@ -170,23 +172,43 @@ class _FPTRegisterScreenState extends State<FormerRegisterScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              height: 100,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.grey,
-                              ),
-                              child: const Center(
-                                child: Text('FPT student card'),
-                              ),
+                            Obx(
+                              () {
+                                return Container(
+                                  height: 100,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey,
+                                    image: DecorationImage(
+                                      image: NetworkImage(registerController
+                                          .indentifyImage.value),
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  child: const Center(
+                                    child: Text('FPT student card'),
+                                  ),
+                                );
+                              },
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
                                 backgroundColor: Colors.white,
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                await updateController
+                                    .updateImgUrlByGallery()
+                                    .then((img) {
+                                  if (img == null) {
+                                    return;
+                                  } else {
+                                    registerController.indentifyImage.value =
+                                        img;
+                                  }
+                                });
+                              },
                               child: Text(
                                 'choose image',
                                 style: Theme.of(context).textTheme.bodyText1,
@@ -211,14 +233,16 @@ class _FPTRegisterScreenState extends State<FormerRegisterScreen> {
                           width: double.infinity,
                           child: IntrinsicWidth(
                             child: CustomButton(
-                                onTap: () {
-                                  // registerController.register(context);
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //   SnackBar(
-                                  //     content: const Text('Account created !'),
-                                  //   ),
-                                  // );
-                                  // Navigator.pop(context);
+                                onTap: () async {
+                                  await registerController
+                                      .registerEmail(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text('Account created !'),
+                                    ),
+                                  );
+                                  registerController.indentifyImage.value = "";
+                                  Navigator.pop(context);
                                 },
                                 title: 'Register Now',
                                 buttonColor: Theme.of(context).primaryColor),

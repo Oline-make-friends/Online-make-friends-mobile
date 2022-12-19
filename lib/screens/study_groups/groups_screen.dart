@@ -197,7 +197,23 @@ class GroupsScreen extends StatelessWidget {
                                     name: groupController
                                         .joinedGroup[index].name!,
                                     isJoined: true,
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      Alert.showLoadingIndicatorDialog(context);
+                                      for (String admin in groupController
+                                          .joinedGroup[index].admins!) {
+                                        await groupController.findAdminById(
+                                            userId: admin);
+                                      }
+
+                                      for (String member in groupController
+                                          .joinedGroup[index].members!) {
+                                        await groupController.findMemberById(
+                                            userId: member);
+                                      }
+
+                                      groupController.currentGroup.value =
+                                          groupController.joinedGroup[index];
+                                      Get.back();
                                       Get.to(GroupDetailScreen(),
                                           arguments: groupController
                                               .joinedGroup[index]);

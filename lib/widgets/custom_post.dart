@@ -210,7 +210,7 @@ class _CustomPostState extends State<CustomPost> {
                                       FontAwesomeIcons.triangleExclamation,
                                     ),
                                   ),
-                                  const Text('Report post')
+                                  const Text('Delete post')
                                 ],
                               ),
                             )

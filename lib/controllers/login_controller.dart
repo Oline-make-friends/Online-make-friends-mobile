@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cometchat/cometchat_sdk.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/models/login_model.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/repository/user_repository.dart';
@@ -12,6 +14,7 @@ import 'package:flutter_making_friends_app_2/widgets/alert.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../config/settings.dart';
 
@@ -31,6 +34,7 @@ class LoginController extends GetxController {
   var password = '';
   var errorString = "".obs;
   var isLoading = true.obs;
+  final updateController = Get.put(UpdateProfileController());
 
   @override
   void onInit() {
@@ -48,7 +52,8 @@ class LoginController extends GetxController {
   }
 
   String? validateUsername(String value) {
-    if (value.isEmpty || !value.contains('@gmail.com')) {
+    if (value.isEmpty ||
+        !value.contains('@gmail.com') && !value.contains('@fpt.edu.vn')) {
       return "email is invalid";
     }
     return null;
@@ -80,22 +85,50 @@ class LoginController extends GetxController {
       errorString.value = "Server timeout! Please try again!";
       return errorString.value;
     }
-    var data = json.decode(response);
+    var data = json.decode(response.toString());
+    // log(data["is_prove"].toString());
     //! login invalid
-    if (data == "Cannot read properties of null (reading 'is_active')") {
+    if (data == "Cannot read property 'is_active' of null") {
       Navigator.of(context).pop();
       errorString.value = "Username or password is incorrect!";
       return errorString.value;
     }
+
     //! login success
     else {
-      loginedUser.value = UserModel.fromJson(data);
-      await prefs.setString('loginUser', loginedUser.value.id!);
-      await loginComet(loginedUser.value);
-      errorString.value = "";
-      usernameController = TextEditingController();
-      passwordController = TextEditingController();
-      Get.offAll(const BottomNavScreen(), arguments: loginedUser);
+      UserModel verifyUser = UserModel.isProveFromModel(data);
+      if (verifyUser.isProve == false) {
+        Navigator.of(context).pop();
+        errorString.value = "Account need verification from admin!";
+        return errorString.value;
+      } else {
+        loginedUser.value = UserModel.fromJson(data);
+        await prefs.setString('loginUser', loginedUser.value.id!);
+        await loginComet(loginedUser.value);
+        errorString.value = "";
+        usernameController = TextEditingController();
+        passwordController = TextEditingController();
+        if (loginedUser.value.about == "") {
+          updateController.statusIsBlank.value = true;
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text('Provide more information for the account!'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.offAll(UpdateProfileScreen());
+                      },
+                      child: const Text('UPDATE NOW'),
+                    )
+                  ],
+                );
+              });
+        } else {
+          Get.offAll(BottomNavScreen(), arguments: loginedUser);
+        }
+      }
     }
     return null;
   }

@@ -1,9 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
+import 'package:flutter_making_friends_app_2/controllers/update_post_controller.dart';
 import 'package:flutter_making_friends_app_2/models/post_model.dart';
+import 'package:flutter_making_friends_app_2/screens/profile/edit/post_edit_screen.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -31,56 +35,67 @@ class UserPostsScreen extends StatelessWidget {
       // appBar: const CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Obx(() {
-          if (postController.isLoading.value) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (postController.userPostList.isEmpty) {
-            return const Center(
-              child: Text("You don't have any post"),
-            );
-          } else {
-            return ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: postController.userPostList.length,
-              itemBuilder: ((context, index) {
-                // print(data.toString());
-                return CustomUserPost(
-                  post: postController.userPostList[index],
-                  content: postController.userPostList[index].content!,
-                  image: postController.userPostList[index].imageUrl,
-                );
-              }),
-            );
-          }
-        }),
+        child: Obx(
+          () {
+            if (postController.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (postController.userPostList.isEmpty) {
+              return const Center(
+                child: Text("You don't have any post"),
+              );
+            } else {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: postController.userPostList.length,
+                itemBuilder: ((context, index) {
+                  // print(data.toString());
+                  return CustomUserPost(
+                    post: postController.userPostList[index],
+                    content: postController.userPostList[index].content!,
+                    image: postController.userPostList[index].imageUrl,
+                    onPressed: () {},
+                  );
+                }),
+              );
+            }
+          },
+        ),
       ),
     );
   }
 }
 
-class CustomUserPost extends StatelessWidget {
+class CustomUserPost extends StatefulWidget {
   final String? image;
   final Post post;
   final String content;
-  const CustomUserPost({
+  void Function()? onPressed;
+  CustomUserPost({
     Key? key,
+    this.onPressed,
     this.image,
     required this.post,
     required this.content,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    int postDay = (DateTime.now().day - post.createdAt.day).abs();
+  State<CustomUserPost> createState() => _CustomUserPostState();
+}
 
+class _CustomUserPostState extends State<CustomUserPost> {
+  @override
+  Widget build(BuildContext context) {
+    int postDay = (DateTime.now().day - widget.post.createdAt.day).abs();
+    final postController = Get.put(PostController());
     return InkWell(
       onTap: () {
         // Get.to(NewsDetailScreen());
       },
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,7 +103,8 @@ class CustomUserPost extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: CircleAvatar(
-                  backgroundImage: NetworkImage(post.createdBy!.avatarUrl!),
+                  backgroundImage:
+                      NetworkImage(widget.post.createdBy!.avatarUrl!),
                 ),
               ),
               const SizedBox(width: 5),
@@ -97,39 +113,48 @@ class CustomUserPost extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          post.createdBy!.fullname!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: Colors.black),
+                        Row(
+                          children: [
+                            Text(
+                              widget.post.createdBy!.fullname!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(color: Colors.black),
+                            ),
+                            const SizedBox(width: 5),
+                            postDay == 0
+                                ? Text(
+                                    "today",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(color: Colors.black),
+                                  )
+                                : Text(
+                                    postDay < 7 && postDay > 0
+                                        ? '$postDay days ago'
+                                        : "${widget.post.createdAt.day}/${widget.post.createdAt.month}/${widget.post.createdAt.year} ${DateFormat.Hm().format(widget.post.createdAt)}",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText2!
+                                        .copyWith(color: Colors.black),
+                                  ),
+                          ],
                         ),
-                        const SizedBox(width: 5),
-                        postDay == 0
-                            ? Text(
-                                "today",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .copyWith(color: Colors.black),
-                              )
-                            : Text(
-                                postDay < 7 && postDay > 0
-                                    ? '$postDay days ago'
-                                    : "${post.createdAt.day}/${post.createdAt.month}/${post.createdAt.year} ${DateFormat.Hm().format(post.createdAt)}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText2!
-                                    .copyWith(color: Colors.black),
-                              ),
+                        // IconButton(
+                        //   onPressed: onPressed,
+                        //   icon: Icon(Icons.more_vert_outlined, size: 15),
+                        // )
                       ],
                     ),
                     Row(
                       children: [
-                        post.type != null
+                        widget.post.type != null
                             ? Text(
-                                '#${post.type}',
+                                '#${widget.post.type}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -137,9 +162,9 @@ class CustomUserPost extends StatelessWidget {
                               )
                             : Container(),
                         const SizedBox(width: 5),
-                        post.hashtag != null
+                        widget.post.hashtag != null
                             ? Text(
-                                '#${post.hashtag}',
+                                '#${widget.post.hashtag}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -150,7 +175,7 @@ class CustomUserPost extends StatelessWidget {
                     ),
                     const SizedBox(height: 5),
                     Linkify(
-                      text: content,
+                      text: widget.content,
                       maxLines: 7,
                       style: Theme.of(context)
                           .textTheme
@@ -159,7 +184,7 @@ class CustomUserPost extends StatelessWidget {
                       onOpen: ((link) => print("Clicked ${link.url}!")),
                     ),
                     const SizedBox(height: 5),
-                    image != null
+                    widget.image != null
                         ? Container(
                             height: 180,
                             width: double.infinity,
@@ -169,18 +194,50 @@ class CustomUserPost extends StatelessWidget {
                               image: DecorationImage(
                                 fit: BoxFit.cover,
                                 alignment: Alignment.center,
-                                image: NetworkImage(image!),
+                                image: NetworkImage(widget.image!),
                               ),
                             ),
                           )
                         : Container(),
-                    SizedBox(height: 10),
-                    const Divider(thickness: 2),
                   ],
                 ),
-              )
+              ),
             ],
           ),
+          // IconButton(
+          //   onPressed: () {
+          //     var state = _menuKey.currentState;
+          //     state?.showButtonMenu();
+          //   },
+          //   icon: Icon(
+          //     Icons.more_horiz_rounded,
+          //     size: 25,
+          //   ),
+          // ),
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
+              PopupMenuItem(
+                value: 1,
+                child: Text('Delete'),
+              ),
+              PopupMenuItem(
+                value: 2,
+                child: Text('Edit'),
+              ),
+            ],
+            onSelected: (item) async {
+              if (item == 1) {
+                log('Delete selected');
+                postController.deletePost(widget.post.id!, context);
+                setState(() {});
+              } else if (item == 2) {
+                log('Edit selected');
+                Get.to(PostEditScreen(), arguments: widget.post);
+              }
+            },
+          ),
+          const Divider(thickness: 2),
+          const SizedBox(height: 10),
         ],
       ),
     );

@@ -12,8 +12,9 @@ import 'models.dart';
 List<Course> courseFromJson(String str) =>
     List<Course>.from(json.decode(str).map((x) => Course.fromJson(x)));
 
-String courseToJson(List<Course> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+// String courseToJson(List<Course> data) =>
+//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String courseToJson(Course course) => json.encode(course.toJson());
 
 class Course extends Equatable {
   Course({
@@ -59,16 +60,9 @@ class Course extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id == null ? null : id,
         "created_by": createdBy == null ? null : createdBy!.toJson(),
         "description": description == null ? null : description,
         "name": name == null ? null : name,
-        "quizs": quizs == null
-            ? null
-            : List<dynamic>.from(quizs!.map((x) => x.toJson())),
-        "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
-        "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),
-        "__v": v == null ? null : v,
       };
 
   @override

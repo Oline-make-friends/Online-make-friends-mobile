@@ -63,110 +63,59 @@ class NotificationScreen extends StatelessWidget {
                         },
                       ),
                       const Divider(thickness: 2),
-                      Text(
-                        'Notifications',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
-                      Obx(
-                        () {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: notiController.friendReqList.length,
-                            itemBuilder: (context, index) {
-                              print(notiController.friendReqList[index].id);
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 20,
-                                        foregroundImage: NetworkImage(
-                                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"),
-                                        // backgroundImage: NetworkImage(
-                                        //     friendRequest.senderId!.avatarUrl!),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                          'Phong Ko Long Bong has liked your post!'),
-                                    ],
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.remove_circle_outline_sharp,
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                ],
-                              );
-                            },
-                          );
-                        },
-                      ),
                     ],
                   )
                 : Container(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Notifications',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Obx(
+                  () {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: notiController.friendReqList.length,
+                      itemBuilder: (context, index) {
+                        print(notiController.friendReqList[index].id);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  foregroundImage: NetworkImage(
+                                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"),
+                                  // backgroundImage: NetworkImage(
+                                  //     friendRequest.senderId!.avatarUrl!),
+                                ),
+                                const SizedBox(width: 10),
+                                Text('Phong Ko Long Bong has liked your post!'),
+                              ],
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.remove_circle_outline_sharp,
+                                color: Colors.red,
+                              ),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            )
             // const Divider(thickness: 2),
-
-            // Row(
-            //   children: [
-            //     CircleAvatar(
-            //       radius: 20,
-            //       backgroundImage: NetworkImage(UserModel.users[3].avatarUrl!),
-            //     ),
-            //     const SizedBox(width: 10),
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Text(
-            //       'A person wants to be your friend!',
-            //       style: Theme.of(context)
-            //           .textTheme
-            //           .bodyText1!
-            //           .copyWith(fontWeight: FontWeight.bold),
-            //     ),
-            //     Text(
-            //       '3h ago',
-            //       style: Theme.of(context)
-            //           .textTheme
-            //           .bodyText2!
-            //           .copyWith(color: Colors.black54),
-            //     ),
-            //     Row(
-            //       children: [
-            //         ElevatedButton(
-            //           onPressed: () {},
-            //           child: Text('Accept'),
-            //           style: ElevatedButton.styleFrom(
-            //             elevation: 0,
-            //             minimumSize: Size(60, 25),
-            //           ),
-            //         ),
-            //         const SizedBox(width: 10),
-            //         ElevatedButton(
-            //           onPressed: () {},
-            //           child: Text(
-            //             'Decline',
-            //             style: Theme.of(context).textTheme.bodyText1,
-            //           ),
-            //           style: ElevatedButton.styleFrom(
-            //             primary: Colors.white,
-            //             elevation: 0,
-            //             minimumSize: Size(60, 25),
-            //           ),
-            //         ),
-            //       ],
-            //     )
-            //   ],
-            // ),
-            //   ],
-            // ),
           ],
         ),
       ),

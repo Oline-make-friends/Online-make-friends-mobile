@@ -65,8 +65,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.meeting_room_outlined),
-              label: 'Meeting',
+              icon: Icon(Icons.event),
+              label: 'Event',
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             BottomNavigationBarItem(

@@ -17,6 +17,7 @@ class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     GroupPost currentPost = Get.arguments[0];
     var loginController = Get.put(LoginController());
+    final postController = Get.put(PostController());
     UserModel currentUser = Get.arguments[1];
 
     return Scaffold(
@@ -63,7 +64,6 @@ class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
                       ),
                     ],
                   ),
-
                   //! content
                   const SizedBox(height: 5),
 
@@ -117,16 +117,17 @@ class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
-                        icon: const FaIcon(
-                          FontAwesomeIcons.heart,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const FaIcon(
-                          FontAwesomeIcons.ellipsis,
-                        ),
+                        onPressed: () async {
+                          await postController.likePost(
+                              currentPost.id!, currentUser.id!);
+                        },
+                        icon: postController.isLiked.value
+                            ? FaIcon(
+                                FontAwesomeIcons.solidHeart,
+                              )
+                            : FaIcon(
+                                FontAwesomeIcons.heart,
+                              ),
                       ),
                     ],
                   ),

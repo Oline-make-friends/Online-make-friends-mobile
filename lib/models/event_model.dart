@@ -8,8 +8,10 @@ import 'package:flutter_making_friends_app_2/models/user_model.dart';
 List<Event> eventFromJson(String str) =>
     List<Event>.from(json.decode(str).map((x) => Event.fromJson(x)));
 
-String eventToJson(List<Event> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+List<Event> eventCreatedFromJson(String str) =>
+    List<Event>.from(json.decode(str).map((x) => Event.getCreatedfromJson(x)));
+
+String eventToJson(Event event) => json.encode(event.toJson());
 
 class Event extends Equatable {
   Event({
@@ -59,19 +61,26 @@ class Event extends Equatable {
         v: json["__v"] == null ? null : json["__v"],
       );
 
+  factory Event.getCreatedfromJson(Map<String, dynamic> json) => Event(
+        id: json["_id"] == null ? null : json["_id"],
+        title: json["title"] == null ? null : json["title"],
+        description: json["description"] == null ? null : json["description"],
+        type: json["type"] == null ? null : json["type"],
+        dateTime: json["date_time"] == null ? null : json["date_time"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+      );
+
   Map<String, dynamic> toJson() => {
-        "_id": id == null ? null : id,
         "created_by": createdBy == null ? null : createdBy!.toJson(),
         "title": title == null ? null : title,
         "description": description == null ? null : description,
         "type": type == null ? null : type,
         "date_time": dateTime == null ? null : dateTime,
-        "user_joined": userJoined == null
-            ? null
-            : List<dynamic>.from(userJoined!.map((x) => x.toJson())),
-        "createdAt": createdAt == null ? null : createdAt.toIso8601String(),
-        "updatedAt": updatedAt == null ? null : updatedAt.toIso8601String(),
-        "__v": v == null ? null : v,
       };
 
   @override

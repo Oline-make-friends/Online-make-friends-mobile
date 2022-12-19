@@ -18,6 +18,10 @@ String registerToJson(UserModel data) {
   return json.encode(data.registerToJson());
 }
 
+String registerMailToJson(UserModel data) {
+  return json.encode(data.registerMailToJson());
+}
+
 String updateToJson(UserModel data) {
   return json.encode(data.updateToJson());
 }
@@ -25,6 +29,8 @@ String updateToJson(UserModel data) {
 class UserModel extends Equatable {
   UserModel({
     this.id,
+    this.isProve,
+    this.proveImageUrl,
     this.username,
     this.fullname,
     this.password,
@@ -47,6 +53,8 @@ class UserModel extends Equatable {
         this.updatedAt = updatedAt ?? DateTime.now();
 
   final String? id;
+  final bool? isProve;
+  final String? proveImageUrl;
   final String? username;
   final String? fullname;
   final String? password;
@@ -68,6 +76,8 @@ class UserModel extends Equatable {
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
+        isProve: json["is_prove"],
+        proveImageUrl: json["proveImage_url"],
         username: json["username"],
         fullname: json["fullname"],
         password: json["password"],
@@ -87,6 +97,10 @@ class UserModel extends Equatable {
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         v: json["__v"],
+      );
+
+  factory UserModel.isProveFromModel(Map<String, dynamic> json) => UserModel(
+        isProve: json["is_prove"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -117,6 +131,16 @@ class UserModel extends Equatable {
         "password": password,
         "gender": gender,
         "date_of_birth": dateOfBirth,
+      };
+
+  Map<String, dynamic> registerMailToJson() => {
+        "username": username,
+        "fullname": fullname,
+        "password": password,
+        "gender": gender,
+        "date_of_birth": dateOfBirth,
+        "proveImage_url": proveImageUrl,
+        "is_prove": isProve,
       };
 
   Map<String, dynamic> updateToJson() => {

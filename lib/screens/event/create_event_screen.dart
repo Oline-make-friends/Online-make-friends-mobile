@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/widgets/custom_text_form_field.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CreateEventScreen extends StatelessWidget {
   const CreateEventScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final dobController = TextEditingController();
+    final eventController = Get.put(EventController());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -33,14 +35,17 @@ class CreateEventScreen extends StatelessWidget {
         child: Column(
           children: [
             CustomTextFormField(
+              controller: eventController.titleController,
               labelText: 'title',
             ),
             const SizedBox(height: 10),
             CustomTextFormField(
+              controller: eventController.typeController,
               labelText: 'type',
             ),
             const SizedBox(height: 10),
             CustomTextFormField(
+              controller: eventController.descController,
               labelText: 'description',
             ),
             const SizedBox(height: 10),
@@ -48,20 +53,24 @@ class CreateEventScreen extends StatelessWidget {
               width: double.infinity,
               child: CustomTextFormField(
                 enable: false,
+                controller: TextEditingController(
+                    text:
+                        "${eventController.startDateController.day}-${eventController.startDateController.month}-${eventController.startDateController.year} ${DateFormat.Hm().format(eventController.startDateController)}"),
                 labelText: 'Start date',
-                controller: dobController,
                 suffixIcon: IconButton(
                     onPressed: () {
-                      DatePicker.showDatePicker(
+                      DatePicker.showDateTimePicker(
                         context,
                         showTitleActions: true,
-                        minTime: DateTime(1940, 1, 1),
+                        minTime: DateTime.now(),
                         maxTime: DateTime(2100, 1, 1),
                         currentTime: DateTime.now(),
                         onChanged: (date) {
                           print('change $date');
                         },
-                        onConfirm: (date) {},
+                        onConfirm: (date) {
+                          eventController.startDateController = date;
+                        },
                       );
                     },
                     icon: const Icon(Icons.date_range)),
@@ -69,7 +78,13 @@ class CreateEventScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  Alert.showLoadingIndicatorDialog(context);
+                  await eventController.createEvent();
+                  await eventController.fetchEvent();
+                  Get.back();
+                  Get.back();
+                },
                 child: Text('Create',
                     style: Theme.of(context).textTheme.headline5))
           ],

@@ -57,4 +57,26 @@ class EventRepository {
     // print('${response.statusCode}: ${response.body}');
     return response.body;
   }
+
+  static addEvent(String endpoint, var body) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: body,
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
+
+  // static getEventCreated(String endpoint, String username) async {
+  //   var response = await client.post(
+  //     BuildServer.buildUrl(endpoint),
+  //     body: jsonEncode(<String, String>{
+  //       "username": username,
+  //     }),
+  //     headers: {"Content-type": "application/json"},
+  //   );
+  //   // print('${response.statusCode}: ${response.body}');
+  //   return response.body;
+  // }
 }

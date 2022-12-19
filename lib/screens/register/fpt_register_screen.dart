@@ -86,12 +86,13 @@ class _FPTRegisterScreenState extends State<FPTRegisterScreen> {
                         CustomTextFormField(
                           hintTxt: 'Email',
                           prefixicon: const Icon(Icons.email),
-                          controller: registerController.emailController,
+                          controller: registerController.fptEmailController,
                           onSaved: (value) {
                             registerController.email = value!;
                           },
                           validator: (value) {
-                            return registerController.validateUsername(value!);
+                            return registerController
+                                .validateFptUsername(value!);
                           },
                         ),
                         const SizedBox(
@@ -188,7 +189,7 @@ class _FPTRegisterScreenState extends State<FPTRegisterScreen> {
                           child: IntrinsicWidth(
                             child: CustomButton(
                                 onTap: () {
-                                  registerController.register(context);
+                                  registerController.registerFpt(context);
                                   // ScaffoldMessenger.of(context).showSnackBar(
                                   //   SnackBar(
                                   //     content: const Text('Account created !'),

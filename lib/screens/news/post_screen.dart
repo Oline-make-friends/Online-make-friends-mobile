@@ -82,6 +82,7 @@ class _PostScreenState extends State<PostScreen> {
                   // print(postController.postList[index].toString());
                   return CustomPost(
                     onTap: () async {
+                      Alert.showLoadingIndicatorDialog(context);
                       if (fetchedPosts[index].likes!.contains(currentUser.id)) {
                         postController.isLiked.value = true;
                       } else {
@@ -95,6 +96,7 @@ class _PostScreenState extends State<PostScreen> {
                             .getCommentUser(fetchedPosts[index].comments![i]);
                       }
                       postController.currentPost.value = fetchedPosts[index];
+                      Get.back();
                       Get.to(PostDetailScreen(), arguments: [
                         fetchedPosts[index],
                         currentUser,
@@ -117,6 +119,8 @@ class _PostScreenState extends State<PostScreen> {
                 return Future.delayed(const Duration(seconds: 1), () {
                   setState(() {
                     postController.fetchPosts();
+                    postController.getUserPost(
+                        userId: loginController.loginedUser.value.id!);
                   });
                 });
               },

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_making_friends_app_2/models/group_model.dart';
+import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:http/http.dart' as http;
 
 import 'build_server.dart';
@@ -28,6 +29,40 @@ class GroupRepository {
       body: jsonEncode(<String, String>{
         "_id": groupId,
         "idUser": userId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
+
+  static uploadGroupPost(String endpoint, UserModel createdBy, String imgUrl,
+      String content, String idGroup) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, dynamic>{
+        "created_by": createdBy.toJson(),
+        "imageUrl": imgUrl,
+        "content": content,
+        "is_group": true,
+        "_idGroup": idGroup,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
+
+  static leaveGroup(
+    String endpoint,
+    String groupId,
+    String memberId,
+  ) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, dynamic>{
+        "_id": groupId,
+        "idUser": memberId,
       }),
       headers: {"Content-type": "application/json"},
     );

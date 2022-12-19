@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/screens/news/course_detail_screen.dart';
+import 'package:flutter_making_friends_app_2/screens/news/create_course_screen.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_making_friends_app_2/controllers/course_controller.dart';
@@ -51,7 +52,9 @@ class CourseScreen extends StatelessWidget {
                         ],
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(CreateCourseScreen());
+                        },
                         child: Container(
                           height: 40,
                           width: 40,

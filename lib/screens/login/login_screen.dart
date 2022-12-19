@@ -24,7 +24,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isHidden = true;
     return Scaffold(
       appBar: AppBar(
         title: Text(

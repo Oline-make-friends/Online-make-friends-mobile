@@ -20,15 +20,16 @@ class PostDetailScreen extends StatefulWidget {
 class _PostDetailScreenState extends State<PostDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    Post currentPost = Get.arguments[0];
     final postController = Get.put(PostController());
     UserModel currentUser = Get.arguments[1];
     final commentController = TextEditingController();
+    Post viewedPost = postController.currentPost.value;
 
     return Scaffold(
+      //! post author
       appBar: AppBar(
         title: Text(
-          "${currentPost.createdBy!.fullname}'s post",
+          "${viewedPost.createdBy!.fullname}'s post",
           style: Theme.of(context).textTheme.headline5,
         ),
         iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -50,21 +51,21 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       children: [
                         CircleAvatar(
                           backgroundImage:
-                              NetworkImage(currentPost.createdBy!.avatarUrl!),
+                              NetworkImage(viewedPost.createdBy!.avatarUrl!),
                         ),
                         const SizedBox(width: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              currentPost.createdBy!.fullname!,
+                              viewedPost.createdBy!.fullname!,
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6!
                                   .copyWith(color: Colors.black),
                             ),
                             Text(
-                              "${currentPost.createdAt.day}/${currentPost.createdAt.month}/${currentPost.createdAt.year} ${DateFormat.Hm().format(currentPost.createdAt)}",
+                              "${viewedPost.createdAt.day}/${viewedPost.createdAt.month}/${viewedPost.createdAt.year} ${DateFormat.Hm().format(viewedPost.createdAt)}",
                               style: Theme.of(context).textTheme.bodyText2,
                             ),
                           ],
@@ -77,16 +78,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     Row(
                       children: [
                         Text(
-                          '#${currentPost.type}',
+                          '#${viewedPost.type}',
                           style: Theme.of(context)
                               .textTheme
                               .bodyText1!
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(width: 5),
-                        currentPost.hashtag != null
+                        viewedPost.hashtag != null
                             ? Text(
-                                '#${currentPost.hashtag}',
+                                '#${viewedPost.hashtag}',
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!
@@ -96,9 +97,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ],
                     ),
                     const SizedBox(height: 5),
-                    currentPost.content != null
+                    viewedPost.content != null
                         ? Text(
-                            currentPost.content!,
+                            viewedPost.content!,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
@@ -106,11 +107,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                           )
                         : Container(),
                     const SizedBox(height: 5),
-                    currentPost.imageUrl != null
+                    viewedPost.imageUrl != null
                         ? GestureDetector(
                             onTap: () {
                               Get.to(ImageViewScreen(),
-                                  arguments: currentPost.imageUrl);
+                                  arguments: viewedPost.imageUrl);
                             },
                             child: Hero(
                               tag: 'image_hero',
@@ -121,7 +122,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   borderRadius: BorderRadius.circular(20),
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage(currentPost.imageUrl!),
+                                    image: NetworkImage(viewedPost.imageUrl!),
                                   ),
                                 ),
                               ),
@@ -130,7 +131,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                         : const SizedBox(),
                     const Divider(thickness: 2),
                     Text(
-                      '${currentPost.comments!.length} Comments ${currentPost.likes!.length} Likes',
+                      '${viewedPost.comments!.length} Comments ${viewedPost.likes!.length} Likes',
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
                     const Divider(thickness: 2),
@@ -149,7 +150,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             return IconButton(
                               onPressed: () async {
                                 await postController.likePost(
-                                    currentPost.id!, currentUser.id!);
+                                    viewedPost.id!, currentUser.id!);
                                 await postController.fetchPosts();
                               },
                               icon: postController.isLiked.value
@@ -176,14 +177,17 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
               //! Comments
               const Divider(thickness: 3),
-              currentPost.comments!.isNotEmpty
+              viewedPost.comments!.isNotEmpty
                   ? ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: currentPost.comments!.length,
+                      itemCount: viewedPost.comments!.length,
                       itemBuilder: (context, index) {
                         // UserModel commentUser = postController.getCommentUser(currentPost.comments![index]);
-                        Comment currenComment = currentPost.comments![index];
+                        Comment currentComment = viewedPost.comments![index];
+                        UserModel commentUser =
+                            viewedPost.comments![index].commentUser ??
+                                currentUser;
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Column(
@@ -194,8 +198,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   Align(
                                     alignment: Alignment.topLeft,
                                     child: CircleAvatar(
-                                      backgroundImage: NetworkImage(currenComment
-                                              .commentUser!.avatarUrl ??
+                                      backgroundImage: NetworkImage(commentUser
+                                              .avatarUrl ??
                                           "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"),
                                     ),
                                   ),
@@ -206,7 +210,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          currenComment.commentUser!.fullname ??
+                                          commentUser.fullname ??
                                               "Comment user",
                                           style: Theme.of(context)
                                               .textTheme
@@ -214,10 +218,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                               .copyWith(color: Colors.black),
                                         ),
                                         Text(
-                                            "${currenComment.createdAt!.day}/${currenComment.createdAt!.month}/${currenComment.createdAt!.year} ${DateFormat.Hm().format(currenComment.createdAt!)}"),
+                                            "${currentComment.createdAt!.day}/${currentComment.createdAt!.month}/${currentComment.createdAt!.year} ${DateFormat.Hm().format(currentComment.createdAt!)}"),
                                         const SizedBox(height: 5),
                                         Text(
-                                          currenComment.content!,
+                                          currentComment.content!,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1!
@@ -289,14 +293,19 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       }
                       postController.isPosting.value = true;
                       await postController.commentPost(currentUser.id!,
-                          commentController.text, currentPost.id!);
-                      await postController.getPostById(
-                          currentPost.id!, currentPost);
+                          commentController.text, viewedPost.id!);
+                      await postController.getPostById(viewedPost.id!);
                       for (int i = 0;
-                          i <= currentPost.comments!.length - 1;
+                          i <= viewedPost.comments!.length - 1;
                           i++) {
                         await postController
-                            .getCommentUser(currentPost.comments![i]);
+                            .getCommentUser(viewedPost.comments![i]);
+                      }
+                      for (int i = 0;
+                          i <= viewedPost.comments!.length - 1;
+                          i++) {
+                        await postController
+                            .getCommentUser(viewedPost.comments![i]);
                       }
                       await postController.fetchPosts();
                       postController.isPosting.value = false;

@@ -152,7 +152,7 @@ class EventDetailSCreen extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      isJoined!
+                      isJoined ?? false
                           //! leave event
                           ? InkWell(
                               onTap: () async {

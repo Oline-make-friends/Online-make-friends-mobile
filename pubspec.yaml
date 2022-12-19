@@ -52,6 +52,8 @@ dependencies:
   flutter_chat_ui_kit: ^3.0.3-pluto.beta.1
   firebase_core: ^2.3.0
   google_sign_in: ^5.4.2
+  rive: ^0.9.1
+  expandable: ^5.0.1
   # url_launcher: ^6.1.5
 
 dev_dependencies:

@@ -14,10 +14,12 @@ import '../widgets/alert.dart';
 
 class RegisterController extends GetxController {
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
+  late TextEditingController fptEmailController;
   late TextEditingController emailController;
   late TextEditingController passwordController;
   late TextEditingController fullnameController;
   late TextEditingController doBController;
+  var indentifyImage = "".obs;
   late TextEditingController rePasswordController;
   final loginController = Get.put(LoginController());
   late String genderValue;
@@ -32,6 +34,7 @@ class RegisterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fptEmailController = TextEditingController();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     fullnameController = TextEditingController();
@@ -42,7 +45,7 @@ class RegisterController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
+    fptEmailController.dispose();
     passwordController.dispose();
     fullnameController.dispose();
     doBController.dispose();
@@ -50,9 +53,15 @@ class RegisterController extends GetxController {
     super.onClose();
   }
 
+  String? validateFptUsername(String value) {
+    if (value.isEmpty || !value.contains('@fpt.edu.vn')) {
+      return "email is invalid";
+    }
+    return null;
+  }
+
   String? validateUsername(String value) {
-    if (value.isEmpty ||
-        !value.contains('@gmail.com') && !value.contains('@fpt.edu.vn')) {
+    if (value.isEmpty || !value.contains('@gmail.com')) {
       return "email is invalid";
     }
     return null;
@@ -79,7 +88,41 @@ class RegisterController extends GetxController {
     return null;
   }
 
-  Future<void> register(BuildContext context) async {
+  Future<void> registerFpt(BuildContext context) async {
+    final isValid = registerFormKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    registerFormKey.currentState!.save();
+    Alert.showLoadingIndicatorDialog(context);
+    UserModel registerUser = UserModel(
+      username: fptEmailController.text,
+      password: passwordController.text,
+      fullname: fullnameController.text,
+      gender: genderValue,
+      dateOfBirth: doBController.text,
+    );
+    var response = await UserRepository.postLogin(
+        registerToJson(registerUser), 'auth/register');
+    // print('regsiter controller response: ${response.toString()}');
+    var data = json.decode(response);
+    if (data.toString().contains("duplicate key")) {
+      errorString.value =
+          'Your email has been registered, try using another one!';
+      Navigator.of(context).pop();
+    } else {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Account created!')));
+      UserModel currentUser = UserModel.fromJson(data);
+      // loginController.loginedUser.value = currentUser;
+      await registerComet(currentUser);
+      // Get.to(const BottomNavScreen());
+      Get.back();
+    }
+  }
+
+  Future<void> registerEmail(BuildContext context) async {
     final isValid = registerFormKey.currentState!.validate();
     if (!isValid) {
       return;
@@ -92,9 +135,11 @@ class RegisterController extends GetxController {
       fullname: fullnameController.text,
       gender: genderValue,
       dateOfBirth: doBController.text,
+      proveImageUrl: indentifyImage.value,
+      isProve: false,
     );
     var response = await UserRepository.postLogin(
-        registerToJson(registerUser), 'auth/register');
+        registerMailToJson(registerUser), 'auth/register');
     // print('regsiter controller response: ${response.toString()}');
     var data = json.decode(response);
     if (data.toString().contains("duplicate key")) {

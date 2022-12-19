@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 import 'package:flutter_making_friends_app_2/controllers/user_controller.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
+import 'package:flutter_making_friends_app_2/screens/profile/user_courses.dart';
+import 'package:flutter_making_friends_app_2/screens/profile/user_event.dart';
 import 'package:get/get.dart';
 
 import '../../widgets/widgets.dart';
@@ -57,11 +59,11 @@ class NewProfileScreen extends StatelessWidget {
                 child: Text('Change password'),
               ),
             ],
-            onSelected: (item) {
+            onSelected: (item) async {
               if (item == 1) {
                 final notiController = Get.put(NotiController());
                 notiController.notiTimer!.cancel();
-                loginController.logout(context);
+                await loginController.logout(context);
               } else if (item == 2) {
                 Get.to(ResetPasswordScreen());
               }
@@ -112,15 +114,11 @@ class CustomTabBar extends StatelessWidget {
           ),
           Container(
             height: 2500,
-            child: TabBarView(
+            child: const TabBarView(
               children: [
                 UserPostsScreen(),
-                Container(
-                  child: Text("Articles Body"),
-                ),
-                Container(
-                  child: Text("User Body"),
-                ),
+                UserEventScreen(),
+                UserCourseScreen(),
               ],
             ),
           ),

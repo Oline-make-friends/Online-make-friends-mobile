@@ -63,6 +63,17 @@ class UserRepository {
     return respone.body;
   }
 
+  static updatePassword(String endpoint, String newPassword) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "password": newPassword,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    return respone.body;
+  }
+
   static getUserById(String endpoint) async {
     var respone = await client.post(
       BuildServer.buildUrl(endpoint),
@@ -95,6 +106,22 @@ class UserRepository {
   static sendEmailResetPassword(String endpoint) async {
     var respone = await client.post(
       BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    return respone.body;
+  }
+
+  static followUser(
+    String endpoint,
+    String userId,
+    String followerId,
+  ) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "currentUser_id": userId,
+        "follower_id": followerId,
+      }),
       headers: {"Content-type": "application/json"},
     );
     return respone.body;

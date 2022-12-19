@@ -74,4 +74,29 @@ class PostRepository {
     // print('${response.statusCode}: ${response.body}');
     return response.body;
   }
+
+  static updatePost(String endpoint, String postId, Post post) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "id": postId,
+        "content": post.content!,
+        "hashtag": post.hashtag!,
+        "type": post.type!,
+        "imageUrl": post.imageUrl!,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
+
+  static deletePost(String endpoint) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    // print('${response.statusCode}: ${response.body}');
+    return response.body;
+  }
 }

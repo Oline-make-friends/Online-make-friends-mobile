@@ -10,16 +10,26 @@ class EventController extends GetxController {
   var searchList = <Event>[].obs;
   var joinedEventList = <Event>[].obs;
   late TextEditingController searchController;
+  late TextEditingController titleController;
+  late TextEditingController typeController;
+  late TextEditingController descController;
+  late DateTime startDateController;
   var isLoading = true.obs;
   var errorString = "".obs;
   final loginController = Get.put(LoginController());
   late UserModel currentUser;
+  var eventCreated = <Event>[].obs;
 
   @override
   void onInit() {
     fetchEvent();
+    getEventCreated();
     currentUser = loginController.loginedUser.value;
     searchController = TextEditingController();
+    titleController = TextEditingController();
+    typeController = TextEditingController();
+    descController = TextEditingController();
+    startDateController = DateTime.now();
     super.onInit();
   }
 
@@ -71,5 +81,26 @@ class EventController extends GetxController {
         duration: const Duration(seconds: 2),
       ),
     );
+  }
+
+  Future<void> createEvent() async {
+    Event newEvent = Event(
+      title: titleController.text,
+      type: typeController.text,
+      description: descController.text,
+      updatedAt: startDateController,
+      createdBy: loginController.loginedUser.value,
+    );
+
+    var response =
+        await EventRepository.addEvent('event/add', eventToJson(newEvent));
+  }
+
+  Future<void> getEventCreated() async {
+    var response = await EventRepository.getUserEvent(
+        "event/getEventCreated", loginController.loginedUser.value.username!);
+    if (response != null) {
+      eventCreated.value = eventCreatedFromJson(response);
+    }
   }
 }

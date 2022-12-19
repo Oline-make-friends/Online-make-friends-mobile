@@ -1,9 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_making_friends_app_2/controllers/controllers.dart';
 
 import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/widgets/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class UsersScreen extends StatelessWidget {
   final UserModel user;
@@ -23,6 +25,8 @@ class UsersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userController = Get.put(UserController());
+    final loginController = Get.put(LoginController());
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -68,17 +72,33 @@ class UsersScreen extends StatelessWidget {
                             color: Theme.of(context).errorColor,
                             icon: Icons.clear_rounded,
                           ),
-                          ChoiceButton(
-                            height: 80,
-                            width: 80,
-                            size: 30,
-                            color: Colors.white,
-                            hasGradient: true,
-                            icon: FontAwesomeIcons.handshakeSimple,
+                          InkWell(
+                            onTap: () {
+                              userController.sendFriendRequest(
+                                  loginController.loginedUser.value.id!,
+                                  user.id!,
+                                  context);
+                            },
+                            child: ChoiceButton(
+                              height: 80,
+                              width: 80,
+                              size: 30,
+                              color: Colors.white,
+                              hasGradient: true,
+                              icon: FontAwesomeIcons.handshakeSimple,
+                            ),
                           ),
-                          ChoiceButton(
-                            color: Theme.of(context).accentColor,
-                            icon: Icons.watch_later,
+                          InkWell(
+                            onTap: () {
+                              userController.followUser(
+                                  loginController.loginedUser.value.id!,
+                                  user.id.toString(),
+                                  context);
+                            },
+                            child: ChoiceButton(
+                              color: Theme.of(context).accentColor,
+                              icon: Icons.add,
+                            ),
                           )
                         ],
                       ),

@@ -17,6 +17,7 @@ class UpdateProfileController extends GetxController {
   late TextEditingController aboutController;
   late TextEditingController dobController;
   var genderValue = 'Male'.obs;
+  var statusIsBlank = false.obs;
   late TextEditingController majorController;
   late TextEditingController locationController;
   var interests = <String>[].obs;

@@ -11,5 +11,6 @@ export 'custom_text_form_field.dart';
 export 'custom_user_card.dart';
 export 'event_container.dart';
 export 'gender_drop_down.dart';
+export 'post_type.dart';
 export 'user_card.dart';
 export 'user_image_small.dart';

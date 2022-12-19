@@ -25,6 +25,7 @@ class PostController extends GetxController {
   var imageUrl = ''.obs;
   final loginController = Get.put(LoginController());
   late UserModel currentUser;
+
   Comment? comment;
   TextEditingController? content;
   TextEditingController? hashtag;
@@ -58,7 +59,7 @@ class PostController extends GetxController {
   Future<void> createPost(BuildContext context,
       {required UserModel createdBy}) async {
     Alert.showLoadingIndicatorDialog(context);
-    print("Where is my tag: ${hashtag?.text}");
+    // print("Where is my tag: ${hashtag?.text}");
     Post post = Post(
       createdBy: createdBy,
       imageUrl: imageUrl.value,
@@ -112,11 +113,19 @@ class PostController extends GetxController {
     }
   }
 
-  Future<void> getPostById(String postId, Post post) async {
+  Future<void> getPostById(String postId) async {
     var response = await PostRepository.getPostById("post/getPost/$postId");
     if (response != null) {
       var data = Post.fromJson(jsonDecode(response));
-      post = data;
+      currentPost.value = data;
     }
+  }
+
+  Future<void> deletePost(String id, BuildContext context) async {
+    Alert.showLoadingIndicatorDialog(context);
+    var response = await PostRepository.deletePost("post/delete/$id");
+    log(response.toString());
+    await getUserPost(userId: currentUser.id!);
+    Get.back();
   }
 }
