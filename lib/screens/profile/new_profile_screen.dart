@@ -61,8 +61,6 @@ class NewProfileScreen extends StatelessWidget {
             ],
             onSelected: (item) async {
               if (item == 1) {
-                final notiController = Get.put(NotiController());
-                notiController.notiTimer!.cancel();
                 await loginController.logout(context);
               } else if (item == 2) {
                 Get.to(ResetPasswordScreen());

@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
-import 'package:flutter_making_friends_app_2/controllers/post_controller.dart';
+import 'package:flutter_making_friends_app_2/controllers/noti_contrroller.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import 'package:flutter_making_friends_app_2/controllers/post_controller.dart';
 
 import '../models/models.dart';
 
@@ -20,10 +22,11 @@ class CustomPost extends StatefulWidget {
   final void Function()? onTap;
   final DateTime createdAt;
   final UserModel? currentUser;
+  final String? authorId;
   const CustomPost({
     Key? key,
-    this.image,
     this.currentPostId,
+    this.image,
     required this.user,
     this.type,
     this.hashtag,
@@ -33,6 +36,7 @@ class CustomPost extends StatefulWidget {
     this.onTap,
     required this.createdAt,
     this.currentUser,
+    this.authorId,
   }) : super(key: key);
 
   @override
@@ -44,6 +48,7 @@ class _CustomPostState extends State<CustomPost> {
   Widget build(BuildContext context) {
     int postDay = (DateTime.now().day - widget.createdAt.day).abs();
     final postController = Get.put(PostController());
+    final notiController = Get.put(NotiController());
     // print('days: $postDay');
     return InkWell(
       onTap: widget.onTap,
@@ -175,7 +180,12 @@ class _CustomPostState extends State<CustomPost> {
                                 await postController.likePost(
                                     widget.currentPostId!,
                                     widget.currentUser!.id!);
+                                await notiController.addNoti(
+                                    "liked your post",
+                                    "${widget.currentUser!.fullname}",
+                                    widget.authorId!);
                                 await postController.fetchPosts();
+
                                 setState(() {});
                               },
                             ),

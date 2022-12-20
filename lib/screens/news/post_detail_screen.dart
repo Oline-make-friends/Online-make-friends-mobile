@@ -23,6 +23,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final postController = Get.put(PostController());
     UserModel currentUser = Get.arguments[1];
     final commentController = TextEditingController();
+    final notiController = Get.put(NotiController());
     Post viewedPost = postController.currentPost.value;
 
     return Scaffold(
@@ -152,6 +153,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 await postController.likePost(
                                     viewedPost.id!, currentUser.id!);
                                 await postController.fetchPosts();
+                                await notiController.addNoti(
+                                    "Liked your post",
+                                    currentUser.fullname!,
+                                    viewedPost.createdBy!.id!);
                               },
                               icon: postController.isLiked.value
                                   ? FaIcon(
@@ -308,6 +313,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             .getCommentUser(viewedPost.comments![i]);
                       }
                       await postController.fetchPosts();
+                      await notiController.addNoti("Commented your post",
+                          currentUser.fullname!, viewedPost.createdBy!.id!);
                       postController.isPosting.value = false;
                       setState(() {});
                     },

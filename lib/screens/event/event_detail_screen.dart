@@ -83,16 +83,7 @@ class EventDetailSCreen extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "${currentEvent.updatedAt.day} ${DateFormat.MMM().format(currentEvent.updatedAt)}",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(
-                                        color: Colors.white, fontSize: 20),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                DateFormat.Hm().format(currentEvent.updatedAt),
+                                "${currentEvent.dateTime ?? "Sun Jan 15"}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText1!

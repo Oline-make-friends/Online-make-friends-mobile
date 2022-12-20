@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_making_friends_app_2/models/models.dart';
 import 'package:flutter_making_friends_app_2/repository/event_repository.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'login_controller.dart';
 
@@ -13,23 +16,25 @@ class EventController extends GetxController {
   late TextEditingController titleController;
   late TextEditingController typeController;
   late TextEditingController descController;
-  late DateTime startDateController;
+  var startDateController = DateTime.now().obs;
+  String dateTime = "";
   var isLoading = true.obs;
   var errorString = "".obs;
   final loginController = Get.put(LoginController());
   late UserModel currentUser;
   var eventCreated = <Event>[].obs;
+  var onGoingEvents = <Event>[].obs;
 
   @override
   void onInit() {
     fetchEvent();
     getEventCreated();
+    getExpiredEvent();
     currentUser = loginController.loginedUser.value;
     searchController = TextEditingController();
     titleController = TextEditingController();
     typeController = TextEditingController();
     descController = TextEditingController();
-    startDateController = DateTime.now();
     super.onInit();
   }
 
@@ -37,7 +42,6 @@ class EventController extends GetxController {
     var response = await EventRepository.getAllEvent('event/getAll');
     if (response != null) {
       eventList.value = response;
-      // print(eventList.toString());
     }
     joinedEventList.clear();
     for (Event e in eventList) {
@@ -88,8 +92,9 @@ class EventController extends GetxController {
       title: titleController.text,
       type: typeController.text,
       description: descController.text,
-      updatedAt: startDateController,
+      updatedAt: startDateController.value,
       createdBy: loginController.loginedUser.value,
+      dateTime: dateTime,
     );
 
     var response =
@@ -102,5 +107,20 @@ class EventController extends GetxController {
     if (response != null) {
       eventCreated.value = eventCreatedFromJson(response);
     }
+  }
+
+  void getExpiredEvent() {
+    List<Event> expiredEvent = [];
+    for (Event e in eventList) {
+      if (e.dateTime != null) {
+        DateTime dt = DateFormat('EEE MMM dd yyyy')
+            .parse("${e.dateTime!} ${DateTime.now().year}");
+        log("${DateTime.now().compareTo(dt)}");
+        if (DateTime.now().compareTo(dt) == -1) {
+          onGoingEvents.add(e);
+        }
+      }
+    }
+    log(onGoingEvents.length.toString());
   }
 }

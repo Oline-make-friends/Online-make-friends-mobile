@@ -40,6 +40,10 @@ class _PostTypeDropDownState extends State<PostTypeDropDown> {
           value: widget.type,
           items: const <DropdownMenuItem>[
             DropdownMenuItem(
+              child: Text(''),
+              value: '',
+            ),
+            DropdownMenuItem(
               child: Text('Knowledge'),
               value: 'Knowledge',
             ),

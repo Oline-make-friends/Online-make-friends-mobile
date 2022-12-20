@@ -1,8 +1,10 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EventContainer extends StatelessWidget {
   final String coverImg;
+  final String dateTime;
   DateTime startDate;
   final String category;
   final String eventName;
@@ -10,15 +12,19 @@ class EventContainer extends StatelessWidget {
 
   EventContainer({
     Key? key,
-    this.ontap,
     required this.coverImg,
-    required this.category,
+    required this.dateTime,
     required this.startDate,
+    required this.category,
     required this.eventName,
+    this.ontap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final String day = dateTime.substring(8, 10);
+    final String month = dateTime.substring(4, 7);
+    print("$day - $month");
     final String monthFormat = DateFormat('MMM').format(startDate);
     // print(monthFormat);
     return InkWell(
@@ -37,6 +43,7 @@ class EventContainer extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              //! dateTime
               Align(
                 alignment: Alignment.topRight,
                 child: Card(
@@ -50,11 +57,11 @@ class EventContainer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '${startDate.day}',
+                          day,
                           style: Theme.of(context).textTheme.headline5,
                         ),
                         Text(
-                          monthFormat,
+                          month,
                           style: Theme.of(context).textTheme.bodyText1,
                         ),
                       ],

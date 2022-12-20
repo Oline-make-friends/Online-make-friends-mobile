@@ -49,32 +49,41 @@ class CreateEventScreen extends StatelessWidget {
               labelText: 'description',
             ),
             const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              child: CustomTextFormField(
-                enable: false,
-                controller: TextEditingController(
-                    text:
-                        "${eventController.startDateController.day}-${eventController.startDateController.month}-${eventController.startDateController.year} ${DateFormat.Hm().format(eventController.startDateController)}"),
-                labelText: 'Start date',
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      DatePicker.showDateTimePicker(
-                        context,
-                        showTitleActions: true,
-                        minTime: DateTime.now(),
-                        maxTime: DateTime(2100, 1, 1),
-                        currentTime: DateTime.now(),
-                        onChanged: (date) {
-                          print('change $date');
+            Obx(
+              () {
+                return SizedBox(
+                  width: double.infinity,
+                  child: CustomTextFormField(
+                    enable: false,
+                    controller: TextEditingController(
+                      text:
+                          "${eventController.startDateController.value.day}-${eventController.startDateController.value.month}-${eventController.startDateController.value.year} ${DateFormat.Hm().format(eventController.startDateController.value)}",
+                    ),
+                    labelText: 'Start date',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          DatePicker.showDateTimePicker(
+                            context,
+                            showTitleActions: true,
+                            minTime: DateTime.now(),
+                            maxTime: DateTime(2100, 1, 1),
+                            currentTime: DateTime.now(),
+                            onChanged: (date) {
+                              print(
+                                  'change ${DateFormat.E().format(date)} ${DateFormat.d().format(date)} ${DateFormat.MMM().format(date)} ');
+                            },
+                            onConfirm: (date) {
+                              eventController.startDateController.value = date;
+                              eventController.dateTime =
+                                  "${DateFormat.E().format(date)} ${DateFormat.MMM().format(date)} ${DateFormat.d().format(date)}";
+                              print(eventController.dateTime);
+                            },
+                          );
                         },
-                        onConfirm: (date) {
-                          eventController.startDateController = date;
-                        },
-                      );
-                    },
-                    icon: const Icon(Icons.date_range)),
-              ),
+                        icon: const Icon(Icons.date_range)),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 20),
             TextButton(

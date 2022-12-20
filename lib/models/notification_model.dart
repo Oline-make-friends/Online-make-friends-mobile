@@ -1,69 +1,62 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+// To parse this JSON data, do
+//
+//     final notification = notificationFromJson(jsonString);
+
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_making_friends_app_2/models/user_model.dart';
-
-List<Notification> notiFromJson(String str) => List<Notification>.from(
+List<Notification> notificationFromJson(String str) => List<Notification>.from(
     json.decode(str).map((x) => Notification.fromJson(x)));
 
-String notiToJson(List<Notification> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String notificationToJson(Notification data) => json.encode(data.toJson());
 
 class Notification extends Equatable {
-  final int id;
-  final UserModel user;
-  final String content;
-  final DateTime createdTime;
-
   Notification({
-    DateTime? createdTime,
-    required this.id,
-    required this.user,
-    required this.content,
-  }) : this.createdTime = createdTime ?? DateTime.now();
+    this.id,
+    this.userId,
+    this.title,
+    this.content,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    this.v,
+  })  : this.createdAt = createdAt ?? DateTime.now(),
+        this.updatedAt = updatedAt ?? DateTime.now();
+
+  final String? id;
+  final String? userId;
+  final String? title;
+  final String? content;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final int? v;
+
+  factory Notification.fromJson(Map<String, dynamic> json) => Notification(
+        id: json["_id"],
+        userId: json["user_id"],
+        title: json["title"],
+        content: json["content"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user_id": userId,
+        "title": title,
+        "content": content,
+      };
 
   @override
-  List<Object> get props => [id, user, content, createdTime];
-
-  Notification copyWith({
-    int? id,
-    UserModel? user,
-    String? content,
-    DateTime? createdTime,
-  }) {
-    return Notification(
-      id: id ?? this.id,
-      user: user ?? this.user,
-      content: content ?? this.content,
-      createdTime: createdTime ?? this.createdTime,
-    );
+  List<Object?> get props {
+    return [
+      id,
+      userId,
+      title,
+      content,
+      createdAt,
+      updatedAt,
+      v,
+    ];
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'user': user.toJson(),
-      'content': content,
-      'createdTime': createdTime.millisecondsSinceEpoch,
-    };
-  }
-
-  factory Notification.fromMap(Map<String, dynamic> map) {
-    return Notification(
-      id: map['id'] as int,
-      user: UserModel.fromJson(map['user'] as Map<String, dynamic>),
-      content: map['content'] as String,
-      createdTime:
-          DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory Notification.fromJson(String source) =>
-      Notification.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

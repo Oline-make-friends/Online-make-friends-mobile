@@ -16,13 +16,13 @@ class NotiRepository {
     // print("${response.statusCode}: ${response.body}");
     if (response.statusCode == 200) {
       var resultString = response.body;
-      return notiFromJson(resultString);
+      return notificationFromJson(resultString);
     } else {
       return null;
     }
   }
 
-  static getUserNoti(String endpoint, String receiverId) async {
+  static getUserFriendRequest(String endpoint, String receiverId) async {
     var respone = await client.post(
       BuildServer.buildUrl(endpoint),
       body: jsonEncode(<String, String>{
@@ -32,5 +32,30 @@ class NotiRepository {
     );
     // print(respone.body);
     return friendRequestFromJson(respone.body);
+  }
+
+  static addNoti(String endpoint, var body) async {
+    var response = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: body,
+      headers: {"Content-type": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static getUserNoti(String endpoint, String userId) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      body: jsonEncode(<String, String>{
+        "user_id": userId,
+      }),
+      headers: {"Content-type": "application/json"},
+    );
+    // print(respone.body);
+    return notificationFromJson(respone.body);
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -32,12 +33,16 @@ class PostController extends GetxController {
 
   @override
   void onInit() {
+    fetchPosts();
     super.onInit();
     content = TextEditingController();
     hashtag = TextEditingController();
     currentUser = loginController.loginedUser.value;
-    fetchPosts();
     getUserPost(userId: currentUser.id!);
+    Timer.periodic(const Duration(seconds: 30), (timer) {
+      log("Getting new post every 30s");
+      fetchPosts();
+    });
   }
 
   @override

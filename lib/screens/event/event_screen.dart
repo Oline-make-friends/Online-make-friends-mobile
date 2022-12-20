@@ -68,6 +68,15 @@ class EventScreen extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
+                  TextButton(
+                    onPressed: () {
+                      eventController.getExpiredEvent();
+                    },
+                    child: Text(
+                      "test",
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  )
                 ],
               ),
               const SizedBox(height: 25),
@@ -119,6 +128,9 @@ class EventScreen extends StatelessWidget {
                       itemCount: eventController.joinedEventList.length,
                       itemBuilder: (context, index) {
                         return EventContainer(
+                          dateTime:
+                              eventController.joinedEventList[index].dateTime ??
+                                  "Sun Jan 15",
                           coverImg:
                               'https://images.unsplash.com/photo-1593443821262-5625fcd78f49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
                           category:
@@ -157,17 +169,23 @@ class EventScreen extends StatelessWidget {
                     return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: eventController.eventList.length,
+                      itemCount: eventController.onGoingEvents.length,
                       itemBuilder: (context, index) {
                         return EventContainer(
+                          dateTime:
+                              eventController.onGoingEvents[index].dateTime ??
+                                  "Sun Jan 15",
                           coverImg:
                               'https://images.unsplash.com/photo-1593443821262-5625fcd78f49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-                          category: eventController.eventList[index].type!,
-                          startDate: eventController.eventList[index].updatedAt,
-                          eventName: eventController.eventList[index].title!,
+                          category: eventController.onGoingEvents[index].type!,
+                          startDate:
+                              eventController.onGoingEvents[index].updatedAt,
+                          eventName:
+                              eventController.onGoingEvents[index].title!,
                           ontap: () {
                             Get.to(EventDetailSCreen(),
-                                arguments: eventController.eventList[index]);
+                                arguments:
+                                    eventController.onGoingEvents[index]);
                           },
                         );
                       },

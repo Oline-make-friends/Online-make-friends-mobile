@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     
    <application
-        android:label="flutter_making_friends_app_2"
+        android:label="FStudy"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

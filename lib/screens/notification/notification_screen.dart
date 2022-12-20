@@ -54,7 +54,6 @@ class NotificationScreen extends StatelessWidget {
                             shrinkWrap: true,
                             itemCount: notiController.friendReqList.length,
                             itemBuilder: (context, index) {
-                              print(notiController.friendReqList[index].id);
                               return CustomFriendRequestRow(
                                   friendRequest:
                                       notiController.friendReqList[index]);
@@ -66,55 +65,60 @@ class NotificationScreen extends StatelessWidget {
                     ],
                   )
                 : Container(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Notifications',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                Obx(
-                  () {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: notiController.friendReqList.length,
-                      itemBuilder: (context, index) {
-                        print(notiController.friendReqList[index].id);
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 20,
-                                  foregroundImage: NetworkImage(
-                                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"),
-                                  // backgroundImage: NetworkImage(
-                                  //     friendRequest.senderId!.avatarUrl!),
-                                ),
-                                const SizedBox(width: 10),
-                                Text('Phong Ko Long Bong has liked your post!'),
-                              ],
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.remove_circle_outline_sharp,
-                                color: Colors.red,
-                              ),
-                            )
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            )
+            notiController.notiList.length != 0
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Notifications',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Obx(
+                        () {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: notiController.notiList.length,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(
+                                        notiController.notiList[index].title!,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        notiController.notiList[index].content!,
+                                      ),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      notiController.notiList.remove(
+                                          notiController.notiList[index]);
+                                    },
+                                    icon: Icon(
+                                      Icons.remove_circle_outline_sharp,
+                                      color: Colors.red,
+                                    ),
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                : Container(),
             // const Divider(thickness: 2),
           ],
         ),
@@ -142,8 +146,7 @@ class CustomFriendRequestRow extends StatelessWidget {
           radius: 20,
           foregroundImage: NetworkImage(
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__340.png"),
-          // backgroundImage: NetworkImage(
-          //     friendRequest.senderId!.avatarUrl!),
+          backgroundImage: NetworkImage(friendRequest.senderId!.avatarUrl!),
         ),
         const SizedBox(width: 10),
         Column(

@@ -112,6 +112,7 @@ class _PostScreenState extends State<PostScreen> {
                     likes: fetchedPosts[index].likes!,
                     comments: fetchedPosts[index].comments!,
                     createdAt: fetchedPosts[index].createdAt,
+                    authorId: fetchedPosts[index].createdBy!.id,
                   );
                 }),
               ),

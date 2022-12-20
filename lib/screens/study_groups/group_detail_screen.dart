@@ -365,6 +365,7 @@ class GroupDetailScreen extends StatelessWidget {
                     image: groupPostList[index].imageUrl,
                     comments: groupPostList[index].comments!,
                     createdAt: groupPostList[index].createdAt,
+                    authorId: groupPostList[index].createdBy!.id!,
                     onTap: () {
                       Alert.showLoadingIndicatorDialog(context);
                       if (groupPostList[index]

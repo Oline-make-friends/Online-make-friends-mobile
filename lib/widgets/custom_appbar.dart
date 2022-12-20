@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart' as CometUIKIt;
 import 'package:flutter_making_friends_app_2/screens/test_screen/test.dart';
@@ -70,7 +72,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       actions: [
         Obx(
           () {
-            int numOfNoti = notiController.friendReqList.length;
+            int numOfNoti = notiController.notiList.length +
+                notiController.friendReqList.length;
 
             return IconButton(
               onPressed: () {
@@ -97,8 +100,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(20),
                               ),
-                              child: Text(
-                                  "${notiController.friendReqList.length}",
+                              child: Text("${numOfNoti}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -118,38 +120,6 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             // print("f Id:  ${friendsId.toString()}");
 
             Navigator.pushNamed(context, '/friends');
-            // Get.to(
-            //   CometUIKIt.CometChatUsersWithMessages(
-            //     theme: CometUIKIt.CometChatTheme(
-            //         palette: CometUIKIt.Palette(
-            //           mode: CometUIKIt.PaletteThemeModes.dark,
-            //           primary: CometUIKIt.PaletteModel(
-            //               dark: Theme.of(context).primaryColor,
-            //               light: Theme.of(context).primaryColor),
-            //           secondary900: CometUIKIt.PaletteModel(
-            //               dark: Colors.white,
-            //               light: Theme.of(context).primaryColor),
-            //           accent: CometUIKIt.PaletteModel(
-            //               dark: Colors.black54,
-            //               light: Theme.of(context).primaryColor),
-            //           backGroundColor: CometUIKIt.PaletteModel(
-            //               dark: Theme.of(context).scaffoldBackgroundColor,
-            //               light: Theme.of(context).primaryColor),
-            // primary: CometUIKIt.PaletteModel(
-            //     dark: Colors.black54,
-            //     light: Theme.of(context).primaryColor),
-            // secondary: CometUIKIt.PaletteModel(
-            //     dark: Theme.of(context).primaryColor,
-            //     light: Theme.of(context).primaryColor),
-            //         ),
-            //         typography: CometUIKIt.Typography.fromDefault()),
-            //     usersConfiguration: CometUIKIt.UsersConfiguration(
-            //       title: 'Friends',
-            //       userListConfiguration:
-            //           CometUIKIt.UserListConfiguration(uids: friendsId),
-            //     ),
-            //   ),
-            // );
           },
           icon: FaIcon(
             FontAwesomeIcons.solidMessage,
