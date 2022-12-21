@@ -24,10 +24,9 @@ class FormerRegisterScreen extends StatefulWidget {
   State<FormerRegisterScreen> createState() => _FPTRegisterScreenState();
 }
 
-var registerController = Get.put(RegisterController());
-final updateController = Get.put(UpdateProfileController());
-
 class _FPTRegisterScreenState extends State<FormerRegisterScreen> {
+  final registerController = Get.put(RegisterController());
+  final updateController = Get.put(UpdateProfileController());
   String dropValue = 'Male';
   var dobController = TextEditingController();
   @override

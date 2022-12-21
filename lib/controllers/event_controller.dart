@@ -29,7 +29,6 @@ class EventController extends GetxController {
   void onInit() {
     fetchEvent();
     getEventCreated();
-    getExpiredEvent();
     currentUser = loginController.loginedUser.value;
     searchController = TextEditingController();
     titleController = TextEditingController();
@@ -52,6 +51,7 @@ class EventController extends GetxController {
         }
       }
     }
+    getExpiredEvent();
     isLoading.value = false;
   }
 
@@ -110,7 +110,7 @@ class EventController extends GetxController {
   }
 
   void getExpiredEvent() {
-    List<Event> expiredEvent = [];
+    onGoingEvents.clear();
     for (Event e in eventList) {
       if (e.dateTime != null) {
         DateTime dt = DateFormat('EEE MMM dd yyyy')

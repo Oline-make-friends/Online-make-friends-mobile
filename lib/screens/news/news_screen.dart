@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/screens/news/course_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/news/post_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/report/report_screen.dart';
+import 'package:flutter_making_friends_app_2/screens/screens.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -95,6 +96,21 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
                         currentPage = 2;
                       });
                       print(currentPage);
+                      // Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Search',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    leading: FaIcon(
+                      FontAwesomeIcons.search,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Get.to(SearchPostScreen());
                       // Navigator.pop(context);
                     },
                   ),

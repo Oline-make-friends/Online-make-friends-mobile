@@ -69,21 +69,25 @@ class SearchFriendScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png"),
+                                    image:
+                                        NetworkImage(users[index].avatarUrl!),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                                 child: Align(
                                   alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    userController.foundUsers[index].fullname!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
-                                          fontSize: 15,
-                                        ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      userController
+                                          .foundUsers[index].fullname!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .copyWith(
+                                            fontSize: 15,
+                                          ),
+                                    ),
                                   ),
                                 ),
                               ),

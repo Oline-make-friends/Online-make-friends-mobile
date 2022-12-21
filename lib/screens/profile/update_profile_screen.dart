@@ -131,7 +131,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               //!about
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'about',
+                  labelText: 'About',
                   filled: true,
                   fillColor: Colors.white54,
                   enabledBorder: const OutlineInputBorder(
@@ -358,6 +358,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         await loginController.findLoginUserById(
                             userId: loginController.loginedUser.value.id!);
                         updateController.statusIsBlank.value = false;
+                        updateController.imgUrl.value = "";
                         Get.offAll(BottomNavScreen());
                       }
                     },

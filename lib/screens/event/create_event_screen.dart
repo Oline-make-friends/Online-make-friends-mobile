@@ -36,17 +36,17 @@ class CreateEventScreen extends StatelessWidget {
           children: [
             CustomTextFormField(
               controller: eventController.titleController,
-              labelText: 'title',
+              labelText: 'Title',
             ),
             const SizedBox(height: 10),
             CustomTextFormField(
               controller: eventController.typeController,
-              labelText: 'type',
+              labelText: 'Type',
             ),
             const SizedBox(height: 10),
             CustomTextFormField(
               controller: eventController.descController,
-              labelText: 'description',
+              labelText: 'Description',
             ),
             const SizedBox(height: 10),
             Obx(
@@ -57,12 +57,12 @@ class CreateEventScreen extends StatelessWidget {
                     enable: false,
                     controller: TextEditingController(
                       text:
-                          "${eventController.startDateController.value.day}-${eventController.startDateController.value.month}-${eventController.startDateController.value.year} ${DateFormat.Hm().format(eventController.startDateController.value)}",
+                          "${eventController.startDateController.value.day}-${eventController.startDateController.value.month}-${eventController.startDateController.value.year}",
                     ),
                     labelText: 'Start date',
                     suffixIcon: IconButton(
                         onPressed: () {
-                          DatePicker.showDateTimePicker(
+                          DatePicker.showDatePicker(
                             context,
                             showTitleActions: true,
                             minTime: DateTime.now(),

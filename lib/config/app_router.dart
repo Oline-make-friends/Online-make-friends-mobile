@@ -3,6 +3,7 @@ import 'package:flutter_making_friends_app_2/models/user_match_model.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
 
 import '../models/user_model.dart';
+import '../screens/register/fpt_register_screen.dart';
 
 class AppRouter {
   static Route onGenerateRoute(RouteSettings settings) {

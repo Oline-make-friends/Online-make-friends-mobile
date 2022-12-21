@@ -21,6 +21,14 @@ class UserRepository {
     }
   }
 
+  static loginByGmail(String endpoint) async {
+    var respone = await client.post(
+      BuildServer.buildUrl(endpoint),
+      headers: {"Content-type": "application/json"},
+    );
+    return respone.body;
+  }
+
   static getAllUser(String endpoint) async {
     var response = await client.get(
       BuildServer.buildUrl(endpoint),

@@ -186,7 +186,8 @@ class SplashScreen extends StatelessWidget {
                                           const SizedBox(height: 50),
                                           CustomLoginButton(
                                             onTap: () {
-                                              loginController.loginGoogle();
+                                              loginController
+                                                  .loginGoogle(context);
                                             },
                                             image:
                                                 'http://pngimg.com/uploads/google/google_PNG19635.png',

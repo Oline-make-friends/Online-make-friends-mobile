@@ -21,6 +21,7 @@ class UserEventScreen extends StatelessWidget {
               ),
             )
           : ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: eventCreated.length,
               itemBuilder: ((context, index) {
                 return Card(

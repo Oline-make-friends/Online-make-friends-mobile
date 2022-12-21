@@ -23,7 +23,7 @@ class FPTRegisterScreen extends StatefulWidget {
   State<FPTRegisterScreen> createState() => _FPTRegisterScreenState();
 }
 
-var registerController = Get.put(RegisterController());
+final registerController = Get.put(RegisterController());
 
 class _FPTRegisterScreenState extends State<FPTRegisterScreen> {
   String dropValue = 'Male';

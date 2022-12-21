@@ -92,6 +92,10 @@ class LoginController extends GetxController {
       Navigator.of(context).pop();
       errorString.value = "Username or password is incorrect!";
       return errorString.value;
+    } else if (data == "This account has been baned") {
+      Navigator.of(context).pop();
+      errorString.value = "This account has been baned";
+      return errorString.value;
     }
 
     //! login success
@@ -180,9 +184,62 @@ class LoginController extends GetxController {
     });
   }
 
-  loginGoogle() async {
+  loginGoogle(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+
     await _googleSignIn.signOut();
     googleAcount.value = await _googleSignIn.signIn();
     log("google email: ${googleAcount.value?.email}");
+    var response = await UserRepository.loginByGmail(
+        'auth/loginByGmail/${googleAcount.value?.email}');
+    var data = json.decode(response.toString());
+    //! login invalid
+    if (data == "Cannot read property 'is_active' of null") {
+      Navigator.of(context).pop();
+      errorString.value = "Account is not registered!";
+      return errorString.value;
+    } else if (data == "This account has been baned") {
+      Navigator.of(context).pop();
+      errorString.value = "This account has been baned";
+      return errorString.value;
+    }
+
+    //! login success
+    else {
+      UserModel verifyUser = UserModel.isProveFromModel(data);
+      if (verifyUser.isProve == false) {
+        Navigator.of(context).pop();
+        errorString.value = "Account need verification from admin!";
+        return errorString.value;
+      } else {
+        loginedUser.value = UserModel.fromJson(data);
+        await prefs.setString('loginUser', loginedUser.value.id!);
+        await loginComet(loginedUser.value);
+        errorString.value = "";
+        usernameController = TextEditingController();
+        passwordController = TextEditingController();
+        if (loginedUser.value.about == "") {
+          updateController.statusIsBlank.value = true;
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text('Provide more information for the account!'),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.offAll(UpdateProfileScreen());
+                      },
+                      child: const Text('UPDATE NOW'),
+                    )
+                  ],
+                );
+              });
+        } else {
+          Get.offAll(BottomNavScreen(), arguments: loginedUser);
+        }
+      }
+    }
+    return null;
   }
 }

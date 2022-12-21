@@ -21,6 +21,7 @@ class PostController extends GetxController {
   var isPosting = false.obs;
   var postList = <Post>[].obs;
   var currentPost = Post().obs;
+  var searchResult = <Post>[].obs;
   var isLiked = false.obs;
   var userPostList = <Post>[].obs;
   var imageUrl = ''.obs;
@@ -30,6 +31,7 @@ class PostController extends GetxController {
   Comment? comment;
   TextEditingController? content;
   TextEditingController? hashtag;
+  late TextEditingController searchKey;
 
   @override
   void onInit() {
@@ -37,6 +39,7 @@ class PostController extends GetxController {
     super.onInit();
     content = TextEditingController();
     hashtag = TextEditingController();
+    searchKey = TextEditingController();
     currentUser = loginController.loginedUser.value;
     getUserPost(userId: currentUser.id!);
     Timer.periodic(const Duration(seconds: 30), (timer) {
@@ -132,5 +135,14 @@ class PostController extends GetxController {
     log(response.toString());
     await getUserPost(userId: currentUser.id!);
     Get.back();
+  }
+
+  void searchByHashTag() async {
+    searchResult.clear();
+    for (Post post in postList) {
+      if (post.hashtag!.toLowerCase().contains(searchKey.text)) {
+        searchResult.add(post);
+      }
+    }
   }
 }
