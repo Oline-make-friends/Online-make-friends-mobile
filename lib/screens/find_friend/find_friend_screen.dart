@@ -112,7 +112,7 @@ class FindFriendScreen extends StatelessWidget {
                           usercontroller.userList[0].id.toString(), context);
                     },
                     child: ChoiceButton(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColorDark,
                       icon: Icons.add,
                     ),
                   ),

@@ -1,7 +1,7 @@
 const String appRegion = 'US';
-const String appId = '226952cd53148d68';
-const String authKey = "e937e6360fecce622d6376a387d8ba1973c941c6";
-const String apiKey = "bc13330c63f3f6bca75ccdac9518d855c2a6bf5a";
+const String appId = '2411808b2dac67e8';
+const String authKey = "9b2408644013917964ef0a064e6ebba1938b630c";
+const String apiKey = "b282785b2eaa738feb75cdb1e08890bf05f6108c";
 const String zegoAppSign =
     "07bf064ca6fe696c2d58875b0c4b6d077d862b92214fc6bdc5ac8ead196c65ae";
 const int zegoAppID = 442638381;

@@ -1,6 +1,5 @@
 import 'package:cometchat/cometchat_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_making_friends_app_2/config/app_router.dart';
 import 'package:flutter_making_friends_app_2/config/theme.dart';
 import 'package:flutter_making_friends_app_2/models/user_model.dart';

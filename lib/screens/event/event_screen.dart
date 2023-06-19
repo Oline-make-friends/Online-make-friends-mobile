@@ -68,15 +68,15 @@ class EventScreen extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  TextButton(
-                    onPressed: () {
-                      eventController.getExpiredEvent();
-                    },
-                    child: Text(
-                      "test",
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  )
+                  // TextButton(
+                  //   onPressed: () {
+                  //     eventController.getExpiredEvent();
+                  //   },
+                  //   child: Text(
+                  //     "test",
+                  //     style: Theme.of(context).textTheme.headline6,
+                  //   ),
+                  // )
                 ],
               ),
               const SizedBox(height: 25),

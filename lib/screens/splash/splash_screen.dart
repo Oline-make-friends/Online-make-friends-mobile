@@ -3,8 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/login_controller.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart' as mbs;
 
 import '../../widgets/widgets.dart';
 
@@ -130,7 +129,7 @@ class SplashScreen extends StatelessWidget {
                   buttonColor: Theme.of(context).primaryColor,
                   title: 'Find Someone',
                   onTap: () {
-                    showMaterialModalBottomSheet(
+                    mbs.showMaterialModalBottomSheet(
                       context: context,
                       builder: ((context) {
                         return SafeArea(

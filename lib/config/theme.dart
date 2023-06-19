@@ -8,7 +8,7 @@ ThemeData theme() {
     backgroundColor: const Color(0xFFdee9f1),
     scaffoldBackgroundColor: const Color(0xFFdee9f1),
     fontFamily: 'JosefinSans',
-    buttonColor: const Color(0xFF2f4252),
+    // buttonColor: const Color(0xFF2f4252),
     textTheme: const TextTheme(
       headline1: TextStyle(
         color: Color(0xFFed7117),

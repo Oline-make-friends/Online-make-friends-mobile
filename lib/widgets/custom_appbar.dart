@@ -2,7 +2,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart' as CometUIKIt;
+// import 'package:flutter_chat_ui_kit/flutter_chat_ui_kit.dart' as CometUIKIt;
 import 'package:flutter_making_friends_app_2/screens/test_screen/test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -11,7 +11,7 @@ import '../controllers/controllers.dart';
 import '../models/models.dart';
 import '../screens/screens.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final Widget? leading;
   const CustomAppBar({

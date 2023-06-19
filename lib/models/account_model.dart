@@ -8,7 +8,7 @@ class Account extends Equatable {
   final bool is_admin;
   final bool is_active;
 
-  const Account({
+  Account({
     required this.id,
     required this.username,
     required this.password,

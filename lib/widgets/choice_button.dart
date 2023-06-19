@@ -30,7 +30,7 @@ class ChoiceButton extends StatelessWidget {
               ? LinearGradient(
                   colors: [
                     Theme.of(context).primaryColor,
-                    Theme.of(context).accentColor
+                    Theme.of(context).primaryColorDark
                   ],
                 )
               : null,

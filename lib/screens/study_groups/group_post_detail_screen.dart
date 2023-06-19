@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-class GroupPostDetailScreen extends StatelessWidget with PreferredSizeWidget {
+class GroupPostDetailScreen extends StatelessWidget {
   final PreferredSizeWidget? bottom;
 
   GroupPostDetailScreen({super.key, this.bottom});

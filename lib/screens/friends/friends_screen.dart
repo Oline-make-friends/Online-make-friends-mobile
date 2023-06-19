@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_making_friends_app_2/models/models.dart';
-import 'package:flutter_making_friends_app_2/screens/group_chat/group_chat_screen.dart';
+
 import 'package:flutter_making_friends_app_2/screens/meeting/join_meeting_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/meeting/meeting_screen.dart';
 import 'package:flutter_making_friends_app_2/screens/screens.dart';
-import 'package:flutter_making_friends_app_2/screens/single_chat/single_chat_screen.dart';
-import 'package:flutter_making_friends_app_2/widgets/custom_appbar.dart';
-import 'package:flutter_making_friends_app_2/widgets/user_image_small.dart';
+
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';

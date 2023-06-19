@@ -96,7 +96,7 @@ class UsersScreen extends StatelessWidget {
                                   context);
                             },
                             child: ChoiceButton(
-                              color: Theme.of(context).accentColor,
+                              color: Theme.of(context).primaryColorDark,
                               icon: Icons.add,
                             ),
                           )
@@ -158,7 +158,7 @@ class UsersScreen extends StatelessWidget {
                               gradient: LinearGradient(
                                 colors: [
                                   Theme.of(context).primaryColor,
-                                  Theme.of(context).accentColor,
+                                  Theme.of(context).primaryColorDark,
                                 ],
                               ),
                             ),

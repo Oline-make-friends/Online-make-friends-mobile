@@ -48,6 +48,7 @@ class FriendsListScreen extends StatelessWidget {
             typography: CometUIKIt.Typography.fromDefault()),
         usersConfiguration: CometUIKIt.UsersConfiguration(
           title: 'Friends',
+
           // showBackButton: false,
           userListConfiguration:
               CometUIKIt.UserListConfiguration(uids: friendsId),

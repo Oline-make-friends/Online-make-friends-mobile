@@ -121,6 +121,6 @@ class EventController extends GetxController {
         }
       }
     }
-    log(onGoingEvents.length.toString());
+    // log(onGoingEvents.length.toString());
   }
 }

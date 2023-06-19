@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_making_friends_app_2/controllers/group_controller.dart';
-import 'package:flutter_making_friends_app_2/models/user_model.dart';
 import 'package:flutter_making_friends_app_2/screens/study_groups/group_detail_screen.dart';
 import 'package:get/get.dart';
 
@@ -26,9 +25,24 @@ class GroupsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Explore',
-                    style: Theme.of(context).textTheme.headline1,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Explore',
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await groupController.fetchGroups();
+                        },
+                        child: Text(
+                          'Refresh',
+                          style: TextStyle(
+                              color: Theme.of(context).scaffoldBackgroundColor),
+                        ),
+                      )
+                    ],
                   ),
                   Text(
                     'all study groups',
@@ -94,30 +108,30 @@ class GroupsScreen extends StatelessWidget {
             // ),
 
             //!search container
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                // border: Border.all(),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.search),
-                  ),
-                  Flexible(
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Search for group',
-                          border: InputBorder.none),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: const EdgeInsets.symmetric(horizontal: 20),
+            //   height: 40,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     // border: Border.all(),
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: Row(
+            //     children: [
+            //       IconButton(
+            //         onPressed: () {},
+            //         icon: Icon(Icons.search),
+            //       ),
+            //       Flexible(
+            //         child: TextField(
+            //           decoration: InputDecoration(
+            //               hintText: 'Search for group',
+            //               border: InputBorder.none),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

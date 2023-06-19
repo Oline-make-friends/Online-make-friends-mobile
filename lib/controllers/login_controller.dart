@@ -14,7 +14,7 @@ import 'package:flutter_making_friends_app_2/widgets/alert.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+// import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../config/settings.dart';
 
@@ -107,6 +107,7 @@ class LoginController extends GetxController {
         return errorString.value;
       } else {
         loginedUser.value = UserModel.fromJson(data);
+        log("user id: ${loginedUser.value.id!}");
         await prefs.setString('loginUser', loginedUser.value.id!);
         await loginComet(loginedUser.value);
         errorString.value = "";
